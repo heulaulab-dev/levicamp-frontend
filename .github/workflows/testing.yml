@@ -1,0 +1,21 @@
+name: Frontend CI (Testing Branch)
+
+on:
+  push:
+    branches: [testing]
+  pull_request:
+    branches: [testing]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Run Lint
+        run: bun lint
