@@ -1,4 +1,4 @@
-import FacilitiesCard from "@components/ui/FacilitiesCard";
+import FacilitiesCard from "@components/ui/facilitiesCard";
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";

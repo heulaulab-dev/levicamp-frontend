@@ -1,46 +1,35 @@
 import Image from "next/image";
-import PricingCard from "@components/ui/PricingCard";
+import PricingCard from "@components/ui/pricingCard";
+import { Award } from "lucide-react";
 
 const TentPrice = () => {
   return (
     <section className="flex flex-col items-center text-center py-24 px-6 relative">
-      <Image src="/assets/icons/camp-icon.png" alt="Tent Icon" width={70} height={70} />
+      <Image
+        src="/assets/icons/camp-icon.png"
+        alt="Tent Icon"
+        width={70}
+        height={70}
+      />
 
-      <h2 className="text-6xl font-semibold text-gray-900 mt-4 mb-24">
+      <h2 className="text-6xl font-semibold text-[var(--text)] mt-4 mb-24">
         Your Tent is Set. Your Adventure <br />
         Starts Now.
       </h2>
 
-      <div className="flex flex-wrap justify-center gap-8 overflow-x-auto w-full my-24">
-        <div className="bg-green-200 rounded-2xl p-6 flex flex-col justify-between h-[622px] w-[384px] shadow-lg text-start mb-6">
-          <div>
-            <h3 className="text-4xl font-semibold text-gray-900 leading-snug">
-              Find Your Tent
-            </h3>
-            <p className="light italic text-3xl text-gray-700 mt-1">
-              & Make Unforgettable Memories!
-            </p>
-          </div>
-
-          <div className="flex items-center justify-between ">
-            <p className="text-gray-900 text-xl leading-relaxed text-left">
-              Choose your tent <br /> category and book <br /> your perfect <br /> escape.
-            </p>
-            <div className="bg-green-600 w-[72px] h-[72px] flex items-center justify-center rounded-full ">
-              <Image
-                src="/assets/icons/arrow-up-right.svg"
-                alt="Arrow"
-                width={30}
-                height={30}
-              />
-            </div>
-          </div>
+      <div className="relative w-full pl-32 mt-24">
+        <div className="flex items-center gap-2 bg-card text-text-card px-5 py-2.5 rounded-lg shadow-md mb-12 w-max">
+          <Award className="w-5 h-5" />
+          <span>Our Tent Category</span>
         </div>
+      </div>
 
+      <div className="flex flex-wrap justify-center gap-8 overflow-x-auto w-full mb-24">
         <PricingCard
           type="Standard"
-          price="600k"
+          price="400k"
           features={[
+            "Fits up to 4 people - no extra fees!",
             "Best View",
             "Free Access to the Waterfall",
             "Free Breakfast",
@@ -51,8 +40,9 @@ const TentPrice = () => {
         />
         <PricingCard
           type="VIP"
-          price="900k"
+          price="550k"
           features={[
+            "Fits up to 4 people - no extra fees!",
             "Best View",
             "Free Access to the Waterfall",
             "Free Breakfast",
