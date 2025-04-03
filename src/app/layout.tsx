@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "@styles/globals.css";
 import Navbar from "@components/navbar";
 import Footer from "@components/footer";
+import {Toaster} from "@components/ui/toaster";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -18,14 +19,16 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
+    children: React.ReactNode;
+  }>) {
   return (
     <html lang="en">
       <body className= {`${plusJakartaSans.variable} antialiased bg-black` }>
         <Navbar /> {/* Navbar muncul di semua halaman */}
         <main>{children}</main>
         <Footer /> {/* Footer muncul di semua halaman */}
+        {/* Toast notification */}
+        <Toaster />
       </body>
     </html>
   );

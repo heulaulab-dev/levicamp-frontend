@@ -11,6 +11,7 @@ export type Tent = {
   status: "available" | "unavailable";
   updated_at?: string; 
   created_at?: string; 
+  capacity: number;
 };
 
 export type Category = {
@@ -41,13 +42,13 @@ export type Reservation = {
   check_in?: string;
   check_out?: string;
   status:
-    | "pending"
-    | "confirmed"
-    | "checked-in"
-    | "completed"
-    | "canceled"
-    | "refund"
-    | "rescheduled";
+  | "pending"
+  | "confirmed"
+  | "checked-in"
+  | "completed"
+  | "canceled"
+  | "refund"
+  | "rescheduled";
 };
 
 export type responseArray = {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import PricingCard from "@components/ui/pricingCard";
+import PricingCard from "@components/ui/PricingCard";
 import { Award } from "lucide-react";
 
 const TentPrice = () => {

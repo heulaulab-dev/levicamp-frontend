@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image"; // Import next/image
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/Button";
 import { Separator } from "@components/ui/separator";
 import { Trash2 } from "lucide-react";
 
@@ -52,31 +52,31 @@ function SummaryPersonal({ selectedTents, onRemove }: SummaryTentProps) {
         {selectedTents.length === 0 ? (
           <p className="text-gray-500 text-sm">No tents selected.</p>
         ) : (
-          selectedTents.map((tent) => (
-            <div key={tent.id} className="flex items-center gap-3 border-b py-3">
-              <div className="relative w-16 h-16 rounded-md overflow-hidden">
-                <Image
-                  src={tent.image}
-                  alt={tent.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                />
+            selectedTents.map((tent) => (
+              <div key={tent.id} className="flex items-center gap-3 border-b py-3">
+                <div className="relative w-16 h-16 rounded-md overflow-hidden">
+                  <Image
+                    src={tent.image}
+                    alt={tent.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-orange-600">{tent.name}</p>
+                  <p className="text-sm text-gray-500">Category: {tent.category?.name ?? "Unknown"}</p>
+                  <p className="text-sm text-gray-500">Max. Capacity: {tent.max_capacity} guests</p>
+                  <p className="text-sm font-medium text-orange-600">
+                    IDR {tent.weekend_price.toLocaleString("id-ID")}
+                  </p>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => onRemove(tent.id)}>
+                  <Trash2 className="w-5 h-5 text-red-500" />
+                </Button>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-orange-600">{tent.name}</p>
-                <p className="text-sm text-gray-500">Category: {tent.category?.name ?? "Unknown"}</p>
-                <p className="text-sm text-gray-500">Max. Capacity: {tent.max_capacity} guests</p>
-                <p className="text-sm font-medium text-orange-600">
-                  IDR {tent.weekend_price.toLocaleString("id-ID")}
-                </p>
-              </div>
-              <Button variant="ghost" size="icon" onClick={() => onRemove(tent.id)}>
-                <Trash2 className="w-5 h-5 text-red-500" />
-              </Button>
-            </div>
-          ))
-        )}
+            ))
+          )}
         <Separator className="my-3" />
         <h3 className="font-semibold text-gray-700">Price Summary</h3>
         <div className="flex justify-between text-sm text-gray-600">

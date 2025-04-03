@@ -1,7 +1,7 @@
 import { useReservations } from "@hooks/useReservations"; // Import custom hook
 import { format, isBefore, startOfToday } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/Button";
 import { Calendar } from "@components/ui/calendar";
 import { Card, CardContent } from "@components/ui/card";
 import { useState } from "react";
@@ -19,6 +19,8 @@ import {
 } from "@components/ui/select";
 import Image from "next/image";
 import TentCollection from "@components/reservation/TentCollection";
+import Loading from "@components/ui/loading";
+import { useToast } from "@components/hooks/use-toast";
 
 export function HeroHeader() {
   const today = startOfToday();
@@ -33,6 +35,7 @@ export function HeroHeader() {
     setSelectedCategory,
     selectedCategory,
   } = useReservations(); 
+  const {toast} = useToast();
 
   const [tempSelectedCategory, setTempSelectedCategory] = useState(selectedCategory);
 
@@ -101,11 +104,11 @@ export function HeroHeader() {
                         {format(date.from, "PPP")} - {format(date.to, "PPP")}
                       </>
                     ) : (
-                      format(date.from, "PPP")
-                    )
+                        format(date.from, "PPP")
+                      )
                   ) : (
-                    "Select date range"
-                  )}
+                      "Select date range"
+                    )}
                   <CalendarIcon className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
@@ -126,7 +129,14 @@ export function HeroHeader() {
             className="bg-button hover:bg-button-hover text-white px-6 py-2 rounded-lg"
             onClick={() => {
               setSelectedCategory(tempSelectedCategory); 
-              handleSearch();
+              handleSearch((message: string) => {
+                toast({
+                  title: "Something went wrong.",
+                  description: message, 
+                  variant: "destructive", 
+                  className: "bg-red-500 text-white p-4",
+                });
+              });
             }}
             disabled={loading}
           >
@@ -134,45 +144,45 @@ export function HeroHeader() {
           </Button>
         </div>
         <div className="flex flex-col md:flex-row gap-4 mt-6">
-        <Card className="w-full md:w-72 bg-white">
-          <CardContent className="p-4">
-            <h3 className="text-lg font-semibold text-text-card">
-              Need to Reschedule?
-            </h3>
-            <p className="text-sm text-text-card">
-              Flexible booking changes up to 48 hours before check-in
-            </p>
-            <Button
-              variant="outline"
-              className="mt-2 w-full bg-card text-brand"
-            >
-              Request Change
-            </Button>
-          </CardContent>
-        </Card>
+          <Card className="w-full md:w-72 bg-white">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-semibold text-text-card">
+                Need to Reschedule?
+              </h3>
+              <p className="text-sm text-text-card">
+                Flexible booking changes up to 48 hours before check-in
+              </p>
+              <Button
+                variant="outline"
+                className="mt-2 w-full bg-card text-brand"
+              >
+                Request Change
+              </Button>
+            </CardContent>
+          </Card>
 
-        <Card className="w-full md:w-72 bg-white">
-          <CardContent className="p-4">
-            <h3 className="text-lg font-semibold text-text-card">
-              Request a Refund
-            </h3>
-            <p className="text-sm text-text-card">
-              Our hassle-free refund process for eligible bookings
-            </p>
-            <Button
-              variant="outline"
-              className="mt-2 w-full bg-card text-brand"
-            >
-              Request Refund
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+          <Card className="w-full md:w-72 bg-white">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-semibold text-text-card">
+                Request a Refund
+              </h3>
+              <p className="text-sm text-text-card">
+                Our hassle-free refund process for eligible bookings
+              </p>
+              <Button
+                variant="outline"
+                className="mt-2 w-full bg-card text-brand"
+              >
+                Request Refund
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
       {/* Bagian Hasil Pencarian */}
-      <section className="mt-6 w-full">
-        {loading && <p className="text-white text-center">Fetching data...</p>}
+      <section className="w-full mb-20">
+        {loading && <Loading />}
         {error && <p className="text-red-500 text-center">{error}</p>}
         {!loading && !error && showResults && (
           <TentCollection

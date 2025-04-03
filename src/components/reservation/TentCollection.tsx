@@ -8,13 +8,13 @@ import { Award, Grid, Tent as TentIcon, Star } from "lucide-react";
 
 interface TentCollectionProps {
   categories:
-    | {
-        id: string;
-        name: string;
-        status?: string;
-        tents: Tent[];
-      }[]
-    | null;
+  | {
+    id: string;
+    name: string;
+    status?: string;
+    tents: Tent[];
+  }[]
+  | null;
   loading: boolean;
   error: string | null;
 }
@@ -35,7 +35,7 @@ export default function TentCollection({ loading, error, categories }: TentColle
   };
 
   return (
-    <div className="flex gap-[50px] mt-[96px] ml-[139px] mr-[139px]">
+    <div className="flex gap-[50px] ml-20">
       {/* SECTION KIRI */}
       <div className="w-2/3 flex flex-col gap-6">
         {/* Header Section */}
@@ -50,26 +50,26 @@ export default function TentCollection({ loading, error, categories }: TentColle
               { name: "Standart", icon: <TentIcon className="w-4 h-4" /> },
               { name: "VIP", icon: <Star className="w-4 h-4" /> },
             ].map(category => (
-              <button
-                key={category.name}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ease-in-out ${
-                  selectedCategory === category.name
-                    ? "bg-orange-500 text-white shadow-md"
-                    : "bg-transparent text-gray-400 hover:bg-gray-700 hover:text-white"
-                }`}
-                onClick={() => setSelectedCategory(category.name)}
-              >
-                {category.icon}
-                {category.name}
-              </button>
-            ))}
+                <button
+                  key={category.name}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ease-in-out ${
+selectedCategory === category.name
+? "bg-orange-500 text-white shadow-md"
+: "bg-transparent text-gray-400 hover:bg-gray-700 hover:text-white"
+}`}
+                  onClick={() => setSelectedCategory(category.name)}
+                >
+                  {category.icon}
+                  {category.name}
+                </button>
+              ))}
           </div>
         </div>
-  
+
         {/* Loading & Error Handling */}
         {loading && <p className="text-center">Loading reservations...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
-  
+
         {/* Tent List */}
         {!loading && !error && (
           <div className="grid grid-cols-3 gap-4">
@@ -95,21 +95,21 @@ export default function TentCollection({ loading, error, categories }: TentColle
                 ))
               )
             ) : (
-              <p className="text-gray-500 col-span-3 text-center">No tents available</p>
-            )}
+                <p className="text-gray-500 col-span-3 text-center">No tents available</p>
+              )}
           </div>
         )}
       </div>
-  
+
       {/* SECTION KANAN (Summary Card) */}
       <div className="w-1/3">
         <SummaryTent
           selectedTents={
             selectedTents
-              .map(id => (categories ?? []).flatMap(category => category.tents).find(tent => Number(tent.id) === id))
-              .filter(Boolean) as Tent[]
+            .map(id => (categories ?? []).flatMap(category => category.tents).find(tent => Number(tent.id) === id))
+            .filter(Boolean) as Tent[]
           }
-          
+
         />
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/Button";
 import { Separator } from "@components/ui/separator";
 import { Trash2 } from "lucide-react";
 
@@ -53,32 +53,32 @@ export default function SummaryTent({ selectedTents, onRemove }: SummaryTentProp
         {selectedTents.length === 0 ? (
           <p className="text-gray-500 text-sm">No tents selected.</p>
         ) : (
-          selectedTents.map((tent) => (
-            <div key={tent.id} className="border-b py-2">
-              {/* Name & Trash Icon in the same row */}
-              <div className="flex justify-between items-center">
-                <p className="font-semibold text-brand">{tent.name}</p>
-                <Button variant="ghost" size="icon" onClick={() => onRemove(tent.id)}>
-                  <Trash2 className="w-5 h-5 text-red-500" />
-                </Button>
+            selectedTents.map((tent) => (
+              <div key={tent.id} className="border-b py-2">
+                {/* Name & Trash Icon in the same row */}
+                <div className="flex justify-between items-center">
+                  <p className="font-semibold text-brand">{tent.name}</p>
+                  <Button variant="ghost" size="icon" onClick={() => onRemove(tent.id)}>
+                    <Trash2 className="w-5 h-5 text-red-500" />
+                  </Button>
+                </div>
+
+                {/* Tent Details */}
+                <div className="grid grid-cols-2 text-sm text-gray-500 gap-2">
+                  <p className="font-medium text-gray-700">Category:</p>
+                  <p className="text-right">{tent.category?.name ?? "Unknown"}</p>
+
+                  <p className="font-medium text-gray-700">Max. Capacity:</p>
+                  <p className="text-right">4 guests</p>
+
+                  <p className="font-medium text-gray-700">Price:</p>
+                  <p className="text-right text-brand font-medium text-md">
+                    IDR {(tent.weekend_price ?? 0).toLocaleString("id-ID")}
+                  </p>
+                </div>
               </div>
-          
-              {/* Tent Details */}
-              <div className="grid grid-cols-2 text-sm text-gray-500 gap-2">
-                <p className="font-medium text-gray-700">Category:</p>
-                <p className="text-right">{tent.category?.name ?? "Unknown"}</p>
-          
-                <p className="font-medium text-gray-700">Max. Capacity:</p>
-                <p className="text-right">4 guests</p>
-          
-                <p className="font-medium text-gray-700">Price:</p>
-                <p className="text-right text-brand font-medium text-md">
-                  IDR {(tent.weekend_price ?? 0).toLocaleString("id-ID")}
-                </p>
-              </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
 
         <Separator className="my-3" />
         <h3 className="font-semibold text-gray-700">Price Summary</h3>

@@ -20,21 +20,23 @@ export function useReservations() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
 
-  const handleSearch = async () => {
+  const handleSearch = async (
+    onError: (message: string) => void,
+  ) => {
     if (!date?.from || !date?.to) {
-      alert("Please select a date range.");
+      onError("Please select a date range");
       return;
     }
-  
+
     if (!API_BASE_URL) {
-      setError("API base URL is not set");
+      onError("please try again later");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
     setShowResults(false);
-  
+
     try {
       const start_date = format(date.from, "yyyy-MM-dd");
       const end_date = format(date.to, "yyyy-MM-dd");
@@ -42,23 +44,23 @@ export function useReservations() {
       if (selectedCategory !== "All") {
         apiUrl += `&name=${selectedCategory}`;
       }
-  
+
       const response = await fetch(apiUrl);
       if (!response.ok) throw new Error("Failed to fetch reservations");
-  
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res: responseArray = await response.json();
       setReservationData(res.data);
       console.log(res.data);
       setShowResults(res.data.length > 0);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "An unknown error occurred");
+      onError(err instanceof Error ? err.message : "Something went wrong");
       setShowResults(false);
     } finally {
       setLoading(false);
     }
   };
-  
+
 
   return { date, setDate, reservationData, loading, error, handleSearch, showResults, setSelectedCategory, selectedCategory, };
 }

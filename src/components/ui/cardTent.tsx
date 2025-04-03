@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/Button";
 import Image from "next/image";
 import { Sun, Briefcase, Users } from "lucide-react";
 import { Tent } from "../../types/reservations";
@@ -35,22 +35,22 @@ export default function CardTent({
           alt={tent.name}
           width={258}
           height={182}
-          className="object-cover w-full h-[160px]"
+          className={`object-cover w-full h-[160px] ${status === "unavailable" ? "filter grayscale" : ""}`}
         />
         <span
           className={`absolute top-3 right-3 flex items-center gap-1 text-xs px-3 py-1 rounded-full font-medium ${
-            tent.category?.name === "VIP"
-              ? "bg-button text-white"
-              : tent.category?.name === "Standart"
-              ? "bg-white text-button"
-              : "bg-gray-200 text-gray-600"
-          }`}
+tent.category?.name === "VIP"
+? "bg-button text-white"
+: tent.category?.name === "Standart"
+? "bg-white text-button"
+: "bg-gray-200 text-gray-600"
+}`}
         >
           {tent.category?.name === "VIP" ? (
             <Star size={14} />
           ) : tent.category?.name === "Standart" ? (
-            <Award size={14} />
-          ) : null}
+              <Award size={14} />
+            ) : null}
           {tent.category?.name || "Uncategorized"}
         </span>
       </div>
@@ -60,7 +60,7 @@ export default function CardTent({
         <CardTitle className="text-lg font-semibold">{tent.name}</CardTitle>
         <div className="flex justify-center items-center text-sm text-gray-500 mt-1">
           <Users size={16} className="mr-2" /> Up to{" "}
-          <b className="ml-1">4 guests</b>
+          <b className="ml-1">{tent.capacity} guests</b>
         </div>
       </CardHeader>
 
@@ -94,10 +94,10 @@ export default function CardTent({
           {/* Status Available / Booked */}
           <span
             className={`text-sm flex items-center px-3 py-1 rounded-full font-medium ${
-              status === "available"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-500 text-white"
-            }`}
+status === "available"
+? "bg-green-100 text-green-700"
+: "bg-red-500 text-white"
+}`}
           >
             {status === "available" ? "Available" : "Booked"}
           </span>
@@ -105,10 +105,10 @@ export default function CardTent({
           {/* Tombol Select / Not Available */}
           <Button
             className={`w-[110px] ${
-              status === "available"
-                ? "bg-button hover:bg-button-hover"
-                : "bg-gray-300"
-            }`}
+status === "available"
+? "bg-button hover:bg-button-hover"
+: "bg-gray-300"
+}`}
             disabled={status !== "available"}
             onClick={onSelect}
           >

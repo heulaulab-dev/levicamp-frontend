@@ -1,23 +1,23 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import FacilitiesCard from "@components/ui/facilitiesCard";
+import FacilitiesCard from "@components/ui/FacilitiesCard";
 import { Bookmark, ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
 
 const facilities = [
   {
     title:
-      "Escape the city, breathe in fresh air, and soak in stunning valley views.",
+    "Escape the city, breathe in fresh air, and soak in stunning valley views.",
     imageSrc: "/assets/Toilet.png",
   },
   {
     title:
-      "Cozy, spacious tents with comfy beds and everything you need to chill.",
+    "Cozy, spacious tents with comfy beds and everything you need to chill.",
     imageSrc: "/assets/waterfall.png",
   },
   {
     title:
-      "Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.",
+    "Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.",
     imageSrc: "/assets/wifi.png",
   },
   {
