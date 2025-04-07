@@ -64,3 +64,14 @@ export type responseObject = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 };
+
+export type CheckPriceResponse = {
+  status: number;
+  message: string;
+  data: {
+    total_price: number;
+    tents: Tent[];
+    start_date: string; 
+    end_date: string;   
+  };
+};

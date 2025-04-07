@@ -2,9 +2,10 @@
 
 import CardTent from "@components/ui/cardTent";
 import SummaryTent from "@components/ui/summaryTent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tent } from "../../types/reservations";
 import { Award, Grid, Tent as TentIcon, Star } from "lucide-react";
+import { format } from "date-fns";
 
 interface TentCollectionProps {
   categories:
@@ -20,19 +21,50 @@ interface TentCollectionProps {
 }
 
 export default function TentCollection({ loading, error, categories }: TentCollectionProps) {
-  const [selectedTents, setSelectedTents] = useState<number[]>([]);
+  const [selectedTents, setSelectedTents] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const reservationData = categories ?? [];
   const filteredCategories =
-    selectedCategory === "All" ? reservationData : reservationData.filter(category => category.name === selectedCategory);
+    selectedCategory === "All" ? reservationData : reservationData.filter(category => category.name.toLowerCase() === selectedCategory.toLowerCase());
 
-  const handleSelectTent = (tentId: number | string) => {
+  const handleSelectTent = (tentId: string | string) => {
     setSelectedTents(prev => {
-      const newId = Number(tentId);
+      const newId = tentId;
       return prev.includes(newId) ? prev : [...new Set([...prev, newId])];
     });
   };
+
+  const handleRemoveTent = (tentId: string) => {
+    setSelectedTents(prev => prev.filter(id => id !== tentId));
+  };
+
+  useEffect(() => {
+    const reservationSearch = localStorage.getItem("reservation_search");
+    const parsedSearch = reservationSearch ? JSON.parse(reservationSearch) : null;
+  
+    const start = parsedSearch?.date?.from
+      ? format(new Date(parsedSearch.date.from), "yyyy-MM-dd")
+      : "";
+    const end = parsedSearch?.date?.to
+      ? format(new Date(parsedSearch.date.to), "yyyy-MM-dd")
+      : "";
+  
+    setStartDate(start);
+    setEndDate(end);
+  
+    const updated = {
+      start_date: start,
+      end_date: end,
+      tent_ids: selectedTents,
+      savedAt: new Date().toISOString(),
+    };
+  
+    localStorage.setItem("reservation_body", JSON.stringify(updated));
+  }, [selectedTents]);
+  
 
   return (
     <div className="flex gap-[50px] ml-20">
@@ -47,7 +79,7 @@ export default function TentCollection({ loading, error, categories }: TentColle
           <div className="flex items-center gap-2 bg-black p-1 rounded-lg shadow-md">
             {[
               { name: "All", icon: <Grid className="w-4 h-4" /> },
-              { name: "Standart", icon: <TentIcon className="w-4 h-4" /> },
+              { name: "Standard", icon: <TentIcon className="w-4 h-4" /> },
               { name: "VIP", icon: <Star className="w-4 h-4" /> },
             ].map(category => (
                 <button
@@ -89,7 +121,7 @@ selectedCategory === category.name
                         tents: [],
                       },
                     }}
-                    isSelected={selectedTents.includes(Number(tent.id))}
+                    isSelected={selectedTents.includes(tent.id)}
                     onSelect={() => handleSelectTent(tent.id)}
                   />
                 ))
@@ -104,12 +136,25 @@ selectedCategory === category.name
       {/* SECTION KANAN (Summary Card) */}
       <div className="w-1/3">
         <SummaryTent
-          selectedTents={
-            selectedTents
-            .map(id => (categories ?? []).flatMap(category => category.tents).find(tent => Number(tent.id) === id))
+         selectedTents={
+          selectedTents
+            .map(id => {
+              for (const category of categories ?? []) {
+                const tent = category.tents.find(t => t.id === id);
+                if (tent) {
+                  return {
+                    ...tent,
+                    category: { name: category.name }, 
+                  };
+                }
+              }
+              return null;
+            })
             .filter(Boolean) as Tent[]
-          }
-
+        }
+          onRemove={handleRemoveTent}
+          startDate={startDate}
+          endDate={endDate}
         />
       </div>
     </div>

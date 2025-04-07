@@ -38,19 +38,18 @@ export default function CardTent({
           className={`object-cover w-full h-[160px] ${status === "unavailable" ? "filter grayscale" : ""}`}
         />
         <span
-          className={`absolute top-3 right-3 flex items-center gap-1 text-xs px-3 py-1 rounded-full font-medium ${
-tent.category?.name === "VIP"
-? "bg-button text-white"
-: tent.category?.name === "Standart"
-? "bg-white text-button"
-: "bg-gray-200 text-gray-600"
-}`}
+          className={`absolute top-3 right-3 flex items-center gap-1 text-xs px-3 py-1 rounded-full font-medium ${tent.category?.name === "VIP"
+            ? "bg-button text-white"
+            : tent.category?.name === "Standart"
+              ? "bg-white text-button"
+              : "bg-gray-200 text-gray-600"
+            }`}
         >
           {tent.category?.name === "VIP" ? (
             <Star size={14} />
           ) : tent.category?.name === "Standart" ? (
-              <Award size={14} />
-            ) : null}
+            <Award size={14} />
+          ) : null}
           {tent.category?.name || "Uncategorized"}
         </span>
       </div>
@@ -93,22 +92,20 @@ tent.category?.name === "VIP"
         <div className="flex items-center justify-between mt-[41px]">
           {/* Status Available / Booked */}
           <span
-            className={`text-sm flex items-center px-3 py-1 rounded-full font-medium ${
-status === "available"
-? "bg-green-100 text-green-700"
-: "bg-red-500 text-white"
-}`}
+            className={`text-sm flex items-center px-3 py-1 rounded-full font-medium ${status === "available"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-500 text-white"
+              }`}
           >
             {status === "available" ? "Available" : "Booked"}
           </span>
 
           {/* Tombol Select / Not Available */}
           <Button
-            className={`w-[110px] ${
-status === "available"
-? "bg-button hover:bg-button-hover"
-: "bg-gray-300"
-}`}
+            className={`w-[110px] ${status === "available"
+              ? "bg-button hover:bg-button-hover"
+              : "bg-gray-300"
+              }`}
             disabled={status !== "available"}
             onClick={onSelect}
           >
