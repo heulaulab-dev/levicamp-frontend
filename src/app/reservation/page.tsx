@@ -1,13 +1,11 @@
 'use client'
 
-import { HeroHeader } from "@components/reservation/HeroHeader";
-// import TentCollection from "@components/reservation/TentCollection";
+import { HeroHeader } from '@/components/pages/reservation/hero-header';
 
 export default function ReservationPage() {
-  return (
-    <div className="bg-black">
-      <HeroHeader />
-      {/* <TentCollection/> */}
-    </div>
-  );
+	return (
+		<div className='bg-background'>
+			<HeroHeader />
+		</div>
+	);
 }
