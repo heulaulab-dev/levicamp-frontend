@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-			<ReactScan />
+			<ReactScan data-lenis-prevent />
 			<head>
 				<Script
 					src='https://unpkg.com/react-scan/dist/install-hook.global.js'

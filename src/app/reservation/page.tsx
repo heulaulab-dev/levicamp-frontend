@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { HeroHeader } from '@/components/pages/reservation/hero-header';
 
