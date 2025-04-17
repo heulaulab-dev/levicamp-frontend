@@ -41,6 +41,7 @@ import {
 } from '@/components/ui/form';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 
 interface OTPVerificationModalProps {
 	open: boolean;
@@ -54,12 +55,13 @@ export function OTPVerificationModal({
 	bookingCode,
 }: OTPVerificationModalProps) {
 	const isDesktop = useMediaQuery('(min-width: 768px)');
-	const { validateRescheduleToken, loading, requestData } = useReschedules();
+	const { validateReschedule, loading } = useReschedules();
+	const { setRescheduleData } = useRescheduleData();
 	const router = useRouter();
 
 	const FormSchema = z.object({
-		pin: z.string().min(8, {
-			message: 'Your one-time password must be 8 characters.',
+		pin: z.string().min(6, {
+			message: 'Your one-time password must be 6 characters.',
 		}),
 	});
 
@@ -71,17 +73,25 @@ export function OTPVerificationModal({
 			return;
 		}
 
-		if (!requestData?.token) {
+		if (!otp) {
 			toast.error('Session expired. Please request a new OTP');
 			return;
 		}
 
 		try {
 			// Use the validateRescheduleToken to verify the OTP (token)
-			const response = await validateRescheduleToken(otp);
+			const response = await validateReschedule(otp);
 
 			// If validation successful, redirect to booking-specific page
 			if (response.status >= 200 && response.status < 300) {
+				// Store the validation data in persistent storage
+				setRescheduleData(response.data.booking, {
+					id: response.data.id,
+					token: response.data.token,
+					used: response.data.used,
+					expired_at: response.data.expired_at,
+				});
+
 				toast.success(
 					'Your identity has been verified. Redirecting to reschedule page.',
 				);
@@ -126,19 +136,21 @@ export function OTPVerificationModal({
 							<FormItem>
 								<FormLabel>Verification Code</FormLabel>
 								<FormControl>
-									<InputOTP maxLength={8} {...field}>
-										<InputOTPGroup>
-											<InputOTPSlot index={0} />
-											<InputOTPSlot index={1} />
-											<InputOTPSlot index={2} />
-											<InputOTPSlot index={3} />
+									<InputOTP
+										maxLength={6}
+										{...field}
+										className='justify-between w-full'
+									>
+										<InputOTPGroup className='w-full'>
+											<InputOTPSlot index={0} className='flex-1 h-12' />
+											<InputOTPSlot index={1} className='flex-1 h-12' />
+											<InputOTPSlot index={2} className='flex-1 h-12' />
 										</InputOTPGroup>
 										<InputOTPSeparator />
-										<InputOTPGroup>
-											<InputOTPSlot index={4} />
-											<InputOTPSlot index={5} />
-											<InputOTPSlot index={6} />
-											<InputOTPSlot index={7} />
+										<InputOTPGroup className='w-full'>
+											<InputOTPSlot index={3} className='flex-1 h-12' />
+											<InputOTPSlot index={4} className='flex-1 h-12' />
+											<InputOTPSlot index={5} className='flex-1 h-12' />
 										</InputOTPGroup>
 									</InputOTP>
 								</FormControl>
@@ -184,7 +196,7 @@ export function OTPVerificationModal({
 							details.
 						</DialogDescription>
 					</DialogHeader>
-					<InputOTPForm />
+					<InputOTPForm className='w-full' />
 				</DialogContent>
 			</Dialog>
 		);

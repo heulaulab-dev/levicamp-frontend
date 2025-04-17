@@ -1,44 +1,51 @@
-import { DateRange } from 'react-day-picker';
-import { Category } from './reservations';
+export interface RescheduleRequest {
+	booking_id: string;
+}
 
-export interface ReservationTent {
-	id: string;
-	name: string;
-	tent_images: string[];
-	description: string;
-	facilities: string[];
-	category_id: string;
-	category?: {
-		id: string;
-		name: string;
-		weekday_price: number;
-		weekend_price: number;
-		facilities: {
-			capacities: string;
-		};
-		description: string;
-		created_at: string;
-		updated_at: string;
+export interface CreateRescheduleRequest {
+	booking_id: string;
+	token: string;
+	tent_id: string[];
+	start_date: string;
+	end_date: string;
+}
+
+export interface RescheduleResponse {
+	status: number;
+	message: string;
+	data: {
+		token: string;
+		booking_id: string;
+		expired_at: string;
+		url: string;
 	};
+}
+
+export interface CreateRescheduleResponse {
+	status: number;
+	message: string;
+	data: Booking;
+}
+
+export interface Booking {
+	id: string;
+	guest_id: string;
+	guest: Guest;
+	total_amount: number;
+	start_date: string;
+	end_date: string;
 	status: string;
-	weekday_price: number;
-	weekend_price: number;
+	detail_booking: Array<DetailBooking>;
 	created_at: string;
 	updated_at: string;
 }
 
-export interface Reservation {
+export interface Guest {
 	id: string;
-	start_date: string;
-	end_date: string;
-	price: number;
-	tent_id: string;
-	tent: ReservationTent;
-	guest_id: string;
-	check_in: string | null;
-	check_out: string | null;
-	status: string;
-	expired_at: string;
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
 	created_at: string;
 	updated_at: string;
 }
@@ -52,38 +59,54 @@ export interface DetailBooking {
 	updated_at: string;
 }
 
-export interface Booking {
+export interface Reservation {
 	id: string;
-	guest_id: string;
-	total_amount: number;
 	start_date: string;
 	end_date: string;
+	price: number;
+	tent_id: string;
+	tent: Tent;
+	guest_id: string;
+	check_in: string | null;
+	check_out: string | null;
 	status: string;
-	detail_booking: DetailBooking[];
+	expired_at: string;
 	created_at: string;
 	updated_at: string;
 }
 
-export interface RescheduleRequest {
-	booking_id: string;
+export interface Tent {
+	id: string;
+	name: string;
+	tent_images: string[];
+	description: string;
+	facilities: string[];
+	category_id: string;
+	category: Category;
+	status: string;
+	weekday_price: number;
+	weekend_price: number;
+	capacity: number;
+	created_at: string;
+	updated_at: string;
+	deleted_at: string | null;
 }
 
-export interface RescheduleRequestResponse {
-	status: number;
-	message: string;
-	error?: {
-		code: string;
-		description: string;
+export interface Category {
+	id: string;
+	name: string;
+	weekday_price: number;
+	weekend_price: number;
+	facilities: {
+		capacities: string;
 	};
-	data?: {
-		token: string;
-		booking_id: string;
-		expired_at: string;
-		url: string;
-	};
+	description: string;
+	created_at: string;
+	updated_at: string;
+	deleted_at: string | null;
 }
 
-export interface RescheduleValidationResponse {
+export interface RescheduleValidateResponse {
 	status: number;
 	message: string;
 	data: {
@@ -98,73 +121,23 @@ export interface RescheduleValidationResponse {
 	};
 }
 
-export interface RescheduleCreateRequest {
-	booking_id: string;
-	token: string;
-	tent_id: string[];
-	start_date: string;
-	end_date: string;
-}
-
-export interface RescheduleCreateResponse {
+export interface RescheduleError {
 	status: number;
 	message: string;
-	data: Booking;
-}
-
-export interface RescheduleData {
-	selectedTents: Array<{
-		id: string;
-		name: string;
-		tent_image: string;
-		category?: {
-			name: string;
-		};
-		capacity: number;
-		weekday_price?: number;
-		weekend_price?: number;
-		api_price?: number;
-	}>;
-	checkInDate?: Date;
-	checkOutDate?: Date;
-	totalPrice: number;
-	isLoadingPrices?: boolean;
+	error: {
+		code: string;
+		description: string;
+	};
 }
 
 export interface RescheduleStore {
 	loading: boolean;
-	error: string | null;
-	bookingData: Booking | null;
-	requestData: RescheduleRequestResponse['data'] | null;
-	validationData: RescheduleValidationResponse['data'] | null;
-	date: DateRange | undefined;
-	selectedTents: string[];
-	tentCategories: Category[] | null;
-	rescheduleData: RescheduleData | null;
+	error: Error | null;
 
-	// Actions
-	resetState: () => void;
-	setDate: (date: DateRange | undefined) => void;
-	setSelectedTents: (tentIds: string[]) => void;
-	addSelectedTent: (tentId: string) => void;
-	removeSelectedTent: (tentId: string) => void;
-	setTentCategories: (categories: Category[] | null) => void;
-	setRescheduleData: (data: RescheduleData) => void;
-	clearRescheduleData: () => void;
-
-	// API calls
-	requestReschedule: (bookingId: string) => Promise<RescheduleRequestResponse>;
-	validateRescheduleToken: (
-		token: string,
-	) => Promise<RescheduleValidationResponse>;
+	reset: () => void;
+	requestReschedule: (bookingId: string) => Promise<RescheduleResponse>;
+	validateReschedule: (token: string) => Promise<RescheduleValidateResponse>;
 	createReschedule: (
-		data: RescheduleCreateRequest,
-	) => Promise<RescheduleCreateResponse>;
-	searchAvailableTents: () => Promise<Category[] | null>;
-
-	// Helper methods
-	prepareRescheduleData: (
-		bookingId: string,
-		token: string,
-	) => RescheduleCreateRequest;
+		data: CreateRescheduleRequest,
+	) => Promise<CreateRescheduleResponse>;
 }

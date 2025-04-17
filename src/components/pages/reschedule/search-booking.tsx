@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -5,34 +6,57 @@ import { Search } from 'lucide-react';
 import { useState } from 'react';
 import { OTPVerificationModal } from '@/components/pages/reschedule/otp-modal';
 import { useReschedules } from '@/hooks/reschedules/use-reschedules';
-import { toast } from 'sonner';
+import { StatusCard } from '@/components/pages/reschedule/status-card';
+import { errorDescriptionMap } from '@/types/error-description-map';
 
 export default function SearchBooking() {
 	const [bookingCode, setBookingCode] = useState('');
 	const [isOTPModalOpen, setIsOTPModalOpen] = useState(false);
-	const { loading, requestReschedule } = useReschedules();
+	const [statusInfo, setStatusInfo] = useState<{
+		variant:
+			| 'eligible'
+			| 'processing'
+			| 'completed'
+			| 'failed'
+			| 'error'
+			| 'confirmed';
+		title: string;
+		description: string;
+	} | null>(null);
+	const { requestReschedule, loading } = useReschedules();
 
+	// Function untuk handle pencarian booking
 	const handleSearch = async () => {
-		if (!bookingCode.trim()) {
-			toast.error('Please enter your booking code');
-			return;
-		}
-
 		try {
-			// Call the requestReschedule function from the useReschedules hook
+			setStatusInfo(null);
 			const response = await requestReschedule(bookingCode);
-
-			// If the request is successful (status is 200 or similar success code)
-			if (response.status === 200) {
+			if (response.data?.token) {
 				setIsOTPModalOpen(true);
 			} else {
-				toast.error(
-					response.error?.description || 'Failed to request reschedule',
-				);
+				console.log(response);
 			}
-		} catch (error) {
-			console.error(error);
-			// Error is already handled in the hook and stored in the error state
+			console.log(response);
+		} catch (error: any) {
+			console.error(error.error.description);
+			console.log(error);
+
+			// Extract error description from API response
+			const errorDescription = error.error.description;
+
+			console.log(errorDescription);
+
+			if (errorDescription && errorDescriptionMap[errorDescription]) {
+				// If error description exists in the map, use the predefined status info
+				setStatusInfo(errorDescriptionMap[errorDescription]);
+			} else {
+				// Fallback for unknown errors
+				setStatusInfo({
+					variant: 'error',
+					title: 'Error',
+					description:
+						error.error.description || 'An unexpected error occurred',
+				});
+			}
 		}
 	};
 
@@ -63,6 +87,16 @@ export default function SearchBooking() {
 					</div>
 				</div>
 			</div>
+
+			{statusInfo && (
+				<div className='mt-4 w-full'>
+					<StatusCard
+						variant={statusInfo.variant}
+						title={statusInfo.title}
+						description={statusInfo.description}
+					/>
+				</div>
+			)}
 
 			<OTPVerificationModal
 				open={isOTPModalOpen}

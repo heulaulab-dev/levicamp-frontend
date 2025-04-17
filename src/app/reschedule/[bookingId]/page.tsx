@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import HeroHeader from '@/components/pages/reschedule/hero-header';
-import { useReschedules } from '@/hooks/reschedules/use-reschedules';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { toast } from 'sonner';
 
 export default function ReschedulePage() {
 	const params = useParams();
+	const router = useRouter();
 	const bookingId = params.bookingId as string;
-	const { bookingData, validationData } = useReschedules();
+	const { bookingData, validationData } = useRescheduleData();
 
 	// We need to load booking data if it's not already loaded
 	// This handles cases where users might directly visit this URL
@@ -18,11 +19,10 @@ export default function ReschedulePage() {
 			// Show a message to the user
 			toast.info('Please verify your booking first');
 
-			// In a real implementation, you might want to:
-			// 1. Redirect to the search page, or
-			// 2. Show a verification form directly on this page
+			// Redirect to the search page
+			router.push('/reschedule');
 		}
-	}, [bookingId, bookingData, validationData]);
+	}, [bookingId, bookingData, validationData, router]);
 
 	return (
 		<div className='bg-background'>

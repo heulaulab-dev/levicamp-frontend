@@ -1,261 +1,137 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { format } from 'date-fns';
-import api from '@/lib/api';
 import {
 	RescheduleStore,
-	RescheduleRequestResponse,
-	RescheduleValidationResponse,
-	RescheduleCreateRequest,
-	RescheduleCreateResponse,
+	RescheduleRequest,
+	RescheduleResponse,
+	RescheduleValidateResponse,
+	RescheduleError,
+	CreateRescheduleRequest,
+	CreateRescheduleResponse,
 } from '@/types/reschedules';
+import api from '@/lib/api';
 import { AxiosError } from 'axios';
-import { useReservations } from '../reservations/use-reservations';
 
-export const useReschedules = create<RescheduleStore>()(
-	persist(
-		(set, get) => ({
+export const useReschedules = create<RescheduleStore>((set) => ({
+	loading: false,
+	error: null,
+
+	reset: () => {
+		set({
 			loading: false,
 			error: null,
-			bookingData: null,
-			requestData: null,
-			validationData: null,
-			tentCategories: null,
-			rescheduleData: null,
-			date: {
-				from: undefined,
-				to: undefined,
-			},
-			selectedTents: [],
+		});
+	},
 
-			resetState: () =>
-				set({
-					loading: false,
-					error: null,
-					bookingData: null,
-					requestData: null,
-					validationData: null,
-					tentCategories: null,
-					rescheduleData: null,
-					date: {
-						from: undefined,
-						to: undefined,
-					},
-					selectedTents: [],
-				}),
+	requestReschedule: async (bookingId: string): Promise<RescheduleResponse> => {
+		set({ loading: true, error: null });
 
-			setDate: (date) => set({ date }),
+		try {
+			const requestData: RescheduleRequest = {
+				booking_id: bookingId,
+			};
 
-			setSelectedTents: (tentIds) => set({ selectedTents: tentIds }),
+			const response = await api.post<RescheduleResponse>(
+				'/reschedules/request',
+				requestData,
+			);
 
-			addSelectedTent: (tentId) => {
-				const currentTents = get().selectedTents;
-				if (!currentTents.includes(tentId)) {
-					set({ selectedTents: [...currentTents, tentId] });
-				}
-			},
+			return response.data;
+		} catch (error: unknown) {
+			const axiosError = error as AxiosError<RescheduleError>;
+			const errorResponse: RescheduleError = axiosError.response?.data || {
+				status: 500,
+				message:
+					error instanceof Error
+						? error.message
+						: 'Failed to request reschedule',
+				error: {
+					code: 'UNKNOWN_ERROR',
+					description:
+						'An unexpected error occurred while requesting reschedule',
+				},
+			};
 
-			removeSelectedTent: (tentId) => {
-				const currentTents = get().selectedTents;
-				set({
-					selectedTents: currentTents.filter((id) => id !== tentId),
-				});
-			},
+			const err = new Error(
+				errorResponse.error.description || 'Failed to request reschedule',
+			);
+			set({ error: err });
+			throw errorResponse;
+		} finally {
+			set({ loading: false });
+		}
+	},
 
-			setTentCategories: (categories) => set({ tentCategories: categories }),
+	validateReschedule: async (
+		token: string,
+	): Promise<RescheduleValidateResponse> => {
+		set({ loading: true, error: null });
 
-			setRescheduleData: (data) => set({ rescheduleData: data }),
+		try {
+			const response = await api.get<RescheduleValidateResponse>(
+				'/reschedules/validate',
+				{ params: { token } },
+			);
 
-			clearRescheduleData: () => set({ rescheduleData: null }),
+			return response.data;
+		} catch (error: unknown) {
+			const axiosError = error as AxiosError<RescheduleError>;
+			const errorResponse: RescheduleError = axiosError.response?.data || {
+				status: 500,
+				message:
+					error instanceof Error
+						? error.message
+						: 'Failed to validate reschedule token',
+				error: {
+					code: 'UNKNOWN_ERROR',
+					description:
+						'An unexpected error occurred while validating reschedule token',
+				},
+			};
 
-			searchAvailableTents: async () => {
-				const state = get();
-				const reservationStore = useReservations.getState();
+			const err = new Error(
+				errorResponse.error.description ||
+					'Failed to validate reschedule token',
+			);
+			set({ error: err });
+			throw errorResponse;
+		} finally {
+			set({ loading: false });
+		}
+	},
 
-				if (!state.date?.from || !state.date?.to) {
-					throw new Error('Please select a date range');
-				}
+	createReschedule: async (
+		data: CreateRescheduleRequest,
+	): Promise<CreateRescheduleResponse> => {
+		set({ loading: true, error: null });
 
-				set({ loading: true, error: null });
+		try {
+			const response = await api.post<CreateRescheduleResponse>(
+				'/reschedules',
+				data,
+			);
 
-				try {
-					// Use the existing reservation search functionality
-					await reservationStore.handleSearch((error: string) => {
-						set({ error, loading: false });
-					});
+			return response.data;
+		} catch (error: unknown) {
+			const axiosError = error as AxiosError<RescheduleError>;
+			const errorResponse: RescheduleError = axiosError.response?.data || {
+				status: 500,
+				message:
+					error instanceof Error
+						? error.message
+						: 'Failed to create reschedule',
+				error: {
+					code: 'UNKNOWN_ERROR',
+					description: 'An unexpected error occurred while creating reschedule',
+				},
+			};
 
-					// After search is complete, we can access the results from useReservations
-					const searchResults = useReservations.getState().reservationData;
-
-					// Set the tent categories in our store
-					set({ tentCategories: searchResults });
-
-					return searchResults;
-				} catch (error) {
-					let errorMessage = 'Failed to search for available tents';
-					if (error instanceof Error) {
-						errorMessage = error.message;
-					}
-					set({ error: errorMessage, loading: false });
-					return null;
-				} finally {
-					set({ loading: false });
-				}
-			},
-
-			requestReschedule: async (
-				bookingId: string,
-			): Promise<RescheduleRequestResponse> => {
-				set({ loading: true, error: null });
-
-				try {
-					const response = await api.post<RescheduleRequestResponse>(
-						'/reschedules/request',
-						{ booking_id: bookingId },
-					);
-
-					const res = response.data;
-
-					if (res.status === 200) {
-						set({
-							requestData: res.data,
-							loading: false,
-						});
-					} else {
-						set({
-							error: res.error?.description || 'Failed to request reschedule',
-							loading: false,
-						});
-					}
-
-					return res;
-				} catch (error) {
-					let errorMessage = 'Failed to request reschedule';
-
-					if (
-						error instanceof AxiosError &&
-						error.response?.data?.error?.description
-					) {
-						errorMessage = error.response.data.error.description;
-					} else if (error instanceof Error) {
-						errorMessage = error.message;
-					}
-
-					set({ error: errorMessage, loading: false });
-
-					return {
-						status: 500,
-						message: 'Request failed',
-						error: {
-							code: 'REQUEST_FAILED',
-							description: errorMessage,
-						},
-					};
-				}
-			},
-
-			validateRescheduleToken: async (
-				token: string,
-			): Promise<RescheduleValidationResponse> => {
-				set({ loading: true, error: null });
-
-				try {
-					const response = await api.get<RescheduleValidationResponse>(
-						'/reschedules/validate',
-						{ params: { token } },
-					);
-
-					set({
-						validationData: response.data.data,
-						bookingData: response.data.data.booking,
-						loading: false,
-					});
-
-					return response.data;
-				} catch (error) {
-					let errorMessage = 'Failed to validate reschedule token';
-
-					if (
-						error instanceof AxiosError &&
-						error.response?.data?.error?.description
-					) {
-						errorMessage = error.response.data.error.description;
-					} else if (error instanceof Error) {
-						errorMessage = error.message;
-					}
-
-					set({ error: errorMessage, loading: false });
-					throw new Error(errorMessage);
-				}
-			},
-
-			createReschedule: async (
-				data: RescheduleCreateRequest,
-			): Promise<RescheduleCreateResponse> => {
-				set({ loading: true, error: null });
-
-				try {
-					const response = await api.post<RescheduleCreateResponse>(
-						'/reschedules',
-						data,
-					);
-
-					set({
-						bookingData: response.data.data,
-						loading: false,
-					});
-
-					return response.data;
-				} catch (error) {
-					let errorMessage = 'Failed to create reschedule';
-
-					if (
-						error instanceof AxiosError &&
-						error.response?.data?.error?.description
-					) {
-						errorMessage = error.response.data.error.description;
-					} else if (error instanceof Error) {
-						errorMessage = error.message;
-					}
-
-					set({ error: errorMessage, loading: false });
-					throw new Error(errorMessage);
-				}
-			},
-
-			prepareRescheduleData: (
-				bookingId: string,
-				token: string,
-			): RescheduleCreateRequest => {
-				const state = get();
-
-				if (
-					!state.date?.from ||
-					!state.date?.to ||
-					state.selectedTents.length === 0
-				) {
-					throw new Error('Missing required reschedule data');
-				}
-
-				return {
-					booking_id: bookingId,
-					token: token,
-					tent_id: state.selectedTents,
-					start_date: format(state.date.from, 'yyyy-MM-dd'),
-					end_date: format(state.date.to, 'yyyy-MM-dd'),
-				};
-			},
-		}),
-		{
-			name: 'reschedule-storage',
-			partialize: (state) => ({
-				bookingData: state.bookingData,
-				requestData: state.requestData,
-				validationData: state.validationData,
-				date: state.date,
-				selectedTents: state.selectedTents,
-				rescheduleData: state.rescheduleData,
-			}),
-		},
-	),
-);
+			const err = new Error(
+				errorResponse.error.description || 'Failed to create reschedule',
+			);
+			set({ error: err });
+			throw errorResponse;
+		} finally {
+			set({ loading: false });
+		}
+	},
+}));

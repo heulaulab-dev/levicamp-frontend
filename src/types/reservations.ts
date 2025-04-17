@@ -14,6 +14,7 @@ export type Tent = {
 	updated_at?: string;
 	created_at?: string;
 	capacity: number;
+	price: number;
 };
 
 export type Category = {

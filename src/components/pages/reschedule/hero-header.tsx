@@ -1,71 +1,37 @@
 import Image from 'next/image';
 import SearchBooking from '@/components/pages/reschedule/search-booking';
-import StatusCard from '@/components/pages/reschedule/status-card';
+import { StatusCard } from '@/components/pages/reschedule/status-card';
 import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
-import { useReschedules } from '@/hooks/reschedules/use-reschedules';
 import RescheduleForm from '@/components/pages/reschedule/reschedule-form';
-import { useMemo, useState } from 'react';
-
-interface ReservationTent {
-	id: string;
-	name: string;
-	tent_images: string[];
-	category:
-		| {
-				id: string;
-				name: string;
-				weekday_price: number;
-				weekend_price: number;
-		  }
-		| string;
-	weekday_price: number;
-	weekend_price: number;
-	capacity?: number;
-}
+import SearchAvailableTent from '@/components/pages/reschedule/search-available-tent';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
+import { toast } from 'sonner';
 
 export default function HeroHeader() {
-	const { validationData, bookingData } = useReschedules();
+	const {
+		bookingData,
+		validationData,
+		invoiceData,
+		showTentCollection,
+		setShowTentCollection,
+	} = useRescheduleData();
 
-	const [showTentCollection, setShowTentCollection] = useState(false);
+	const handleRescheduleRequest = async () => {
+		if (!bookingData || !validationData || !invoiceData) {
+			toast.error('Missing booking information. Please try again.');
+			return;
+		}
 
-	const invoiceData = useMemo(() => {
-		if (!validationData?.booking) return null;
-
-		const booking = validationData.booking;
-		const detailBooking = booking.detail_booking || [];
-
-		const tents = detailBooking.map((detail) => {
-			const tent = detail.reservation.tent as ReservationTent;
-
-			return {
-				id: tent.id,
-				name: tent.name,
-				image: tent.tent_images?.[0] || '',
-				category:
-					typeof tent.category === 'object'
-						? tent.category.name
-						: String(tent.category),
-				capacity: tent.capacity || 0,
-				price: tent.weekday_price || 0,
-			};
-		});
-
-		return {
-			bookingId: booking.id || '',
-			paymentDate: booking.created_at || '',
-			guestName: booking.guest_id || '',
-			guestEmail: booking.guest_id || '',
-			guestPhone: booking.guest_id || '',
-			guestCount: String(detailBooking.length),
-			checkInDate: booking.start_date || '',
-			checkOutDate: booking.end_date || '',
-			tents,
-			totalPrice: booking.total_amount || 0,
-		};
-	}, [validationData]);
-
-	const handleRescheduleRequest = () => {
-		setShowTentCollection(true);
+		try {
+			// Logic to be implemented when user confirms the reschedule
+			setShowTentCollection(true);
+			toast.success('Reschedule request initiated. Please select new dates.');
+		} catch (error) {
+			toast.error(
+				'Failed to process your reschedule request. Please try again.',
+			);
+			console.error('Reschedule request error:', error);
+		}
 	};
 
 	return (
@@ -97,20 +63,40 @@ export default function HeroHeader() {
 			</div>
 
 			{/* Search Section */}
-			<div className='flex flex-col items-center w-full max-w-3xl'>
+			<section className='flex flex-col items-center w-full max-w-3xl'>
 				<SearchBooking />
-			</div>
+			</section>
 
-			<div className='flex flex-col items-center mt-20 w-full container'>
+			<div className='flex flex-col items-center mt-4 w-full'>
 				{bookingData && validationData && invoiceData && (
-					<div className='flex flex-col items-center w-full container'>
-						<StatusCard />
+					<div className='flex flex-col items-center w-full'>
+						<StatusCard
+							variant={
+								bookingData.status === 'confirmed' ? 'eligible' : 'processing'
+							}
+							title={
+								bookingData.status === 'confirmed'
+									? 'Eligible for Reschedule'
+									: 'Processing Booking'
+							}
+							description={
+								bookingData.status === 'confirmed'
+									? 'Your booking is eligible for rescheduling. Please review the details below.'
+									: 'Your booking is being processed. Some features may be limited.'
+							}
+						/>
 
 						{!showTentCollection && (
 							<>
 								<InvoiceDetail {...invoiceData} />
 								<RescheduleForm onRescheduleRequest={handleRescheduleRequest} />
 							</>
+						)}
+
+						{showTentCollection && (
+							<div className='mt-10'>
+								<SearchAvailableTent />
+							</div>
 						)}
 					</div>
 				)}
