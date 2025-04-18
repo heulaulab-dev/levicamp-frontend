@@ -1,9 +1,9 @@
 const Loading = () => {
   return (
-    <>
-      <p className="text-center text-gray-500">Loading reservations...</p>
-    </>
-  );
+		<>
+			<p className='text-gray-500 text-center'>Loading reservations...</p>
+		</>
+	);
 };
 
 export default Loading;

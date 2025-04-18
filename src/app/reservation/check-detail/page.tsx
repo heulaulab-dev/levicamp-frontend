@@ -1,91 +1,161 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ReservationStepper from "@components/reservation/ReservationStepper";
-import Link from "next/link";
-import Image from "next/image";
-import PersonalInfoCard from "@components/ui/personalInfoCard";
-import { ToastContainer } from "react-toastify";
-import SumaryPersonal from "@components/ui/summaryPersonal";
+import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
+import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
+import { PersonalInfoCard } from '@/components/pages/reservation/check-detail/personal-info-card';
+import { useReservations } from '@/hooks/reservations/use-reservations';
+import { format } from 'date-fns';
+import { toast } from 'sonner';
+import Image from 'next/image';
+import { useReservationStore } from '@/store/useReservationStore';
+import { useHydration } from '@/hooks/use-hydration';
 
 export default function CheckDetailPage() {
-  const router = useRouter();
-  const [personalInfo, setPersonalInfo] = useState(null);
-  const [loading, setLoading] = useState(true); // Tambahkan state loading
+	const router = useRouter();
+	const { createReservation } = useReservations();
+	const setDate = useReservations((state) => state.setDate);
+	const handleSearch = useReservations((state) => state.handleSearch);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const isHydrated = useHydration();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem("personalInfo");
+	const { reservationData, personalInfo, setBookingResponseData } =
+		useReservationStore();
 
-    setTimeout(() => {
-      if (!storedData) {
-        router.push("/reservation/extras"); // Redirect jika tidak ada data
-      } else {
-        setPersonalInfo(JSON.parse(storedData));
-      }
-      setLoading(false);
-    }, 1000); // Simulasi delay loading
-  }, [router]);
+	useEffect(() => {
+		// Only check for redirect after hydration is complete
+		if (!isHydrated) return;
 
-  // Menampilkan loading spinner saat data sedang di-fetch
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
-      </div>
-    );
-  }
+		// Redirect if data is missing
+		if (!reservationData) {
+			router.push('/reservation');
+			return;
+		}
 
-  if (!personalInfo) return null; // Hindari error jika data kosong
+		if (!personalInfo) {
+			router.push('/reservation/personal');
+			return;
+		}
 
-  return (
-    <>
-      {/* Hero Section */}
-      <div
-        className="flex flex-col items-center bg-gradient-to-b px-4 py-10 mt-[80px] mb-24"
-        style={{
-          backgroundImage: "url('/bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <Image
-          src="/assets/icons/camp-icon.png"
-          alt="Camping Icon"
-          width={50}
-          height={50}
-        />
-        <div className="text-center mt-4 mb-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-100 leading-tight">
-            One Last Step, take a moment to{" "}
-            <span className="text-brand">review your details</span> and confirm{" "}
-            <br />
-            everything&apos;s set
-          </h1>
-        </div>
-        <ToastContainer />
-        <ReservationStepper />
-      </div>
+		setIsLoading(false);
+	}, [router, reservationData, personalInfo, isHydrated]);
 
-      {/* Content Section */}
-      <div className="flex flex-col lg:flex-row gap-12 w-full mx-auto px-[139px] mt-24 justify-center">
-        <PersonalInfoCard />
-        <SumaryPersonal />
-      </div>
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between mt-6 px-[139px]">
-        <Link href="/reservation/personal-info">
-          <button className="px-6 py-3 bg-gray-300 text-gray-700 font-bold rounded-lg shadow-md hover:bg-gray-400 transition">
-            Back
-          </button>
-        </Link>
-        <Link href="/reservation/payment">
-          <button className="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition">
-            Proceed to Payment
-          </button>
-        </Link>
-      </div>
-    </>
-  );
+	const handleChangeBookingDate = async () => {
+		if (reservationData?.checkInDate && reservationData?.checkOutDate) {
+			// Set the dates in the Zustand store
+			setDate({
+				from: reservationData.checkInDate,
+				to: reservationData.checkOutDate,
+			});
+
+			// Trigger API search
+			await handleSearch((message) => {
+				toast.error(message);
+			});
+		}
+		router.push('/reservation');
+	};
+
+	const handleProceedToPayment = async () => {
+		try {
+			setIsSubmitting(true);
+
+			if (!reservationData?.checkInDate || !reservationData?.checkOutDate) {
+				toast.error('Invalid booking dates');
+				return;
+			}
+
+			if (!personalInfo) {
+				toast.error('Personal information not found');
+				return;
+			}
+
+			const reservationRequest = {
+				name: personalInfo.name,
+				email: personalInfo.email,
+				phone: personalInfo.phone,
+				address: personalInfo.address,
+				tent_id: reservationData.selectedTents.map((tent) => tent.id),
+				start_date: format(reservationData.checkInDate, 'yyyy-MM-dd'),
+				end_date: format(reservationData.checkOutDate, 'yyyy-MM-dd'),
+			};
+
+			const response = await createReservation(reservationRequest);
+
+			// Store the reservation response in the Zustand store instead of localStorage
+			setBookingResponseData(response);
+
+			// Navigate to payment page
+			router.push('/reservation/payment');
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : 'Failed to create reservation',
+			);
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	return (
+		<div className='min-h-screen'>
+			<div
+				className='flex flex-col items-center bg-gradient-to-b mt-20 px-4 py-10'
+				style={{
+					backgroundImage: "url('/bg.png')",
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
+					backgroundRepeat: 'no-repeat',
+				}}
+			>
+				<Image
+					src='/assets/icons/camp-icon.png'
+					alt='Camping Icon'
+					width={50}
+					height={50}
+				/>
+
+				<div className='m-6 text-center'>
+					<h1 className='font-bold text-primary text-4xl md:text-5xl leading-tight'>
+						One Last Step, take a moment to{' '}
+						<span className='text-brand'>review your details</span> and confirm{' '}
+						everything&apos;s set
+					</h1>
+				</div>
+			</div>
+			<div className='mx-auto px-4 container'>
+				<div className='mb-8'>
+					<ReservationStepper currentStep={2} />
+				</div>
+
+				<div className='gap-8 grid grid-cols-1 lg:grid-cols-6 pb-12'>
+					{/* Personal Information Form */}
+					<div className='lg:col-span-4'>
+						<PersonalInfoCard />
+					</div>
+
+					{/* Reservation Summary */}
+					<div className='lg:col-span-2'>
+						{reservationData && (
+							<ReservationSummary
+								data={reservationData}
+								showButtons={true}
+								showBackButton={true}
+								showContinueButton={true}
+								onBack={handleChangeBookingDate}
+								onContinue={handleProceedToPayment}
+								backButtonText='Change Booking Date'
+								continueButtonText='Proceed to Payment'
+								isLoading={isSubmitting}
+							/>
+						)}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
