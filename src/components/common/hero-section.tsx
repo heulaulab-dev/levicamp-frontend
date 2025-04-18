@@ -4,12 +4,14 @@ import Image from 'next/image';
 type HeroSectionProps = {
 	iconSrc?: string;
 	title: React.ReactNode;
+	description?: React.ReactNode;
 	children?: React.ReactNode;
 };
 
 const HeroSection = ({
 	iconSrc = '/assets/icons/camp-icon.png',
 	title,
+	description,
 	children,
 }: HeroSectionProps) => {
 	return (
@@ -32,13 +34,17 @@ const HeroSection = ({
 					<h1 className='font-bold text-primary dark:text-primary-foreground text-4xl md:text-5xl leading-tight'>
 						{title}
 					</h1>
+
+					{description && (
+						<p className='mt-2 text-muted-foreground text-base md:text-lg'>
+							{description}
+						</p>
+					)}
 				</div>
 			</div>
 
 			{/* Slot Content */}
-			<div className='flex flex-col items-center w-full max-w-3xl'>
-				{children}
-			</div>
+			<div className='flex flex-col items-center gap-8 w-full'>{children}</div>
 		</section>
 	);
 };

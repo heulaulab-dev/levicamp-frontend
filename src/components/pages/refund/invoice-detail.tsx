@@ -44,7 +44,7 @@ export default function InvoiceDetail({
 	const subtotal = tents.reduce((sum, tent) => sum + tent.price, 0);
 
 	return (
-		<Card className='shadow-sm m-10 mx-auto w-full max-w-4xl'>
+		<Card className='shadow-sm mx-auto w-full'>
 			<CardContent className='p-8'>
 				<div className='flex justify-between items-start'>
 					<div>
