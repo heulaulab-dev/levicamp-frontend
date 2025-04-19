@@ -1,17 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import HeroHeader from '@/components/pages/landing/hero-header';
+import Hero from '@/components/pages/landing/hero-section';
 import WhyUsSection from '@/components/pages/landing/why-us-section';
-import Facilities from '@/components/pages/landing/facilities';
+import FacilitiesSection from '@/components/pages/landing/facilities';
 import TentPrice from '@/components/pages/landing/tent-price';
+import FacilitesDemo from '@/components/pages/landing/facilities-demo';
+import PricingSection from '@/components/pages/landing/pricing-section';
+import { Zap, ArrowDownToDot, Tent } from 'lucide-react';
+import { defaultTiers } from '@/constants/pricing/pricing-list';
 
 export default function Home() {
 	return (
-		<div className='bg-background'>
-			<HeroHeader />
-			<Facilities />
+		<div>
+			<Hero />
+			<FacilitesDemo />
+			<PricingSection tiers={defaultTiers} />
+			{/* <FacilitiesSection />
 			<WhyUsSection />
-			<TentPrice />
+			<TentPrice /> */}
 		</div>
 	);
 }
