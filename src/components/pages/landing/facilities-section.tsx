@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Bookmark } from 'lucide-react';
 import Image from 'next/image';
@@ -7,7 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import FacilitiesCard from '@/components/ui/facilities-card';
 
-export default function FacilitesDemo() {
+export default function FacilitiesSection() {
 	const [scrollIndex, setScrollIndex] = useState(0);
 	const controls = useAnimation();
 	const sectionRef = useRef<HTMLDivElement>(null);

@@ -31,7 +31,7 @@ const MarqueeRow = memo(({ direction, images }: MarqueeRowProps) => (
 ));
 MarqueeRow.displayName = 'MarqueeRow';
 
-export default function Hero() {
+export default function HeroSection() {
 	const [videoEnded, setVideoEnded] = useState(false);
 
 	// Use callback to prevent recreation on each render
