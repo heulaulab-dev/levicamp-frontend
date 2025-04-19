@@ -1,17 +1,16 @@
 'use client';
 
-import HeroHeader from '@/components/pages/landing/hero-header';
-import WhyUsSection from '@/components/pages/landing/why-us-section';
-import Facilities from '@/components/pages/landing/facilities';
-import TentPrice from '@/components/pages/landing/tent-price';
+import HeroSection from '@/components/pages/landing/hero-section';
+import FacilitiesSection from '@/components/pages/landing/facilities-section';
+import PricingSection from '@/components/pages/landing/pricing-section';
+import { defaultTiers } from '@/constants/pricing/pricing-list';
 
 export default function Home() {
 	return (
-		<div className='bg-background'>
-			<HeroHeader />
-			<Facilities />
-			<WhyUsSection />
-			<TentPrice />
+		<div>
+			<HeroSection />
+			<FacilitiesSection />
+			<PricingSection tiers={defaultTiers} />
 		</div>
 	);
 }
