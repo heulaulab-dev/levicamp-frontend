@@ -1,13 +1,14 @@
 'use client';
 
+import { Award, Grid, Star, Tent as TentIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
+
 import CardTent from '@/components/ui/card-tent';
 import SummaryTent from '@/components/ui/summary-tent';
-import { useState } from 'react';
-import { Tent, Category } from '@/types/reservations';
-import { Award, Grid, Tent as TentIcon, Star } from 'lucide-react';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import { useReservationStore } from '@/store/useReservationStore';
+import { Category, Tent } from '@/types/reservations';
 
 interface TentCollectionProps {
 	categories:
@@ -131,9 +132,9 @@ export default function TentCollection({
 		.filter((tent): tent is NonNullable<typeof tent> => tent !== null);
 
 	return (
-		<div className='flex gap-10 ml-20'>
+		<div className='flex md:flex-row flex-col gap-10'>
 			{/* SECTION KIRI */}
-			<div className='flex flex-col gap-6 w-2/3'>
+			<div className='flex flex-col gap-6 w-full md:w-2/3'>
 				{/* Header Section */}
 				<div className='relative flex justify-between items-center'>
 					<div className='flex items-center gap-2 bg-card bg-secondary shadow-md px-5 py-2.5 rounded-lg text-primary'>
@@ -168,9 +169,9 @@ export default function TentCollection({
 
 				{/* Tent List */}
 				{!loading && !error && (
-					<div className='gap-8 grid grid-cols-3'>
+					<div>
 						{filteredCategories.length > 0 ? (
-							<div className='gap-8 grid grid-cols-3 col-span-3'>
+							<div className='gap-5 grid grid-cols-1 md:grid-cols-3 w-full'>
 								{filteredCategories.flatMap((category) =>
 									category.tents.map((tent) => (
 										<CardTent
@@ -197,16 +198,20 @@ export default function TentCollection({
 								)}
 							</div>
 						) : (
-							<p className='col-span-3 text-gray-500 text-center'>
-								No tents available
-							</p>
+							<div className='py-8 text-muted-foreground text-center'>
+								<TentIcon className='opacity-50 mx-auto mb-2 w-12 h-12' />
+								<p>No tents Available</p>
+								<p className='mt-1 text-sm'>
+									Please select another category or date
+								</p>
+							</div>
 						)}
 					</div>
 				)}
 			</div>
 
 			{/* SECTION KANAN (Summary Card) */}
-			<div className='w-1/3'>
+			<div className='w-full md:w-1/3'>
 				<SummaryTent
 					selectedTents={selectedTents}
 					onRemove={handleRemoveTent}

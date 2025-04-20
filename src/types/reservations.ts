@@ -3,7 +3,7 @@ import { DateRange } from 'react-day-picker';
 export type Tent = {
 	id: string;
 	name: string;
-	tent_image: string;
+	tent_images: string[];
 	weekend_price?: number;
 	weekday_price?: number;
 	description: string;

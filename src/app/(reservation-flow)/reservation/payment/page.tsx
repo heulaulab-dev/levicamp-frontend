@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import Image from 'next/image';
 import { PersonalInfoCard } from '@/components/pages/reservation/payment/personal-info-card';
@@ -229,7 +229,7 @@ export default function PaymentPage() {
 
 			{/* Content Section */}
 			<div className='mx-auto px-4 container'>
-				<div className='mb-8'>
+				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={3} />
 				</div>
 				<div className='gap-8 grid grid-cols-1 lg:grid-cols-6 pb-12'>

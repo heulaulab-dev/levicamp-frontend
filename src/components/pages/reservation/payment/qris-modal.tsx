@@ -13,6 +13,14 @@ import { useState, useEffect } from 'react';
 import { PaymentModalProps } from '@/types/payments';
 import { Clock, Copy } from 'lucide-react';
 import { toast } from 'sonner';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import {
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerDescription,
+} from '@/components/ui/drawer';
 
 export default function QRISModal({
 	isOpen,
@@ -20,7 +28,7 @@ export default function QRISModal({
 	paymentDetails,
 }: PaymentModalProps) {
 	const [timeLeft, setTimeLeft] = useState<string>('');
-
+	const isMobile = useMediaQuery('(max-width: 768px)');
 	// Format currency to IDR
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('id-ID', {
@@ -76,6 +84,118 @@ export default function QRISModal({
 		return () => clearInterval(timer);
 	}, [paymentDetails?.expired_at]);
 
+	if (isMobile) {
+		return (
+			<Drawer open={isOpen} onOpenChange={onClose}>
+				<DrawerContent className='p-4'>
+					<DrawerHeader>
+						<div className='flex justify-center items-center'>
+							<DrawerTitle>QR Payment</DrawerTitle>
+						</div>
+						<DrawerDescription>
+							Scan the QR code below to complete your payment
+						</DrawerDescription>
+					</DrawerHeader>
+					<div className='flex flex-col items-center space-y-4'>
+						{/* QR Code */}
+						<Card className='w-full'>
+							<CardContent className='flex flex-col items-center p-6'>
+								<div className='relative mb-4 w-64 h-64'>
+									<Image
+										src={
+											paymentDetails?.payment.payment_reference ||
+											paymentDetails?.payment_detail?.[0]?.url ||
+											'/placeholder.svg'
+										}
+										alt='QR Code'
+										fill
+										className='object-contain'
+									/>
+								</div>
+
+								{/* Expiration Timer */}
+								<div className='flex justify-center items-center space-x-2 font-medium text-destructive'>
+									<Clock className='w-4 h-4' />
+									<span>Expires in: {timeLeft}</span>
+								</div>
+							</CardContent>
+						</Card>
+
+						{/* Payment Details */}
+						<Card className='w-full'>
+							<CardContent className='p-6'>
+								<div className='space-y-4'>
+									<div className='flex justify-between'>
+										<span className='text-muted-foreground'>Booking Code</span>
+										<div className='flex items-center space-x-1'>
+											<span className='font-medium'>
+												{paymentDetails?.order_id}
+											</span>
+											<Button
+												variant='ghost'
+												size='icon'
+												className='w-6 h-6'
+												onClick={copyOrderId}
+											>
+												<Copy className='w-3 h-3' />
+											</Button>
+										</div>
+									</div>
+
+									<div className='flex justify-between'>
+										<span className='text-muted-foreground'>
+											Payment Method
+										</span>
+										<span className='font-medium uppercase'>
+											{paymentDetails?.payment.payment_method}
+										</span>
+									</div>
+
+									<Separator />
+
+									<div className='flex justify-between'>
+										<span className='text-muted-foreground'>Check-in</span>
+										<span className='font-medium'>
+											{formatDate(
+												paymentDetails?.payment.booking?.start_date || '',
+											)}
+										</span>
+									</div>
+
+									<div className='flex justify-between'>
+										<span className='text-muted-foreground'>Check-out</span>
+										<span className='font-medium'>
+											{formatDate(
+												paymentDetails?.payment.booking?.end_date || '',
+											)}
+										</span>
+									</div>
+
+									<Separator />
+
+									<div className='flex justify-between'>
+										<span className='text-muted-foreground'>Total Amount</span>
+										<span className='font-bold text-lg'>
+											{formatCurrency(
+												paymentDetails?.payment.booking?.total_amount ||
+													paymentDetails?.payment.total_amount ||
+													0,
+											)}
+										</span>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+
+						<div className='text-muted-foreground text-sm text-center'>
+							Please do not close this page until your payment is complete
+						</div>
+					</div>
+				</DrawerContent>
+			</Drawer>
+		);
+	}
+
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className='sm:max-w-md'>
@@ -92,7 +212,7 @@ export default function QRISModal({
 					{/* QR Code */}
 					<Card className='w-full'>
 						<CardContent className='flex flex-col items-center p-6'>
-							<div className='relative mb-4 w-64 h-64'>
+							<div className='relative mb-4 rounded-lg w-64 h-64'>
 								<Image
 									src={
 										paymentDetails?.payment.payment_reference ||
@@ -101,7 +221,7 @@ export default function QRISModal({
 									}
 									alt='QR Code'
 									fill
-									className='object-contain'
+									className='rounded-lg object-contain'
 								/>
 							</div>
 
@@ -118,7 +238,7 @@ export default function QRISModal({
 						<CardContent className='p-6'>
 							<div className='space-y-4'>
 								<div className='flex justify-between'>
-									<span className='text-muted-foreground'>Order ID</span>
+									<span className='text-muted-foreground'>Booking Code</span>
 									<div className='flex items-center space-x-1'>
 										<span className='font-medium'>
 											{paymentDetails?.order_id}

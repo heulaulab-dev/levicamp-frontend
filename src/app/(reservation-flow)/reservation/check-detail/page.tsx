@@ -1,6 +1,6 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
 import { PersonalInfoCard } from '@/components/pages/reservation/check-detail/personal-info-card';
@@ -128,7 +128,7 @@ export default function CheckDetailPage() {
 				</div>
 			</div>
 			<div className='mx-auto px-4 container'>
-				<div className='mb-8'>
+				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={2} />
 				</div>
 
