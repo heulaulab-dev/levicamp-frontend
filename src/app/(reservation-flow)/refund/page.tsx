@@ -1,7 +1,7 @@
 'use client';
 
-import SearchBooking from '@/components/pages/refund/search-booking';
 import HeroSection from '@/components/common/hero-section';
+import SearchBooking from '@/components/pages/refund/search-booking';
 
 export default function RefundIndexPage() {
 	return (

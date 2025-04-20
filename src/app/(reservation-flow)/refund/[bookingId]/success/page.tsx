@@ -17,6 +17,7 @@ import { useRefundData } from '@/hooks/refund/use-refund-data';
 
 export default function RefundConfirmationPage() {
 	const { invoiceData } = useRefundData();
+	console.log(invoiceData);
 	const [showConfetti, setShowConfetti] = useState(true);
 
 	useEffect(() => {
@@ -49,6 +50,15 @@ export default function RefundConfirmationPage() {
 				}
 				description="Your refund request has been successfully submitted. We'll process your request within 3-5 business days and transfer the refund to your provided account."
 			>
+				<div className='flex flex-row gap-3'>
+					<Button asChild className='w-full'>
+						<Link href='/'>Return to Home</Link>
+					</Button>
+					<Button variant='outline' asChild className='w-full'>
+						<Link href='/contact'>Contact Support</Link>
+					</Button>
+				</div>
+
 				<Card className='mb-6'>
 					<CardHeader>
 						<CardTitle>Refund Details</CardTitle>
@@ -96,15 +106,6 @@ export default function RefundConfirmationPage() {
 						</div>
 					</CardContent>
 				</Card>
-
-				<div className='flex flex-row gap-3'>
-					<Button asChild className='w-full'>
-						<Link href='/'>Return to Home</Link>
-					</Button>
-					<Button variant='outline' asChild className='w-full'>
-						<Link href='/contact'>Contact Support</Link>
-					</Button>
-				</div>
 			</HeroSection>
 		</>
 	);
