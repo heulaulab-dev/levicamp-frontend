@@ -1,14 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import {
 	Card,
@@ -18,8 +13,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import Link from 'next/link';
-import { toast } from 'sonner';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 
 interface RescheduleFormProps {
 	onRescheduleRequest: () => void;
@@ -29,19 +31,16 @@ export default function RescheduleForm({
 	onRescheduleRequest,
 }: RescheduleFormProps) {
 	const [agreed, setAgreed] = useState(false);
-	const [reason, setReason] = useState('');
 	const [loading, setLoading] = useState(false);
+	const { rescheduleReason, setRescheduleReason } = useRescheduleData();
 
 	const handleRequestReschedule = async () => {
 		if (!agreed) return;
 
 		setLoading(true);
 		try {
-			// Simulate brief loading state for better UX
-			setTimeout(() => {
-				onRescheduleRequest();
-				setLoading(false);
-			}, 500);
+			onRescheduleRequest();
+			setLoading(false);
 		} catch (error) {
 			toast.error('An error occurred while processing your request');
 			console.error(error);
@@ -50,7 +49,7 @@ export default function RescheduleForm({
 	};
 
 	return (
-		<div className='flex justify-center items-center p-4 min-h-screen'>
+		<div className='flex justify-center items-center w-full min-h-screen'>
 			<Card className='shadow-sm w-full max-w-4xl'>
 				<CardHeader>
 					<CardTitle className='font-semibold text-2xl'>
@@ -225,10 +224,13 @@ export default function RescheduleForm({
 					<Card className='mt-4'>
 						<CardContent className='pt-6'>
 							<div className='mb-4'>
-								<label htmlFor='reason' className='block mb-2'>
+								<label htmlFor='rescheduleReason' className='block mb-2'>
 									Why are you requesting a reschedule?
 								</label>
-								<Select onValueChange={setReason} value={reason}>
+								<Select
+									onValueChange={setRescheduleReason}
+									value={rescheduleReason}
+								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Change of plans' />
 									</SelectTrigger>
