@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
 import { Loader2 } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
 import { CreateRescheduleResponse } from '@/types/reschedules';
 
 export default function RescheduleSuccessPage() {
