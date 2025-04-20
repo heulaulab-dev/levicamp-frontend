@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useRefundData } from '@/hooks/refund/use-refund-data';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
+
 import HeroSection from '@/components/common/hero-section';
+import InvoiceDetail from '@/components/pages/refund/invoice-detail';
+import RefundForm from '@/components/pages/refund/refund-form';
 import SearchBooking from '@/components/pages/refund/search-booking';
 import { StatusCard } from '@/components/pages/refund/status-card';
 import { useRefund } from '@/hooks/refund/use-refund';
+import { useRefundData } from '@/hooks/refund/use-refund-data';
 import { CreateRefundRequest } from '@/types/refunds';
-import InvoiceDetail from '@/components/pages/refund/invoice-detail';
-import RefundForm from '@/components/pages/refund/refund-form';
 
 export default function RefundPage() {
 	const params = useParams();
@@ -22,17 +23,15 @@ export default function RefundPage() {
 
 	// We need to load booking data if it's not already loaded
 	// This handles cases where users might directly visit this URL
-	// useEffect(() => {
-	// 	if (!bookingData && !validationData && bookingId) {
-	// 		// Show a message to the user
-	// 		toast.info('Please verify your booking first');
+	useEffect(() => {
+		if (!bookingData && !validationData && bookingId) {
+			// Show a message to the user
+			toast.info('Please verify your booking first');
 
-	// 		// Redirect to the search page
-	// 		router.push('/refund');
-	// 	}
-	// }, [bookingId, bookingData, validationData, router]);
-
-	// console.log(bookingData);
+			// Redirect to the search page
+			router.push('/refund');
+		}
+	}, [bookingId, bookingData, validationData, router]);
 
 	const handleRefundRequest = async (
 		formData: Omit<CreateRefundRequest, 'token'>,
@@ -71,10 +70,9 @@ export default function RefundPage() {
 				</>
 			}
 		>
-			<SearchBooking />
-			<div className='flex flex-col items-center m-24'>
+			<div className='flex flex-col items-center m-24 w-full'>
 				{bookingData && validationData && invoiceData && (
-					<div className='flex flex-col items-center gap-8'>
+					<div className='flex flex-col items-center gap-8 w-full'>
 						<StatusCard
 							variant={
 								bookingData.status === 'confirmed' ? 'eligible' : 'processing'
