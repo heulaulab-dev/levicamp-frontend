@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
 import { PaymentDetails } from '@/types/payments';
 
 export interface PersonalInfoData {
@@ -18,7 +19,7 @@ export interface ReservationData {
 	selectedTents: Array<{
 		id: string;
 		name: string;
-		tent_image: string;
+		tent_images: string[];
 		category?: {
 			name: string;
 		};

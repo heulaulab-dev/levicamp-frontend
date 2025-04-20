@@ -1,18 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
-import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
 import {
 	PersonalInfoCard,
 	PersonalInfoData,
 } from '@/components/pages/reservation/personal/personal-info-card';
-import Image from 'next/image';
-import { toast } from 'sonner';
-import { useReservationStore } from '@/store/useReservationStore';
-import { useHydration } from '@/hooks/use-hydration';
+import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
+import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
 import { useReservations } from '@/hooks/reservations/use-reservations';
+import { useHydration } from '@/hooks/use-hydration';
+import { useReservationStore } from '@/store/useReservationStore';
 
 export default function PersonalPage() {
 	const router = useRouter();
@@ -145,7 +146,7 @@ export default function PersonalPage() {
 			</div>
 
 			<div className='mx-auto px-4 container'>
-				<div className='mb-8'>
+				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={1} />
 				</div>
 

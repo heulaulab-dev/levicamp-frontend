@@ -1,9 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
 	Select,
 	SelectContent,
@@ -11,13 +13,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import Link from 'next/link';
+import { Textarea } from '@/components/ui/textarea';
+
 interface PersonalInfoCardProps {
 	onSubmit: (data: PersonalInfoData) => void;
 	initialData?: PersonalInfoData;
 }
-import { toast } from 'sonner';
 
 export interface PersonalInfoData {
 	name: string;
@@ -47,8 +48,6 @@ export function PersonalInfoCard({
 			agreeToTerms: formData.get('agreeToTerms') === 'on',
 			agreeToPrivacy: formData.get('agreeToPrivacy') === 'on',
 		};
-
-		toast('Personal information saved');
 		onSubmit(data);
 	};
 
@@ -78,14 +77,20 @@ export function PersonalInfoCard({
 							<label htmlFor='phone' className='font-medium text-sm'>
 								Phone Number *
 							</label>
-							<Input
-								id='phone'
-								name='phone'
-								required
-								type='tel'
-								placeholder='+62'
-								defaultValue={initialData?.phone || ''}
-							/>
+							<div className='relative'>
+								<Input
+									className='peer ps-16'
+									id='phone'
+									name='phone'
+									required
+									type='tel'
+									placeholder='Enter your phone number'
+									defaultValue={initialData?.phone || ''}
+								/>
+								<span className='absolute inset-y-0 flex justify-center items-center peer-disabled:opacity-50 ps-3 text-muted-foreground text-sm pointer-events-none start-0'>
+									+62
+								</span>
+							</div>
 						</div>
 					</div>
 
@@ -105,17 +110,23 @@ export function PersonalInfoCard({
 						</div>
 						<div className='space-y-2'>
 							<label htmlFor='guestCount' className='font-medium text-sm'>
-								Number of Guests *
+								Total Guests *
 							</label>
-							<Input
-								id='guestCount'
-								name='guestCount'
-								required
-								type='number'
-								min='1'
-								placeholder='1'
-								defaultValue={initialData?.guestCount || ''}
-							/>
+							<div className='relative flex shadow-black/5 shadow-sm rounded-lg'>
+								<Input
+									className='z-10 shadow-none -me-px ps-6 rounded-e-none'
+									id='guestCount'
+									name='guestCount'
+									required
+									type='number'
+									min='1'
+									placeholder='1'
+									defaultValue={initialData?.guestCount || ''}
+								/>
+								<span className='inline-flex items-center bg-background px-3 border border-input rounded-e-lg text-muted-foreground text-sm'>
+									Guests
+								</span>
+							</div>
 						</div>
 					</div>
 
@@ -161,7 +172,7 @@ export function PersonalInfoCard({
 								I agree to the{' '}
 								<Link
 									href='/terms-and-conditions'
-									className='text-primary hover:underline'
+									className='font-medium text-primary hover:underline'
 								>
 									Terms and Conditions*
 								</Link>
@@ -178,7 +189,7 @@ export function PersonalInfoCard({
 								I agree to the{' '}
 								<Link
 									href='/privacy-policy'
-									className='text-primary hover:underline'
+									className='font-medium text-primary hover:underline'
 								>
 									Privacy Policy*
 								</Link>

@@ -16,7 +16,7 @@ const HeroSection = ({
 }: HeroSectionProps) => {
 	return (
 		<section
-			className='flex flex-col justify-center items-center bg-gradient-to-b mt-20 px-4 py-10 min-h-screen'
+			className='flex flex-col justify-center items-center bg-gradient-to-b my-24 mt-20 px-4 py-10 min-h-screen'
 			style={{
 				backgroundImage: "url('/bg.png')",
 				backgroundSize: 'cover',
@@ -44,7 +44,9 @@ const HeroSection = ({
 			</div>
 
 			{/* Slot Content */}
-			<div className='flex flex-col items-center gap-8 w-full'>{children}</div>
+			<div className='flex flex-col items-center gap-8 w-full container'>
+				{children}
+			</div>
 		</section>
 	);
 };
