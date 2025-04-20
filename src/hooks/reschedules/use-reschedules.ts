@@ -1,15 +1,16 @@
+import { AxiosError } from 'axios';
 import { create } from 'zustand';
+
+import api from '@/lib/api';
 import {
-	RescheduleStore,
-	RescheduleRequest,
-	RescheduleResponse,
-	RescheduleValidateResponse,
-	RescheduleError,
 	CreateRescheduleRequest,
 	CreateRescheduleResponse,
+	RescheduleError,
+	RescheduleRequest,
+	RescheduleResponse,
+	RescheduleStore,
+	RescheduleValidateResponse,
 } from '@/types/reschedules';
-import api from '@/lib/api';
-import { AxiosError } from 'axios';
 
 export const useReschedules = create<RescheduleStore>((set) => ({
 	loading: false,

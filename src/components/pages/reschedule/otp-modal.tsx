@@ -1,7 +1,10 @@
-import * as React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { cn } from '@/lib/utils';
-import { useMediaQuery } from '@/hooks/use-media-query';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -12,24 +15,11 @@ import {
 } from '@/components/ui/dialog';
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
-	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
 } from '@/components/ui/drawer';
-import { useReschedules } from '@/hooks/reschedules/use-reschedules';
-import { toast } from 'sonner';
-import {
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSeparator,
-	InputOTPSlot,
-} from '@/components/ui/input-otp';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Form,
 	FormControl,
@@ -39,9 +29,16 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSeparator,
+	InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
+import { useReschedules } from '@/hooks/reschedules/use-reschedules';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { cn } from '@/lib/utils';
 
 interface OTPVerificationModalProps {
 	open: boolean;
@@ -55,16 +52,19 @@ export function OTPVerificationModal({
 	bookingCode,
 }: OTPVerificationModalProps) {
 	const isDesktop = useMediaQuery('(min-width: 768px)');
-	const { validateReschedule, loading } = useReschedules();
+	const { validateReschedule, loading, requestReschedule } = useReschedules();
 	const { setRescheduleData } = useRescheduleData();
+	const [isResendingOTP, setIsResendingOTP] = useState(false);
 	const router = useRouter();
 
+	// Form schema for OTP verification
 	const FormSchema = z.object({
 		pin: z.string().min(6, {
 			message: 'Your one-time password must be 6 characters.',
 		}),
 	});
 
+	// Handle OTP verification
 	const handleVerifyOTP = async (data: z.infer<typeof FormSchema>) => {
 		const otp = data.pin;
 
@@ -83,13 +83,16 @@ export function OTPVerificationModal({
 			const response = await validateReschedule(otp);
 
 			// If validation successful, redirect to booking-specific page
-			if (response.status >= 200 && response.status < 300) {
+			if (
+				response.status === 200 &&
+				response.message === 'Success validate reschedule'
+			) {
 				// Store the validation data in persistent storage
 				setRescheduleData(response.data.booking, {
-					id: response.data.id,
 					token: response.data.token,
 					used: response.data.used,
 					expired_at: response.data.expired_at,
+					url: response.data.url,
 				});
 
 				toast.success(
@@ -112,6 +115,22 @@ export function OTPVerificationModal({
 			toast.error(
 				error instanceof Error ? error.message : 'Failed to verify OTP',
 			);
+		}
+	};
+
+	// Handle resending OTP
+	const handleResendOTP = async () => {
+		setIsResendingOTP(true);
+		const response = await requestReschedule(bookingCode);
+		if (
+			response.status === 200 &&
+			response.message === 'Success request reschedule'
+		) {
+			toast.success('New OTP sent successfully');
+			setIsResendingOTP(false);
+		} else {
+			toast.error(response.message || 'Failed to resend OTP');
+			setIsResendingOTP(false);
 		}
 	};
 
@@ -156,12 +175,15 @@ export function OTPVerificationModal({
 								</FormControl>
 								<FormDescription className='text-xs'>
 									Didn&apos;t receive the code?{' '}
-									<Link
-										href='/reschedule/search-booking'
-										className='text-primary hover:underline'
+									<Button
+										variant='link'
+										className='p-0 text-xs'
+										type='button'
+										onClick={handleResendOTP}
+										disabled={isResendingOTP}
 									>
-										Click to resend
-									</Link>
+										{isResendingOTP ? 'Resending...' : 'Click to resend'}
+									</Button>
 								</FormDescription>
 								<FormMessage />
 							</FormItem>
@@ -213,11 +235,6 @@ export function OTPVerificationModal({
 					</DrawerDescription>
 				</DrawerHeader>
 				<InputOTPForm className='px-4' />
-				<DrawerFooter className='pt-2'>
-					<DrawerClose asChild>
-						<Button variant='outline'>Cancel</Button>
-					</DrawerClose>
-				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
 	);

@@ -1,13 +1,14 @@
-import type React from 'react';
-import { cn } from '@/lib/utils';
 import {
 	AlertTriangle,
 	Check,
+	CheckCircle,
 	Clock,
 	ThumbsDown,
-	CheckCircle,
 } from 'lucide-react';
+import type React from 'react';
+
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 export type StatusVariant =
 	| 'eligible'

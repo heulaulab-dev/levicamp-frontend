@@ -1,15 +1,19 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { differenceInDays, format } from 'date-fns';
 import { TentIcon, Trash2 } from 'lucide-react';
-import { format, differenceInDays } from 'date-fns';
-import { Tent } from '@/types/reservations';
-import { useState, useEffect } from 'react';
-import { useReservations } from '@/hooks/reservations/use-reservations';
+import { useEffect, useState } from 'react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Separator } from '@components/ui/separator';
+
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useReservations } from '@/hooks/reservations/use-reservations';
+import { Tent } from '@/types/reservations';
+
+
 
 interface SummaryTentProps {
 	selectedTents: Tent[];

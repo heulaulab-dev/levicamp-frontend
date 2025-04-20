@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
 import { Booking } from '@/types/reschedules';
 
 interface ValidationData {
-	id: string;
 	token: string;
 	used: boolean;
 	expired_at: string;
+	url: string;
 }
 
 export interface RescheduleDataStore {
@@ -36,6 +37,8 @@ export interface RescheduleDataStore {
 	} | null;
 	// UI state
 	showTentCollection: boolean;
+	// Reschedule reason
+	rescheduleReason: string;
 
 	// Actions
 	setRescheduleData: (
@@ -44,6 +47,7 @@ export interface RescheduleDataStore {
 	) => void;
 	clearRescheduleData: () => void;
 	setShowTentCollection: (show: boolean) => void;
+	setRescheduleReason: (reason: string) => void;
 }
 
 export const useRescheduleData = create<RescheduleDataStore>()(
@@ -53,6 +57,7 @@ export const useRescheduleData = create<RescheduleDataStore>()(
 			validationData: null,
 			invoiceData: null,
 			showTentCollection: false,
+			rescheduleReason: '',
 
 			setRescheduleData: (bookingData, validationData) => {
 				// Convert booking data to invoice format
@@ -89,6 +94,10 @@ export const useRescheduleData = create<RescheduleDataStore>()(
 					invoiceData,
 					showTentCollection: false,
 				});
+			},
+
+			setRescheduleReason: (reason) => {
+				set({ rescheduleReason: reason });
 			},
 
 			clearRescheduleData: () => {

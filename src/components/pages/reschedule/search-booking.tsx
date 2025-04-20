@@ -1,12 +1,14 @@
+import { Search } from 'lucide-react';
+import { useState } from 'react';
+
+import { OTPVerificationModal } from '@/components/pages/reschedule/otp-modal';
+import { StatusCard } from '@/components/pages/reschedule/status-card';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/ios-spinner';
 import { Label } from '@/components/ui/label';
-import { Search } from 'lucide-react';
-import { useState } from 'react';
-import { OTPVerificationModal } from '@/components/pages/reschedule/otp-modal';
 import { useReschedules } from '@/hooks/reschedules/use-reschedules';
-import { StatusCard } from '@/components/pages/reschedule/status-card';
 import { errorDescriptionMap } from '@/types/error-description-map';
 
 export default function SearchBooking() {
@@ -25,31 +27,29 @@ export default function SearchBooking() {
 	} | null>(null);
 	const { requestReschedule, loading } = useReschedules();
 
-	// Function untuk handle pencarian booking
+	// Function to handle search booking
 	const handleSearch = async () => {
 		try {
 			setStatusInfo(null);
 			const response = await requestReschedule(bookingCode);
-			if (response.data?.token) {
+			if (
+				response.status === 200 &&
+				response.message === 'Success request reschedule'
+			) {
 				setIsOTPModalOpen(true);
 			} else {
-				console.log(response);
+				setStatusInfo({
+					variant: 'error',
+					title: 'Error',
+					description: response.message || 'An unexpected error occurred',
+				});
 			}
-			console.log(response);
 		} catch (error: any) {
-			console.error(error.error.description);
-			console.log(error);
-
-			// Extract error description from API response
 			const errorDescription = error.error.description;
 
-			console.log(errorDescription);
-
 			if (errorDescription && errorDescriptionMap[errorDescription]) {
-				// If error description exists in the map, use the predefined status info
 				setStatusInfo(errorDescriptionMap[errorDescription]);
 			} else {
-				// Fallback for unknown errors
 				setStatusInfo({
 					variant: 'error',
 					title: 'Error',
@@ -81,8 +81,20 @@ export default function SearchBooking() {
 								<Search size={16} strokeWidth={2} aria-hidden='true' />
 							</div>
 						</div>
-						<Button type='submit' onClick={handleSearch} disabled={loading}>
-							{loading ? 'Searching...' : 'Search'}
+						<Button
+							className='group relative'
+							data-loading={loading}
+							onClick={handleSearch}
+							disabled={loading}
+						>
+							<span className='group-data-[loading=true]:text-transparent'>
+								Search Now!
+							</span>
+							{loading && (
+								<div className='absolute inset-0 flex justify-center items-center'>
+									<Spinner size='lg' />
+								</div>
+							)}
 						</Button>
 					</div>
 				</div>

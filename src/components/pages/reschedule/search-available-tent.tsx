@@ -1,11 +1,11 @@
+import { useState } from 'react';
+import { toast } from 'sonner';
+
+import TentCollection from '@/components/pages/reschedule/tent-collection';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { format, isBefore, startOfToday } from 'date-fns';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
+import DateRangePicker from '@/components/ui/date-picker';
+import { Spinner } from '@/components/ui/ios-spinner';
+import Loading from '@/components/ui/loading';
 import {
 	Select,
 	SelectContent,
@@ -13,16 +13,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { useReservations } from '@/hooks/reservations/use-reservations';
-import { CalendarIcon } from 'lucide-react';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import Loading from '@/components/ui/loading';
-import TentCollection from '@/components/pages/reschedule/tent-collection';
 import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
+import { useReservations } from '@/hooks/reservations/use-reservations';
 
 export default function SearchAvailableTent() {
-	const today = startOfToday();
 	const { invoiceData } = useRescheduleData();
 
 	// Get the required tent count from the original booking
@@ -45,105 +39,91 @@ export default function SearchAvailableTent() {
 
 	return (
 		<>
-			<section className='flex md:flex-row flex-col items-center gap-4 bg-secondary shadow-md p-6 rounded-lg w-full'>
-				<div className='w-full'>
-					<label className='font-medium text-secondary-foreground text-sm'>
-						Category
-					</label>
-					<Select onValueChange={setTempSelectedCategory}>
-						<SelectTrigger className='bg-white w-full text-secondary-foreground'>
-							<SelectValue placeholder='All' />
-						</SelectTrigger>
-						<SelectContent className='bg-white'>
-							<SelectItem className='text-secondary-foreground' value='All'>
-								All
-							</SelectItem>
-							<SelectItem className='text-secondary-foreground' value='VIP'>
-								VIP
-							</SelectItem>
-							<SelectItem
-								className='text-secondary-foreground'
-								value='Standard'
-							>
-								Standard
-							</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
+			<div className='flex flex-col items-center gap-32 w-full'>
+				{/* Search Available Tent Section */}
+				<div className='flex md:flex-row flex-col items-center md:gap-4 bg-secondary shadow-xl p-6 rounded-lg w-full max-w-3xl'>
+					{/* Search Form Section */}
+					<div className='flex md:flex-row flex-col gap-4 w-full'>
+						<div className='flex flex-col gap-2 w-full'>
+							<label className='font-medium text-secondary-foreground text-sm'>
+								Category
+							</label>
+							<Select onValueChange={setTempSelectedCategory}>
+								<SelectTrigger className='bg-white w-full text-secondary-foreground'>
+									<SelectValue placeholder='All' />
+								</SelectTrigger>
+								<SelectContent className='bg-white'>
+									<SelectItem className='text-secondary-foreground' value='All'>
+										All
+									</SelectItem>
+									<SelectItem className='text-secondary-foreground' value='VIP'>
+										VIP
+									</SelectItem>
+									<SelectItem
+										className='text-secondary-foreground'
+										value='Standard'
+									>
+										Standard
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
 
-				<div className='w-full'>
-					<label className='font-medium text-secondary-foreground text-sm'>
-						Booking Date
-					</label>
-					<Popover>
-						<PopoverTrigger asChild>
-							<Button className='flex justify-between bg-white hover:bg-white w-full text-secondary-foreground'>
-								{date?.from ? (
-									date.to ? (
-										<>
-											{format(date.from, 'PPP')} - {format(date.to, 'PPP')}
-										</>
-									) : (
-										format(date.from, 'PPP')
-									)
-								) : (
-									'Select date range'
-								)}
-								<CalendarIcon className='ml-2 w-4 h-4' />
-							</Button>
-						</PopoverTrigger>
-						<PopoverContent className='p-0 w-auto'>
-							<Calendar
-								mode='range'
-								selected={date}
-								onSelect={setDate}
-								numberOfMonths={2}
-								className='rounded-md'
-								disabled={(date) => isBefore(date, today)}
-								initialFocus
-							/>
-						</PopoverContent>
-					</Popover>
-				</div>
+						<DateRangePicker
+							date={date}
+							setDate={setDate}
+							label='Booking Date'
+						/>
+					</div>
 
-				<div>
-					<label className='opacity-0 font-medium text-secondary-foreground text-sm'>
-						Action
-					</label>
-					<Button
-						className='bg-primary rounded-lg w-full h-10 text-primary-foreground'
-						onClick={() => {
-							setSelectedCategory(tempSelectedCategory);
-							handleSearch((message: string) => {
-								toast(message);
-							});
-						}}
-						disabled={loading}
-					>
-						{loading ? 'Loading...' : 'Search'}
-					</Button>
+					{/* Search Button Section */}
+					<div className='flex flex-col gap-2 w-full md:w-auto'>
+						<label className='opacity-0 font-medium text-secondary-foreground text-sm'>
+							Action
+						</label>
+						<Button
+							className='group relative'
+							data-loading={loading}
+							onClick={() => {
+								setSelectedCategory(tempSelectedCategory);
+								handleSearch((message: string) => {
+									toast(message);
+								});
+							}}
+							disabled={loading}
+						>
+							<span className='group-data-[loading=true]:text-transparent'>
+								Search Now!
+							</span>
+							{loading && (
+								<div className='absolute inset-0 flex justify-center items-center'>
+									<Spinner size='lg' />
+								</div>
+							)}
+						</Button>
+					</div>
 				</div>
-			</section>
-			{/* Bagian Hasil Pencarian */}
-			<section className='items-center mt-4 mb-20'>
-				{loading && <Loading />}
-				{error && toast.error(error)}
-				{!loading && !error && showResults && (
-					<TentCollection
-						categories={(reservationData ?? []).filter(
-							(category) =>
-								selectedCategory === 'All' ||
-								category.name === selectedCategory,
-						)}
-						loading={loading}
-						error={error}
-						checkInDate={date?.from}
-						checkOutDate={date?.to}
-						isReschedule={true}
-						requiredTentCount={requiredTentCount}
-					/>
-				)}
-			</section>
+				{/* Search Results Section */}
+				<section>
+					{loading && <Loading />}
+					{error && toast.error(error)}
+					{!loading && !error && showResults && (
+						<TentCollection
+							categories={(reservationData ?? []).filter(
+								(category) =>
+									selectedCategory === 'All' ||
+									category.name === selectedCategory,
+							)}
+							loading={loading}
+							error={error}
+							checkInDate={date?.from}
+							checkOutDate={date?.to}
+							isReschedule={true}
+							requiredTentCount={requiredTentCount}
+						/>
+					)}
+				</section>
+			</div>
 		</>
 	);
 }
