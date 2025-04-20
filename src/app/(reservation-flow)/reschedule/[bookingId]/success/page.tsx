@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
+import { Button } from '@/components/ui/button';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { CreateRescheduleResponse } from '@/types/reschedules';
 
 export default function RescheduleSuccessPage() {
@@ -14,6 +18,7 @@ export default function RescheduleSuccessPage() {
 	const [rescheduleData, setRescheduleData] =
 		useState<CreateRescheduleResponse | null>(null);
 	const [error, setError] = useState<string | null>(null);
+	const { invoiceData } = useRescheduleData();
 
 	// Get the booking ID from the URL params
 	const bookingId = params.bookingId as string;
@@ -124,19 +129,16 @@ export default function RescheduleSuccessPage() {
 				Reschedule Confirmed!
 			</h1>
 
-			<InvoiceDetail
-				bookingId={booking.id}
-				paymentDate={formattedPaymentDate}
-				guestName={booking.guest.name}
-				guestEmail={booking.guest.email}
-				guestPhone={booking.guest.phone}
-				guestCount={guestCount}
-				checkInDate={checkInDate}
-				checkOutDate={checkOutDate}
-				tents={tents}
-				totalPrice={booking.total_amount}
-				onDownload={handleDownload}
-			/>
+			<div className='flex flex-row gap-3'>
+				<Button asChild className='w-full'>
+					<Link href='/'>Return to Home</Link>
+				</Button>
+				<Button variant='outline' asChild className='w-full'>
+					<Link href='/contact'>Contact Support</Link>
+				</Button>
+			</div>
+
+			{invoiceData && <InvoiceDetail {...invoiceData} />}
 		</div>
 	);
 }
