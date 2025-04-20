@@ -1,16 +1,17 @@
 'use client';
 
-import CardTent from '@/components/ui/card-tent';
-import SummaryTent from '@/components/pages/reschedule/summary-tent';
-import { useState } from 'react';
-import { Tent, Category } from '@/types/reservations';
-import { Grid, Tent as TentIcon, Star, Info } from 'lucide-react';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { useReservationStore } from '@/store/useReservationStore';
-import { useReschedules } from '@/hooks/reschedules/use-reschedules';
-import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { format } from 'date-fns';
+import { Grid, Info, Star, Tent as TentIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
+
+import SummaryTent from '@/components/pages/reschedule/summary-tent';
+import CardTent from '@/components/ui/card-tent';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
+import { useReschedules } from '@/hooks/reschedules/use-reschedules';
+import { useReservationStore } from '@/store/useReservationStore';
+import { Category, Tent } from '@/types/reservations';
 
 interface TentCollectionProps {
 	categories:
@@ -54,7 +55,7 @@ export default function TentCollection({
 
 	// Reschedule hooks
 	const { createReschedule } = useReschedules();
-	const { invoiceData, validationData } = useRescheduleData();
+	const { invoiceData, validationData, rescheduleReason } = useRescheduleData();
 
 	const reservationData = categories ?? [];
 	const filteredCategories =
@@ -119,7 +120,10 @@ export default function TentCollection({
 					tent_id: selectedTentIds,
 					start_date: startDate,
 					end_date: endDate,
+					reason: rescheduleReason,
 				};
+
+				console.log(rescheduleData);
 
 				// Call the API
 				const response = await createReschedule(rescheduleData);
@@ -225,9 +229,9 @@ export default function TentCollection({
 		isSubmitting;
 
 	return (
-		<div className='flex gap-10'>
+		<div className='flex md:flex-row flex-col gap-10'>
 			{/* SECTION KIRI */}
-			<div className='flex flex-col gap-6 w-full'>
+			<div className='flex flex-col gap-6 w-full md:w-2/3'>
 				{/* Header Section */}
 				<div className='relative flex justify-between items-center'>
 					{isReschedule && requiredTentCount > 0 && (
@@ -267,9 +271,9 @@ export default function TentCollection({
 
 				{/* Tent List */}
 				{!loading && !error && (
-					<div className='gap-8 grid grid-cols-3'>
+					<div>
 						{filteredCategories.length > 0 ? (
-							<div className='gap-8 grid grid-cols-3 col-span-3'>
+							<div className='gap-5 grid grid-cols-1 md:grid-cols-3 w-full'>
 								{filteredCategories.flatMap((category) =>
 									category.tents.map((tent) => (
 										<CardTent
@@ -296,16 +300,20 @@ export default function TentCollection({
 								)}
 							</div>
 						) : (
-							<p className='col-span-3 text-gray-500 text-center'>
-								No tents available
-							</p>
+							<div className='py-8 text-muted-foreground text-center'>
+								<TentIcon className='opacity-50 mx-auto mb-2 w-12 h-12' />
+								<p>No tents Available</p>
+								<p className='mt-1 text-sm'>
+									Please select another category or date
+								</p>
+							</div>
 						)}
 					</div>
 				)}
 			</div>
 
 			{/* SECTION KANAN (Summary Card) */}
-			<div className='w-full'>
+			<div className='w-full md:w-1/3'>
 				<SummaryTent
 					selectedTents={selectedTents}
 					onRemove={handleRemoveTent}
