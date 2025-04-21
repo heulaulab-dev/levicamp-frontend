@@ -23,7 +23,7 @@ export default function ReschedulePage() {
 		setShowTentCollection,
 	} = useRescheduleData();
 
-	// We need to load booking data if it's not already loaded
+	// Load booking data if it's not already loaded
 	// This handles cases where users might directly visit this URL
 	useEffect(() => {
 		if (!bookingData && !validationData && bookingId) {
@@ -56,13 +56,8 @@ export default function ReschedulePage() {
 
 	return (
 		<HeroSection
-			title={
-				<>
-					Enter your booking code to{' '}
-					<span className='text-primary'>Reschedule</span> your adventure. Your
-					next escape is just a few clicks away!
-				</>
-			}
+			title={<>Check your booking details</>}
+			description='Please review the details below to ensure your booking is correct and select a new date.'
 		>
 			<div className='flex flex-col items-center mt-4 w-full'>
 				{bookingData && validationData && invoiceData && (
