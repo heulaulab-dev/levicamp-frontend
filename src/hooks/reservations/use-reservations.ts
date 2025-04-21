@@ -1,14 +1,15 @@
-import { create } from 'zustand';
 import { format } from 'date-fns';
 import { DateRange } from 'react-day-picker';
+import { create } from 'zustand';
+
+import api from '@/lib/api';
 import {
-	ReservationStore,
-	responseArray,
+	PriceCheckResponse,
 	ReservationRequest,
 	ReservationResponse,
-	PriceCheckResponse,
+	ReservationStore,
+	responseArray,
 } from '@/types/reservations';
-import api from '@/lib/api';
 
 export const useReservations = create<ReservationStore>((set) => ({
 	date: {
