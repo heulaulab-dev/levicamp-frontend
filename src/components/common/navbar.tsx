@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { BookOpen, Globe, Menu, ShoppingBag, Tent, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Globe, ShoppingBag, BookOpen, Tent, Menu, X } from 'lucide-react';
-import { Component as ThemeToggle } from '@/components/ui/theme-toggle';
-import Image from 'next/image';
-import { useReservationStore } from '@/store/useReservationStore';
-import { Button } from '@/components/ui/button';
-import { useHydration } from '@/hooks/use-hydration';
+import { useEffect, useRef, useState } from 'react';
 
-const Navbar = () => {
+import { Button } from '@/components/ui/button';
+import { Component as ThemeToggle } from '@/components/ui/theme-toggle';
+import { useHydration } from '@/hooks/use-hydration';
+import { useReservationStore } from '@/store/useReservationStore';
+
+export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isHidden, setIsHidden] = useState(false);
 	const lastScrollY = useRef(0);
@@ -144,6 +145,7 @@ const Navbar = () => {
 							alt='logo'
 							width={100}
 							height={100}
+							loading='lazy'
 						/>
 					</Link>
 				</div>
@@ -186,7 +188,7 @@ const Navbar = () => {
 
 				{/* Mobile Menu Button */}
 				<button
-					className='md:hidden text-primary text-2xl'
+					className='md:hidden text-primary hover:text-primary/80 text-2xl'
 					onClick={() => setIsOpen(!isOpen)}
 				>
 					{isOpen ? <X /> : <Menu />}
@@ -229,5 +231,3 @@ const Navbar = () => {
 		</>
 	);
 };
-
-export default Navbar;
