@@ -9,10 +9,10 @@ export default function RescheduleIndexPage() {
 			title={
 				<>
 					Enter your booking code to{' '}
-					<span className='text-primary'>Reschedule</span> your adventure. Your
-					next escape is just a few clicks away!
+					<span className='text-primary'>Reschedule</span> your adventure.
 				</>
 			}
+			description='Your next escape is just a few clicks away!'
 		>
 			<div className='flex flex-col items-center w-full max-w-3xl'>
 				<SearchBooking />
