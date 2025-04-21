@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import HeroSection from '@/components/common/hero-section';
 import InvoiceDetail from '@/components/pages/reservation/invoice/invoice-detail';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import { Button } from '@/components/ui/button';
@@ -83,11 +84,6 @@ export default function InvoicePage() {
 			price: tent.api_price || tent.weekend_price || 0,
 		})) || [];
 
-	console.log('=========================================');
-	console.log(reservationData);
-	console.log(tents);
-	console.log('=========================================');
-
 	return (
 		<>
 			{showConfetti && (
@@ -106,44 +102,15 @@ export default function InvoicePage() {
 					}}
 				/>
 			)}
-			<div className='min-h-screen'>
-				{/* Hero Section */}
-				<div
-					className='flex flex-col items-center bg-gradient-to-b mt-20 px-4 py-10'
-					style={{
-						backgroundImage: "url('/bg.png')",
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat',
-					}}
-				>
-					<Image
-						src='/assets/icons/camp-icon.png'
-						alt='Camping Icon'
-						width={50}
-						height={50}
-					/>
-					<div className='m-6 text-center'>
-						<h1 className='font-bold text-primary-foreground text-4xl md:text-5xl leading-tight'>
-							<span className='text-primary'>
-								Thank you for choosing Levi Camp!
-							</span>{' '}
-							Here’s your invoice. Download it, screenshot it, or check your
-							email for a copy.
-						</h1>
-					</div>
-				</div>
-				<div className='mx-auto px-4 container'>
+
+			<HeroSection
+				title='Thank you for choosing Levi Camp!'
+				description='Here’s your invoice. Download it, screenshot it, or check your email for a copy.'
+				showActionButtons={true}
+			>
+				<div className='mx-auto my-24 px-4 container'>
 					<div className='hidden md:block mb-8'>
 						<ReservationStepper currentStep={5} />
-					</div>
-					<div className='flex flex-row justify-center items-center gap-3 w-full'>
-						<Button asChild>
-							<Link href='/'>Return to Home</Link>
-						</Button>
-						<Button variant='outline' asChild>
-							<Link href='/contact'>Contact Support</Link>
-						</Button>
 					</div>
 					<InvoiceDetail
 						bookingId={bookingId}
@@ -159,7 +126,7 @@ export default function InvoicePage() {
 						onDownload={handleDownload}
 					/>
 				</div>
-			</div>
+			</HeroSection>
 		</>
 	);
 }
