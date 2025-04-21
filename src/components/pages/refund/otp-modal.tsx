@@ -90,12 +90,6 @@ export function OTPVerificationModal({
 					token: response.data.token,
 					used: response.data.used,
 					expired_at: response.data.expired_at,
-					refund_amount: response.data.refund_amount,
-					refund_method: response.data.refund_method,
-					account_name: response.data.account_name,
-					account_number: response.data.account_number,
-					status: response.data.status,
-					reason: response.data.reason,
 				});
 
 				toast.success(

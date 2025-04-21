@@ -65,7 +65,7 @@ export default function RefundForm({
 	};
 
 	return (
-		<Card className='shadow-sm w-full'>
+		<Card className='shadow-sm w-full max-w-4xl'>
 			<CardHeader>
 				<CardTitle className='font-semibold text-2xl'>
 					Refund Request Form
