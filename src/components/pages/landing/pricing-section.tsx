@@ -1,13 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { ArrowRightIcon, CheckIcon } from '@radix-ui/react-icons';
-import { cn } from '@/lib/utils';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 
 interface Feature {
 	name: string;
