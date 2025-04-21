@@ -1,15 +1,16 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
+import HeroSection from '@/components/common/hero-section';
+import { PersonalInfoCard } from '@/components/pages/reservation/check-detail/personal-info-card';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
-import { PersonalInfoCard } from '@/components/pages/reservation/check-detail/personal-info-card';
 import { useReservations } from '@/hooks/reservations/use-reservations';
-import { format } from 'date-fns';
-import { toast } from 'sonner';
-import Image from 'next/image';
-import { useReservationStore } from '@/store/useReservationStore';
 import { useHydration } from '@/hooks/use-hydration';
+import { useReservationStore } from '@/store/useReservationStore';
 
 export default function CheckDetailPage() {
 	const router = useRouter();
@@ -102,32 +103,11 @@ export default function CheckDetailPage() {
 	};
 
 	return (
-		<div className='min-h-screen'>
-			<div
-				className='flex flex-col items-center bg-gradient-to-b mt-20 px-4 py-10'
-				style={{
-					backgroundImage: "url('/bg.png')",
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					backgroundRepeat: 'no-repeat',
-				}}
-			>
-				<Image
-					src='/assets/icons/camp-icon.png'
-					alt='Camping Icon'
-					width={50}
-					height={50}
-				/>
-
-				<div className='m-6 text-center'>
-					<h1 className='font-bold text-primary text-4xl md:text-5xl leading-tight'>
-						One Last Step, take a moment to{' '}
-						<span className='text-brand'>review your details</span> and confirm{' '}
-						everything&apos;s set
-					</h1>
-				</div>
-			</div>
-			<div className='mx-auto px-4 container'>
+		<HeroSection
+			title="Take a moment to review your details and confirm everything's set"
+			description='Confirm your payment details and complete your reservation.'
+		>
+			<div className='mx-auto my-24 px-4 container'>
 				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={2} />
 				</div>
@@ -156,6 +136,6 @@ export default function CheckDetailPage() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</HeroSection>
 	);
 }
