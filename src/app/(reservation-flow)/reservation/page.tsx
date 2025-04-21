@@ -8,10 +8,10 @@ export default function ReservationPage() {
 			title={
 				<>
 					Your <span className='text-primary'>Reservation,</span> Your Way!
-					Fast, Flexible, and hassle-free. Book now and take control of your
-					plans today!
+					Fast, Flexible, and hassle-free.
 				</>
 			}
+			description='Book now and take control of your plans today!'
 		>
 			<ReservationForm />
 		</HeroSection>

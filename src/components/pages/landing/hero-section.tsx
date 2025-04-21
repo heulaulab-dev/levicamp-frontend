@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useCallback, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { memo, useCallback, useState } from 'react';
 import Marquee from 'react-fast-marquee';
+
+import { Button } from '@/components/ui/button';
 
 // Define props interface for MarqueeRow
 interface MarqueeRowProps {

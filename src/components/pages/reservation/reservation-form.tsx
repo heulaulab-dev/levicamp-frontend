@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import ActionCardList from '@/components/pages/reservation/card-actions';
 import TentCollection from '@/components/pages/reservation/tent-collection';
 import { Button } from '@/components/ui/button';
 import DateRangePicker from '@/components/ui/date-picker';
@@ -32,7 +33,7 @@ export default function ReservationForm() {
 		useState(selectedCategory);
 
 	return (
-		<div className='flex flex-col items-center gap-32 w-full'>
+		<div className='flex flex-col items-center gap-2 w-full'>
 			{/* Reservation Date Picker */}
 			<div className='flex md:flex-row flex-col items-center md:gap-4 bg-secondary shadow-xl p-6 rounded-lg w-full max-w-3xl'>
 				{/* Search Form Section */}
@@ -93,8 +94,11 @@ export default function ReservationForm() {
 				</div>
 			</div>
 
+			{/* Action Card List Section */}
+			<ActionCardList />
+
 			{/* Search Results Section */}
-			<section>
+			<section className='my-24'>
 				{loading && <Loading />}
 				{error && toast.error(error)}
 				{!loading && !error && showResults && (

@@ -1,29 +1,31 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Building, CreditCard, QrCode, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
-import Image from 'next/image';
-import { PersonalInfoCard } from '@/components/pages/reservation/payment/personal-info-card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
 import {
 	Card,
 	CardContent,
-	CardTitle,
-	CardHeader,
 	CardDescription,
+	CardHeader,
+	CardTitle,
 } from '@components/ui/card';
-import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
-import { CreditCard, Building, QrCode, Wallet } from 'lucide-react';
-import { usePayment } from '@/hooks/payments/use-payments';
-import QRISModal from '@/components/pages/reservation/payment/qris-modal';
+
+import HeroSection from '@/components/common/hero-section';
 import BankTransferModal from '@/components/pages/reservation/payment/bank-transfer-modal';
-import EWalletModal from '@/components/pages/reservation/payment/ewallet-modal';
 import CreditCardModal from '@/components/pages/reservation/payment/credit-card-modal';
-import { toast } from 'sonner';
-import { useReservationStore } from '@/store/useReservationStore';
+import EWalletModal from '@/components/pages/reservation/payment/ewallet-modal';
+import { PersonalInfoCard } from '@/components/pages/reservation/payment/personal-info-card';
+import QRISModal from '@/components/pages/reservation/payment/qris-modal';
+import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
+import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { usePayment } from '@/hooks/payments/use-payments';
 import { useHydration } from '@/hooks/use-hydration';
+import { useReservationStore } from '@/store/useReservationStore';
 
 export default function PaymentPage() {
 	const router = useRouter();
@@ -200,35 +202,12 @@ export default function PaymentPage() {
 	if (!personalInfo || !reservationData) return null;
 
 	return (
-		<div className='min-h-screen'>
-			{/* Hero Section */}
-			<div
-				className='flex flex-col items-center bg-gradient-to-b mt-20 px-4 py-10'
-				style={{
-					backgroundImage: "url('/bg.png')",
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					backgroundRepeat: 'no-repeat',
-				}}
-			>
-				<Image
-					src='/assets/icons/camp-icon.png'
-					alt='Camping Icon'
-					width={50}
-					height={50}
-				/>
-				<div className='m-6 text-center'>
-					<h1 className='font-bold text-primary-foreground text-4xl md:text-5xl leading-tight'>
-						One Last Step, take a moment to{' '}
-						<span className='text-primary'>review your details</span> and
-						confirm <br />
-						everything&apos;s set
-					</h1>
-				</div>
-			</div>
-
+		<HeroSection
+			title="You're almost there, Secure your spot by completing your payment now"
+			description='Choose your preferred payment method for completing your reservation.'
+		>
 			{/* Content Section */}
-			<div className='mx-auto px-4 container'>
+			<div className='mx-auto my-24 px-4 container'>
 				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={3} />
 				</div>
@@ -311,6 +290,6 @@ export default function PaymentPage() {
 
 			{/* Payment Modals */}
 			{renderPaymentModal()}
-		</div>
+		</HeroSection>
 	);
 }
