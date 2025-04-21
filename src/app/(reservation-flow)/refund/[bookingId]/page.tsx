@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
@@ -8,7 +7,6 @@ import { toast } from 'sonner';
 import HeroSection from '@/components/common/hero-section';
 import InvoiceDetail from '@/components/pages/refund/invoice-detail';
 import RefundForm from '@/components/pages/refund/refund-form';
-import SearchBooking from '@/components/pages/refund/search-booking';
 import { StatusCard } from '@/components/pages/refund/status-card';
 import { useRefund } from '@/hooks/refund/use-refund';
 import { useRefundData } from '@/hooks/refund/use-refund-data';
@@ -50,7 +48,10 @@ export default function RefundPage() {
 				account_number: formData.account_number,
 			};
 
-			await createRefund(refundRequest);
+			const createdRefund = await createRefund(refundRequest);
+
+			useRefundData.getState().setCreatedRefundData(createdRefund);
+
 			toast.success('Refund request submitted successfully!');
 			router.push(`/refund/${bookingData.id}/success`);
 		} catch (error) {
@@ -61,18 +62,12 @@ export default function RefundPage() {
 
 	return (
 		<HeroSection
-			title={
-				<>
-					<span className='text-primary'>
-						Request a refund or track your status
-					</span>{' '}
-					just enter your booking code and let’s handle the rest!
-				</>
-			}
+			title='Request a refund or track your status'
+			description='Just enter your booking code and let’s handle the rest!'
 		>
-			<div className='flex flex-col items-center m-24 w-full'>
+			<div className='flex flex-col items-center mt-4 w-full'>
 				{bookingData && validationData && invoiceData && (
-					<div className='flex flex-col items-center gap-8 w-full'>
+					<div className='flex flex-col items-center w-full'>
 						<StatusCard
 							variant={
 								bookingData.status === 'confirmed' ? 'eligible' : 'processing'
