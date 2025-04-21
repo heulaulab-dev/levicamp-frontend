@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import HeroSection from '@/components/common/hero-section';
 import {
 	PersonalInfoCard,
 	PersonalInfoData,
@@ -118,34 +118,11 @@ export default function PersonalPage() {
 	}
 
 	return (
-		<div className='min-h-screen'>
-			<div
-				className='flex flex-col items-center bg-gradient-to-b mt-20 px-4 py-10'
-				style={{
-					backgroundImage: "url('/bg.png')",
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					backgroundRepeat: 'no-repeat',
-				}}
-			>
-				<Image
-					src='/assets/icons/camp-icon.png'
-					alt='Camping Icon'
-					width={50}
-					height={50}
-				/>
-
-				<div className='m-6 text-center'>
-					<h1 className='font-bold text-primary text-4xl md:text-5xl leading-tight'>
-						Tell us a bit about yourself!{' '}
-						<span className='dark:text-primary-foreground'>
-							Just fill in your details, and we&apos;ll take care of the rest.
-						</span>
-					</h1>
-				</div>
-			</div>
-
-			<div className='mx-auto px-4 container'>
+		<HeroSection
+			title='Tell us a bit about yourself!'
+			description="Just fill in your details, and we'll take care of the rest."
+		>
+			<div className='mx-auto my-24 px-4 container'>
 				<div className='hidden md:block mb-8'>
 					<ReservationStepper currentStep={1} />
 				</div>
@@ -176,6 +153,6 @@ export default function PersonalPage() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</HeroSection>
 	);
 }
