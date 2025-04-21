@@ -6,14 +6,8 @@ import SearchBooking from '@/components/pages/refund/search-booking';
 export default function RefundIndexPage() {
 	return (
 		<HeroSection
-			title={
-				<>
-					<span className='text-primary'>
-						Request a refund or track your status
-					</span>{' '}
-					just enter your booking code and let’s handle the rest!
-				</>
-			}
+			title='Request a refund or track your status'
+			description='Just enter your booking code and let’s handle the rest!'
 		>
 			<SearchBooking />
 		</HeroSection>
