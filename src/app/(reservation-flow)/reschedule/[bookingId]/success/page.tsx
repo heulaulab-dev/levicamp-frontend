@@ -82,47 +82,6 @@ export default function RescheduleSuccessPage() {
 		);
 	}
 
-	// Extract booking data from the response
-	const booking = rescheduleData.data;
-
-	// Format dates for display
-	const formattedPaymentDate = new Date(booking.created_at).toLocaleDateString(
-		'en-US',
-		{
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		},
-	);
-
-	// Format check-in and check-out dates
-	const checkInDate = new Date(booking.start_date).toLocaleDateString('en-US', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	});
-
-	const checkOutDate = new Date(booking.end_date).toLocaleDateString('en-US', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	});
-
-	// Map reservation details to tent format for InvoiceDetail
-	const tents = booking.detail_booking.map((detail) => ({
-		id: detail.reservation.tent.id,
-		name: detail.reservation.tent.name,
-		image: detail.reservation.tent.tent_images[0] || '',
-		category: detail.reservation.tent.category.name,
-		capacity: detail.reservation.tent.capacity,
-		price: detail.reservation.price,
-	}));
-
-	// Calculate total guest capacity
-	const guestCount = booking.detail_booking
-		.reduce((sum, detail) => sum + detail.reservation.tent.capacity, 0)
-		.toString();
-
 	return (
 		<div className='mx-auto py-8 container'>
 			<h1 className='mb-6 font-bold text-2xl text-center'>
