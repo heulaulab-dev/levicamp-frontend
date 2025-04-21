@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import HeroSection from '@/components/common/hero-section';
 import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
-import { Button } from '@/components/ui/button';
+import { Confetti } from '@/components/ui/confetti';
 import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { CreateRescheduleResponse } from '@/types/reschedules';
 
@@ -19,6 +20,7 @@ export default function RescheduleSuccessPage() {
 		useState<CreateRescheduleResponse | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const { invoiceData } = useRescheduleData();
+	const [showConfetti, setShowConfetti] = useState(true);
 
 	// Get the booking ID from the URL params
 	const bookingId = params.bookingId as string;
@@ -29,6 +31,8 @@ export default function RescheduleSuccessPage() {
 			router.push('/');
 			return;
 		}
+
+		setShowConfetti(true);
 
 		// If we have reschedule data in sessionStorage, use that
 		const storedData = sessionStorage.getItem(`reschedule_data_${bookingId}`);
@@ -83,21 +87,36 @@ export default function RescheduleSuccessPage() {
 	}
 
 	return (
-		<div className='mx-auto py-8 container'>
-			<h1 className='mb-6 font-bold text-2xl text-center'>
-				Reschedule Confirmed!
-			</h1>
-
-			<div className='flex flex-row gap-3'>
-				<Button asChild className='w-full'>
-					<Link href='/'>Return to Home</Link>
-				</Button>
-				<Button variant='outline' asChild className='w-full'>
-					<Link href='/contact'>Contact Support</Link>
-				</Button>
-			</div>
-
-			{invoiceData && <InvoiceDetail {...invoiceData} />}
-		</div>
+		<>
+			{showConfetti && (
+				<Confetti
+					style={{
+						position: 'fixed',
+						width: '100%',
+						height: '100%',
+						zIndex: 100,
+						pointerEvents: 'none',
+					}}
+					options={{
+						particleCount: 100,
+						spread: 70,
+						origin: { y: 0.3 },
+					}}
+				/>
+			)}
+			<HeroSection
+				title={
+					<>
+						<span className='text-primary'>Reschedule Request Submitted</span>{' '}
+					</>
+				}
+				description="Your reschedule request has been successfully submitted. We'll process your request within 3-5 business days and transfer the reschedule to your new date."
+				showActionButtons={true}
+			>
+				<div className='mx-auto container'>
+					{invoiceData && <InvoiceDetail {...invoiceData} />}
+				</div>
+			</HeroSection>
+		</>
 	);
 }
