@@ -1,14 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import {
 	Card,
@@ -17,12 +12,18 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import Link from 'next/link';
-import { toast } from 'sonner';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CreateRefundRequest } from '@/types/refunds';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { REFUND_POLICY } from '@/constants/refunds/refund-policy';
+import { CreateRefundRequest } from '@/types/refunds';
 
 interface RefundFormProps {
 	onRefundRequest: (formData: Omit<CreateRefundRequest, 'token'>) => void;
@@ -64,7 +65,7 @@ export default function RefundForm({
 	};
 
 	return (
-		<Card className='shadow-sm w-full'>
+		<Card className='shadow-sm w-full max-w-4xl'>
 			<CardHeader>
 				<CardTitle className='font-semibold text-2xl'>
 					Refund Request Form

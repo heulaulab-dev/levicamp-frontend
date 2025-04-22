@@ -1,10 +1,16 @@
-import { useReservations } from '@/hooks/reservations/use-reservations'; // Import custom hook
 import { format, isBefore, startOfToday } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { toast } from 'sonner';
+
+import Loading from '@components/ui/loading';
+
+import TentCollection from '@/components/pages/reservation/tent-collection';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
-import { useState } from 'react';
 import {
 	Popover,
 	PopoverContent,
@@ -17,11 +23,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import Image from 'next/image';
-import TentCollection from '@/components/pages/reservation/tent-collection';
-import Loading from '@components/ui/loading';
-import { toast } from 'sonner';
-import Link from 'next/link';
+import { useReservations } from '@/hooks/reservations/use-reservations'; // Import custom hook
 
 export function HeroHeader() {
 	const today = startOfToday();

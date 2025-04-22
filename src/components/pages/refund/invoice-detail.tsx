@@ -1,8 +1,9 @@
+import { CopyIcon, Download } from 'lucide-react';
+import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { CopyIcon, Download } from 'lucide-react';
-import Image from 'next/image';
 
 export interface InvoiceDetailProps {
 	bookingId: string;
@@ -44,9 +45,9 @@ export default function InvoiceDetail({
 	const subtotal = tents.reduce((sum, tent) => sum + tent.price, 0);
 
 	return (
-		<Card className='shadow-sm mx-auto w-full'>
+		<Card className='shadow-sm m-10 mx-auto w-full max-w-4xl'>
 			<CardContent className='p-8'>
-				<div className='flex justify-between items-start'>
+				<div className='flex md:flex-row flex-col justify-between items-start gap-4'>
 					<div>
 						<div className='flex items-center gap-2'>
 							<h1 className='font-semibold text-xl'>Your Invoice</h1>
@@ -62,7 +63,7 @@ export default function InvoiceDetail({
 							download or screenshot this page for quick access.
 						</p>
 					</div>
-					<Button onClick={onDownload}>
+					<Button onClick={onDownload} className='w-full md:w-auto'>
 						<Download className='mr-2 w-4 h-4' /> Download Invoice
 					</Button>
 				</div>

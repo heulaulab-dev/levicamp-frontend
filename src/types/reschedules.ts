@@ -8,6 +8,7 @@ export interface CreateRescheduleRequest {
 	tent_id: string[];
 	start_date: string;
 	end_date: string;
+	reason: string;
 }
 
 export interface RescheduleResponse {
@@ -118,6 +119,7 @@ export interface RescheduleValidateResponse {
 		expired_at: string;
 		created_at: string;
 		updated_at: string;
+		url: string;
 	};
 }
 

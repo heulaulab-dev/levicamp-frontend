@@ -1,11 +1,12 @@
 'use client';
 
-import { format, differenceInDays } from 'date-fns';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
+import { differenceInDays, format } from 'date-fns';
 import Image from 'next/image';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface ReservationSummaryProps {
@@ -13,7 +14,7 @@ interface ReservationSummaryProps {
 		selectedTents: Array<{
 			id: string;
 			name: string;
-			tent_image: string;
+			tent_images: string[];
 			category?: {
 				name: string;
 			};
@@ -86,7 +87,7 @@ export function ReservationSummary({
 	return (
 		<Card className='mx-auto p-4 border rounded-2xl w-full max-w-2xl'>
 			<CardHeader className='pb-2'>
-				<CardTitle className='font-semibold text-primary text-lg'>
+				<CardTitle className='font-semibold text-primary text-xl md:text-2xl'>
 					Reservation Summary
 				</CardTitle>
 			</CardHeader>
@@ -127,7 +128,7 @@ export function ReservationSummary({
 								<div className='flex items-start gap-3'>
 									<div className='relative rounded-md w-16 h-16 overflow-hidden'>
 										<Image
-											src={tent.tent_image || '/tent-image.jpg'}
+											src={tent.tent_images[0] || '/tent-image.jpg'}
 											alt={tent.name}
 											fill
 											className='object-cover'
@@ -253,3 +254,4 @@ export function ReservationSummary({
 		</Card>
 	);
 }
+

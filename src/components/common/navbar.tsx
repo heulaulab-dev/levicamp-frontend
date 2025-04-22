@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { BookOpen, Globe, Menu, ShoppingBag, Tent, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Globe, ShoppingBag, BookOpen, Tent, Menu, X } from 'lucide-react';
-import { Component as ThemeToggle } from '@/components/ui/theme-toggle';
-import Image from 'next/image';
-import { useReservationStore } from '@/store/useReservationStore';
-import { Button } from '@/components/ui/button';
-import { useHydration } from '@/hooks/use-hydration';
+import { useEffect, useRef, useState } from 'react';
 
-const Navbar = () => {
+import { Button } from '@/components/ui/button';
+import { Component as ThemeToggle } from '@/components/ui/theme-toggle';
+import { useHydration } from '@/hooks/use-hydration';
+import { useReservationStore } from '@/store/useReservationStore';
+
+export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isHidden, setIsHidden] = useState(false);
 	const lastScrollY = useRef(0);
@@ -90,7 +91,11 @@ const Navbar = () => {
 	const menuItems = [
 		{ name: 'Reservation', path: '/reservation', icon: Tent },
 		{ name: 'Facilities', path: '/facilities', icon: Globe },
-		{ name: 'Catalog', path: '/catalog', icon: ShoppingBag },
+		{
+			name: 'Catalog',
+			path: 'https://assets.levicamp.id/assets/catalog/levicamp-catalog-2025.pdf',
+			icon: ShoppingBag,
+		},
 		{ name: 'Article', path: '/article', icon: BookOpen },
 	];
 
@@ -128,7 +133,7 @@ const Navbar = () => {
 				</div>
 			)}
 			<nav
-				className={`fixed ${
+				className={`fixed shadow-xl ${
 					hasInProgressReservation && pathname === '/reservation'
 						? 'top-[41px]'
 						: 'top-0'
@@ -144,12 +149,13 @@ const Navbar = () => {
 							alt='logo'
 							width={100}
 							height={100}
+							loading='lazy'
 						/>
 					</Link>
 				</div>
 
 				{/* Menu Desktop */}
-				<div className='hidden md:flex gap-1'>
+				<div className='hidden md:flex gap-4'>
 					{menuItems.map((item, index) => {
 						const isActive = pathname === item.path;
 						const Icon = item.icon;
@@ -158,6 +164,7 @@ const Navbar = () => {
 							<Link
 								key={index}
 								href={item.path}
+								target={item.path.startsWith('https') ? '_blank' : '_self'}
 								className={`group flex items-center gap-2 px-4 py-2 rounded-lg text-primary transition-all ${
 									isActive
 										? 'bg-primary text-primary-foreground'
@@ -171,7 +178,7 @@ const Navbar = () => {
 											: 'opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100'
 									}`}
 								/>
-								<span className='tracking-tight group-hover:tracking-normal transition-all duration-300 ease-in-out'>
+								<span className='tracking-normal transition-all duration-300 ease-in-out'>
 									{item.name}
 								</span>
 							</Link>
@@ -186,7 +193,7 @@ const Navbar = () => {
 
 				{/* Mobile Menu Button */}
 				<button
-					className='md:hidden text-primary text-2xl'
+					className='md:hidden text-primary hover:text-primary/80 text-2xl'
 					onClick={() => setIsOpen(!isOpen)}
 				>
 					{isOpen ? <X /> : <Menu />}
@@ -229,5 +236,3 @@ const Navbar = () => {
 		</>
 	);
 };
-
-export default Navbar;

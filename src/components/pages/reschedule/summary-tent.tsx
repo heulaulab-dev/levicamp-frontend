@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { Card, CardContent, CardHeader, CardFooter } from '@components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@components/ui/separator';
-import { Bookmark, HelpCircle, Trash2 } from 'lucide-react';
-import { Tent } from '@/types/reservations';
-import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { differenceInDays } from 'date-fns';
-import { useReservations } from '@/hooks/reservations/use-reservations';
+import { Bookmark, HelpCircle, Trash2, TentIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
+import { Separator } from '@components/ui/separator';
+
+import { Button } from '@/components/ui/button';
+import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
+import { useReservations } from '@/hooks/reservations/use-reservations';
+import { Tent } from '@/types/reservations';
 
 interface SummaryTentProps {
 	selectedTents: Tent[];
@@ -355,9 +357,13 @@ export default function SummaryTent({
 										</div>
 									))
 								) : (
-									<p className='text-muted-foreground text-sm text-center'>
-										No tents selected yet
-									</p>
+									<div className='py-8 text-muted-foreground text-center'>
+										<TentIcon className='opacity-50 mx-auto mb-2 w-12 h-12' />
+										<p>No tents selected</p>
+										<p className='mt-1 text-sm'>
+											Select tents to continue booking
+										</p>
+									</div>
 								)}
 							</CardContent>
 						</Card>

@@ -3,34 +3,9 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import FacilitiesCard from '@/components/ui/facilities-card';
 import { Bookmark, ArrowUpRight, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ListFacilities } from '@/constants/facilities/list-facilities';
 
-const facilities = [
-	{
-		title:
-			'Escape the city, breathe in fresh air, and soak in stunning valley views.',
-		imageSrc: '/assets/Toilet.png',
-	},
-	{
-		title:
-			'Cozy, spacious tents with comfy beds and everything you need to chill.',
-		imageSrc: '/assets/waterfall.png',
-	},
-	{
-		title:
-			'Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.',
-		imageSrc: '/assets/wifi.png',
-	},
-	{
-		title: 'Wake up to a free breakfast every morning.',
-		imageSrc: '/assets/Toilet.png',
-	},
-	{
-		title: 'Experience the thrill off-road ATV rides.',
-		imageSrc: '/assets/waterfall.png',
-	},
-];
-
-const HardSellingSection = () => {
+export default function FacilitiesSection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
 	const [scrollIndex, setScrollIndex] = useState(0);
 	const controls = useAnimation();
@@ -47,7 +22,7 @@ const HardSellingSection = () => {
 	};
 
 	const handleNext = () => {
-		setScrollIndex((prev) => Math.min(prev + 1, facilities.length - 1));
+		setScrollIndex((prev) => Math.min(prev + 1, ListFacilities.length - 1));
 	};
 
 	return (
@@ -91,7 +66,7 @@ const HardSellingSection = () => {
 
 				<div className='relative overflow-x-hidden'>
 					<motion.div animate={controls} className='flex gap-6'>
-						{facilities.map((facility, index) => (
+						{ListFacilities.map((facility, index) => (
 							<motion.div
 								key={index}
 								className='flex-shrink-0 w-[449px] snap-center'
@@ -108,7 +83,7 @@ const HardSellingSection = () => {
 							className='group flex flex-col flex-shrink-0 justify-between bg-secondary hover:bg-secondary-hover shadow-lg p-6 rounded-2xl w-[449px] h-[604px] text-secondary-foreground hover:text-secondary-foreground text-start snap-center'
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: facilities.length * 0.1 }}
+							transition={{ delay: ListFacilities.length * 0.1 }}
 						>
 							<div>
 								<h3 className='font-semibold text-6xl italic leading-snug'>
@@ -132,4 +107,4 @@ const HardSellingSection = () => {
 	);
 };
 
-export default HardSellingSection;
+

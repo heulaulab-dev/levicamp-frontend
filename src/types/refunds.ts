@@ -119,7 +119,7 @@ export interface Reservation {
 export interface Tent {
 	id: string;
 	name: string;
-	tent_image: string;
+	tent_images: string[];
 	description: string;
 	facilities: string[];
 	category_id: string;
@@ -127,6 +127,7 @@ export interface Tent {
 	status: string;
 	weekday_price: number;
 	weekend_price: number;
+	capacity: number;
 	created_at: string;
 	updated_at: string;
 }
