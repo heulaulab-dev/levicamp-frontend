@@ -12,6 +12,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { plusJakartaSans } from '@/lib/fonts';
 import { createMetadata } from '@/lib/metadata';
+import { GoogleTagManager } from '@next/third-parties/google';
 
 export const metadata: Metadata = createMetadata({});
 
@@ -22,6 +23,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
+			<GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID ?? ''} />
 			<ReactScan data-lenis-prevent />
 			<head>
 				<Script
