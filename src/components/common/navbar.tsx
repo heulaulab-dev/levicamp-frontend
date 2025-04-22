@@ -91,7 +91,11 @@ export default function Navbar() {
 	const menuItems = [
 		{ name: 'Reservation', path: '/reservation', icon: Tent },
 		{ name: 'Facilities', path: '/facilities', icon: Globe },
-		{ name: 'Catalog', path: '/catalog', icon: ShoppingBag },
+		{
+			name: 'Catalog',
+			path: 'https://assets.levicamp.id/assets/catalog/levicamp-catalog-2025.pdf',
+			icon: ShoppingBag,
+		},
 		{ name: 'Article', path: '/article', icon: BookOpen },
 	];
 
@@ -129,7 +133,7 @@ export default function Navbar() {
 				</div>
 			)}
 			<nav
-				className={`fixed ${
+				className={`fixed shadow-xl ${
 					hasInProgressReservation && pathname === '/reservation'
 						? 'top-[41px]'
 						: 'top-0'
@@ -151,7 +155,7 @@ export default function Navbar() {
 				</div>
 
 				{/* Menu Desktop */}
-				<div className='hidden md:flex gap-1'>
+				<div className='hidden md:flex gap-4'>
 					{menuItems.map((item, index) => {
 						const isActive = pathname === item.path;
 						const Icon = item.icon;
@@ -160,6 +164,7 @@ export default function Navbar() {
 							<Link
 								key={index}
 								href={item.path}
+								target={item.path.startsWith('https') ? '_blank' : '_self'}
 								className={`group flex items-center gap-2 px-4 py-2 rounded-lg text-primary transition-all ${
 									isActive
 										? 'bg-primary text-primary-foreground'
@@ -173,7 +178,7 @@ export default function Navbar() {
 											: 'opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100'
 									}`}
 								/>
-								<span className='tracking-tight group-hover:tracking-normal transition-all duration-300 ease-in-out'>
+								<span className='tracking-normal transition-all duration-300 ease-in-out'>
 									{item.name}
 								</span>
 							</Link>
