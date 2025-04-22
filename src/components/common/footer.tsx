@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import { Separator } from '@/components/ui/separator';
 
-import { NewsletterSection } from './subscribe-action';
+import { NewsletterSection } from '@/components/common/subscribe-action';
 
-export default function FooterDemo() {
+export default function Footer() {
 	return (
 		<footer className='relative bg-secondary px-4 sm:px-8 py-10'>
 			{/* Header Section */}
@@ -51,29 +51,33 @@ export default function FooterDemo() {
 
 				<NewsletterSection title='Stay up to date' />
 			</div>
-			<Separator className='my-4' />
+			<Separator className='bg-primary my-4' />
 			{/* Copyright Section */}
 			<div className='flex flex-row justify-between items-center gap-4'>
-				<p className='text-sm'>© 2025 Levi Camp. All rights reserved.</p>
-				<div className='flex gap-6'>
-					<Link
-						href='/terms'
-						className='hover:text-primary text-sm transition-colors duration-300'
-					>
-						Terms
-					</Link>
-					<Link
-						href='/privacy'
-						className='hover:text-primary text-sm transition-colors duration-300'
-					>
-						Privacy
-					</Link>
-					<Link
-						href='/cookies'
-						className='hover:text-primary text-sm transition-colors duration-300'
-					>
-						Cookies
-					</Link>
+				<p className='text-secondary-foreground text-sm'>
+					© 2025 Levi Camp. All rights reserved.
+				</p>
+				<div className='flex flex-col gap-6'>
+					<div className='flex gap-4'>
+						<Link
+							href='/terms'
+							className='text-secondary-foreground hover:text-primary text-sm transition-colors duration-300'
+						>
+							Terms
+						</Link>
+						<Link
+							href='/privacy'
+							className='text-secondary-foreground hover:text-primary text-sm transition-colors duration-300'
+						>
+							Privacy
+						</Link>
+						<Link
+							href='/cookies'
+							className='text-secondary-foreground hover:text-primary text-sm transition-colors duration-300'
+						>
+							Cookies
+						</Link>
+					</div>
 				</div>
 			</div>
 		</footer>
