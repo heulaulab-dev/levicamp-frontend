@@ -64,7 +64,7 @@ export function NewsletterSection({
 			{...props}
 			className='relative px-4 sm:px-8 py-10 rounded-xl overflow-hidden'
 		>
-			<h2 className='mb-1 font-medium text-primary text-sm/[1.1] md:text-sm/[1.1] tracking-tight'>
+			<h2 className='mb-2 font-medium text-primary text-sm/[1.1] md:text-sm/[1.1] tracking-tight'>
 				{title}
 			</h2>
 			<form onSubmit={handleSubmit} className=''>
@@ -72,7 +72,7 @@ export function NewsletterSection({
 					<div className='inline-flex gap-2'>
 						<Input
 							id='subscribe-form'
-							className='md:min-w-64 h-10'
+							className='dark:bg-current dark:border-current md:min-w-64 h-10'
 							placeholder='Your email'
 							type='email'
 							value={formState.email}
