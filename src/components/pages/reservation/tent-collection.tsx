@@ -45,13 +45,12 @@ export default function TentCollection({
 		clearBookingResponseData,
 	} = useReservationStore();
 
-	const reservationData = categories ?? [];
+	// Rename to avoid confusion with the later reservationData object
+	const categoriesData = categories ?? [];
 	const filteredCategories =
 		selectedCategory === 'All'
-			? reservationData
-			: reservationData.filter(
-					(category) => category.name === selectedCategory,
-			  );
+			? categoriesData
+			: categoriesData.filter((category) => category.name === selectedCategory);
 
 	const handleSelectTent = (tentId: string) => {
 		setSelectedTentIds((prev) => {
@@ -63,43 +62,6 @@ export default function TentCollection({
 
 	const handleRemoveTent = (tentId: string) => {
 		setSelectedTentIds((prev) => prev.filter((id) => id !== tentId));
-	};
-
-	const handleRequestBook = () => {
-		// Clear all previous data from store
-		clearReservationData();
-		clearPersonalInfo();
-		clearPaymentData();
-		clearBookingResponseData();
-
-		// Get prices from the SummaryTent component
-		const tentsWithApiPrices = selectedTents.map((tent) => {
-			// Create a copy of the tent with the api_price field
-			// This will be populated later when the API responds
-			return {
-				...tent,
-				api_price: undefined,
-			};
-		});
-
-		// Create reservation data
-		const reservationData = {
-			selectedTents: tentsWithApiPrices,
-			checkInDate,
-			checkOutDate,
-			totalPrice: 0, // This will be updated by the API
-			isLoadingPrices: true, // Set loading state to true
-		};
-
-		// Save to Zustand store instead of localStorage
-		setReservationData(reservationData);
-
-		// Show success toast
-		toast.success('Great choice! Please fill in your details to continue.');
-
-		// Navigate to personal info page
-		console.log('Navigating to personal info page');
-		router.push('/reservation/personal');
 	};
 
 	// Get all selected tents with their full data
@@ -130,6 +92,58 @@ export default function TentCollection({
 			return tentWithCategory;
 		})
 		.filter((tent): tent is NonNullable<typeof tent> => tent !== null);
+
+	const handleRequestBook = () => {
+		// Validate that tents are selected
+		if (selectedTents.length === 0) {
+			toast.error('Please select at least one tent before proceeding.');
+			return;
+		}
+
+		// Validate dates
+		if (!checkInDate || !checkOutDate) {
+			toast.error('Please select valid check-in and check-out dates.');
+			return;
+		}
+
+		if (checkInDate >= checkOutDate) {
+			toast.error('Check-out date must be after check-in date.');
+			return;
+		}
+
+		// Clear all previous data from store
+		clearReservationData();
+		clearPersonalInfo();
+		clearPaymentData();
+		clearBookingResponseData();
+
+		// Get prices from the SummaryTent component
+		const tentsWithApiPrices = selectedTents.map((tent) => {
+			return {
+				...tent,
+				api_price: undefined,
+			};
+		});
+
+		// Create reservation data
+		const reservationData = {
+			selectedTents: tentsWithApiPrices,
+			checkInDate,
+			checkOutDate,
+			totalPrice: 0,
+			isLoadingPrices: true,
+		};
+
+		// Save to Zustand store instead of localStorage
+		setReservationData(reservationData);
+
+		// Show success toast
+		toast.success('Great choice! Please fill in your details to continue.');
+
+		// Navigate to personal info page
+		console.log('Navigating to personal info page');
+		router.push('/reservation/personal');
+	};
 
 	return (
 		<div className='flex md:flex-row flex-col gap-10'>
@@ -177,7 +191,8 @@ export default function TentCollection({
 										<CardTent
 											key={tent.id}
 											status={
-												category.id === 'unavailable'
+												category.id === 'unavailable' ||
+												tent.status === 'unavailable'
 													? 'unavailable'
 													: 'available'
 											}
