@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator';
 
 import { NewsletterSection } from '@/components/common/subscribe-action';
 
-export default function FooterDemo() {
+export default function Footer() {
 	return (
 		<footer className='relative bg-secondary px-4 sm:px-8 py-10'>
 			{/* Header Section */}
