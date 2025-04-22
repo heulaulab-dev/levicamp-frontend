@@ -27,7 +27,7 @@ const themes = [
 export type ThemeSwitcherProps = {
 	value?: 'light' | 'dark' | 'system';
 	onChange?: (theme: 'light' | 'dark' | 'system') => void;
-	defaultValue?: 'light' | 'dark' | 'system';
+	defaultValue: 'light' | 'dark' | 'system';
 	className?: string;
 };
 
