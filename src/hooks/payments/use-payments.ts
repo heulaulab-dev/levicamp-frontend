@@ -1,10 +1,11 @@
 import { create } from 'zustand';
+
 import api from '@/lib/api';
 import {
-	PaymentStore,
+	PaymentRequest,
 	PaymentResponse,
 	PaymentStatusResponse,
-	PaymentRequest,
+	PaymentStore,
 	PollingOptions,
 } from '@/types/payments';
 

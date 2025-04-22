@@ -49,7 +49,7 @@ const Hero = () => {
 						transform: 'rotate(-65deg)',
 					}}
 				>
-					<Marquee speed={40} direction='left' gradient={true}>
+					<Marquee speed={40} direction='left'>
 						{[...Array(10)].map((_, index) => (
 							<Image
 								key={index}

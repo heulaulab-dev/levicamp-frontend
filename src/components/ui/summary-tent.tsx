@@ -1,15 +1,19 @@
 'use client';
 
+import { differenceInDays, format } from 'date-fns';
+import { TentIcon, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Separator } from '@/components/ui/separator';
+
 import { Button } from '@/components/ui/button';
-import { Separator } from '@components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Trash2 } from 'lucide-react';
-import { format, differenceInDays } from 'date-fns';
-import { Tent } from '@/types/reservations';
-import { useState, useEffect } from 'react';
-import { useReservations } from '@/hooks/reservations/use-reservations';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useReservations } from '@/hooks/reservations/use-reservations';
+import { Tent } from '@/types/reservations';
+
+
 
 interface SummaryTentProps {
 	selectedTents: Tent[];
@@ -178,7 +182,7 @@ export default function SummaryTent({
 	};
 
 	return (
-		<Card className='shadow-md p-4 border rounded-2xl w-[360px]'>
+		<Card className='shadow-md p-4 border rounded-2xl w-full'>
 			<CardHeader className='pb-2'>
 				<CardTitle className='font-semibold text-primary text-xl'>
 					Reservation Summary
@@ -213,7 +217,11 @@ export default function SummaryTent({
 					<h3 className='mb-2 font-semibold text-sm'>You Selected</h3>
 					<ScrollArea className='h-80' data-lenis-prevent>
 						{selectedTents.length === 0 ? (
-							<p className='text-sm'>No tents selected.</p>
+							<div className='py-8 text-muted-foreground text-center'>
+								<TentIcon className='opacity-50 mx-auto mb-2 w-12 h-12' />
+								<p>No tents selected</p>
+								<p className='mt-1 text-sm'>Select tents to continue booking</p>
+							</div>
 						) : (
 							selectedTents.map((tent) => (
 								<div key={tent.id} className='py-2 border-primary border-b'>

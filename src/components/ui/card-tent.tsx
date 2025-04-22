@@ -1,12 +1,12 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Award, Briefcase, Star, Sun, Users } from 'lucide-react';
 import Image from 'next/image';
-import { Sun, Briefcase, Users } from 'lucide-react';
-import { Tent } from '../../types/reservations';
-import { Award, Star } from 'lucide-react';
-import { formatToK } from '../../lib/format';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatToK } from '@/lib/format';
+import { Tent } from '@/types/reservations';
 
 interface CardTentProps {
 	tent: Tent;
@@ -26,12 +26,12 @@ export default function CardTent({
 	return (
 		<Card
 			key={tent.id}
-			className='shadow-md border rounded-2xl w-full max-w-xs h-auto overflow-hidden'
+			className='shadow-md border rounded-xl w-full h-auto overflow-hidden'
 		>
 			{/* Gambar dan Kategori */}
 			<div className='relative'>
 				<Image
-					src={tent.tent_image || '/tent-image.jpg'}
+					src={tent.tent_images[0] || '/tent-image.jpg'}
 					alt={tent.name}
 					width={500}
 					height={350}
@@ -58,11 +58,11 @@ export default function CardTent({
 			</div>
 
 			{/* Nama Tenda */}
-			<CardHeader className='px-4 py-3 text-center'>
+			<CardHeader className='px-4 py-3 text-left md:text-center'>
 				<CardTitle className='font-semibold text-primary text-xl'>
 					{tent.name}
 				</CardTitle>
-				<div className='flex justify-center items-center mt-1 text-sm'>
+				<div className='flex justify-start items-center mt-1 text-sm'>
 					<Users size={16} className='mr-2' /> Up to{' '}
 					<b className='ml-1'>{tent.capacity} guests</b>
 				</div>

@@ -1,5 +1,9 @@
 'use client';
 
+import { Monitor, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
@@ -7,9 +11,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Monitor, Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
 
 function Component() {
 	const { setTheme, resolvedTheme } = useTheme();
