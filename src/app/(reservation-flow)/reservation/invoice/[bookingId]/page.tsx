@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Confetti } from '@/components/ui/confetti';
 import { useHydration } from '@/hooks/use-hydration';
 import { useReservationStore } from '@/store/useReservationStore';
+import LoadingTent from '@/components/common/loading-tent';
 
 export default function InvoicePage() {
 	const params = useParams();
@@ -53,11 +54,7 @@ export default function InvoicePage() {
 	};
 
 	if (loading) {
-		return (
-			<div className='flex justify-center items-center h-screen'>
-				<div className='border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin'></div>
-			</div>
-		);
+		return <LoadingTent />;
 	}
 
 	// Format dates for display

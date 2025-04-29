@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
@@ -105,6 +107,4 @@ export default function FacilitiesSection() {
 			</div>
 		</section>
 	);
-};
-
-
+}
