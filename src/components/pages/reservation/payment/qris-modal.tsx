@@ -84,6 +84,26 @@ export default function QRISModal({
 		return () => clearInterval(timer);
 	}, [paymentDetails?.expired_at]);
 
+	// Get QR image URL from payment details
+	const getQRImageUrl = () => {
+		// Try to get QR code from payment_detail first (QRIS specific)
+		const qrDetail = paymentDetails?.payment_detail?.find(
+			(detail) => detail.type === 'qr',
+		);
+
+		if (qrDetail && 'url' in qrDetail) {
+			return qrDetail.url;
+		}
+
+		// Fallback to payment_reference if available
+		if (paymentDetails?.payment?.payment_reference) {
+			return paymentDetails.payment.payment_reference;
+		}
+
+		// Final fallback
+		return '/placeholder.svg';
+	};
+
 	if (isMobile) {
 		return (
 			<Drawer open={isOpen} onOpenChange={onClose}>
@@ -102,11 +122,7 @@ export default function QRISModal({
 							<CardContent className='flex flex-col items-center p-6'>
 								<div className='relative mb-4 w-64 h-64'>
 									<Image
-										src={
-											paymentDetails?.payment.payment_reference ||
-											paymentDetails?.payment_detail?.[0]?.url ||
-											'/placeholder.svg'
-										}
+										src={getQRImageUrl()}
 										alt='QR Code'
 										fill
 										className='object-contain'
@@ -214,11 +230,7 @@ export default function QRISModal({
 						<CardContent className='flex flex-col items-center p-6'>
 							<div className='relative mb-4 rounded-lg w-64 h-64'>
 								<Image
-									src={
-										paymentDetails?.payment.payment_reference ||
-										paymentDetails?.payment_detail?.[0]?.url ||
-										'/placeholder.svg'
-									}
+									src={getQRImageUrl()}
 									alt='QR Code'
 									fill
 									className='rounded-lg object-contain'
