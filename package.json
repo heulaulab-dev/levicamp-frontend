@@ -12,6 +12,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^5.0.1",
+    "@lottiefiles/dotlottie-react": "^0.13.4",
     "@mui/material": "^6.4.8",
     "@next/font": "^14.2.15",
     "@next/third-parties": "^15.3.1",

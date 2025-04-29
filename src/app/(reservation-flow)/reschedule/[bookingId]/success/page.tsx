@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { Loader2 } from 'lucide-react';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -11,6 +9,7 @@ import InvoiceDetail from '@/components/pages/reschedule/invoice-detail';
 import { Confetti } from '@/components/ui/confetti';
 import { useRescheduleData } from '@/hooks/reschedules/use-reschedule-data';
 import { CreateRescheduleResponse } from '@/types/reschedules';
+import LoadingTent from '@/components/common/loading-tent';
 
 export default function RescheduleSuccessPage() {
 	const params = useParams();
@@ -60,12 +59,7 @@ export default function RescheduleSuccessPage() {
 
 	// Display loading state
 	if (loading) {
-		return (
-			<div className='flex flex-col justify-center items-center min-h-screen'>
-				<Loader2 className='w-10 h-10 text-primary animate-spin' />
-				<p className='mt-4'>Loading your booking details...</p>
-			</div>
-		);
+		return <LoadingTent />;
 	}
 
 	// Display error state
