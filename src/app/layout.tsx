@@ -13,6 +13,7 @@ import { ThemeProvider } from '@/components/ui/theme-provider';
 import { plusJakartaSans } from '@/lib/fonts';
 import { createMetadata } from '@/lib/metadata';
 import { GoogleTagManager } from '@next/third-parties/google';
+import { MusicProviderWrapper } from '@/components/ui/music-provider-wrapper';
 
 export const metadata: Metadata = createMetadata({});
 
@@ -40,10 +41,12 @@ export default function RootLayout({
 				/>
 				<ThemeProvider>
 					<LenisProvider>
-						<Navbar />
-						<main>{children}</main>
-						<Footer />
-						<Toaster richColors />
+						<MusicProviderWrapper>
+							<Navbar />
+							<main>{children}</main>
+							<Footer />
+							<Toaster richColors />
+						</MusicProviderWrapper>
 					</LenisProvider>
 				</ThemeProvider>
 			</body>
