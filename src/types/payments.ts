@@ -23,12 +23,6 @@ export interface Payment {
 	updated_at: string;
 }
 
-export interface PaymentDetail {
-	type: string;
-	name: string;
-	method: string;
-	url: string;
-}
 
 export interface PaymentResponse {
 	status: number;
@@ -81,14 +75,31 @@ export interface PaymentDetails {
 	payment: Payment & {
 		payment_reference?: string;
 	};
-	payment_detail: Array<{
-		type: string;
-		name: string;
-		method: string;
-		url: string;
-	}>;
+	payment_detail: Array<PaymentDetail>;
 	expired_at: string;
 }
+
+// Base payment detail
+interface BasePaymentDetail {
+	type: string;
+}
+
+// Discriminated union
+interface QrPaymentDetail extends BasePaymentDetail {
+	type: 'qr';
+	name: string;
+	method: string;
+	url: string;
+}
+
+interface VaPaymentDetail extends BasePaymentDetail {
+	type: 'va';
+	bank: string;
+	va_number: string;
+}
+
+// Extend easily kalau ada metode lain nanti
+export type PaymentDetail = QrPaymentDetail | VaPaymentDetail;
 
 export interface PaymentModalProps {
 	isOpen: boolean;

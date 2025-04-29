@@ -1,6 +1,5 @@
 'use client';
 
-import { Building, CreditCard, QrCode, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -14,24 +13,22 @@ import {
 } from '@components/ui/card';
 
 import HeroSection from '@/components/common/hero-section';
-import BankTransferModal from '@/components/pages/reservation/payment/bank-transfer-modal';
-import CreditCardModal from '@/components/pages/reservation/payment/credit-card-modal';
-import EWalletModal from '@/components/pages/reservation/payment/ewallet-modal';
 import { PersonalInfoCard } from '@/components/pages/reservation/payment/personal-info-card';
 import QRISModal from '@/components/pages/reservation/payment/qris-modal';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { usePayment } from '@/hooks/payments/use-payments';
 import { useHydration } from '@/hooks/use-hydration';
 import { useReservationStore } from '@/store/useReservationStore';
+import { PaymentCategory } from '@/components/pages/reservation/payment/payment-category';
+import { paymentMethods } from '@/constants/reservation/payment/payment-data';
 
 export default function PaymentPage() {
 	const router = useRouter();
 	const { createPayment, startPolling, stopPolling } = usePayment();
 	const [loading, setLoading] = useState(true);
 	const [selectedMethod, setSelectedMethod] = useState('qris');
+	const [selectedCategory, setSelectedCategory] = useState('qris');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
 	const isHydrated = useHydration();
@@ -45,25 +42,6 @@ export default function PaymentPage() {
 		clearPaymentData,
 		bookingResponseData,
 	} = useReservationStore();
-
-	const paymentMethods = [
-		{ id: 'qris', name: 'QRIS', icon: <QrCode className='w-5 h-5' /> },
-		{
-			id: 'e-wallet',
-			name: 'E-Wallet',
-			icon: <Wallet className='w-5 h-5' />,
-		},
-		{
-			id: 'bank',
-			name: 'Bank Transfer',
-			icon: <Building className='w-5 h-5' />,
-		},
-		{
-			id: 'credit-card',
-			name: 'Credit Card',
-			icon: <CreditCard className='w-5 h-5' />,
-		},
-	];
 
 	useEffect(() => {
 		// Only check for redirect after hydration is complete
@@ -107,7 +85,18 @@ export default function PaymentPage() {
 				const now = new Date();
 
 				if (expiry > now) {
-					// Reuse existing payment details
+					// If payment method is VA, redirect to payment detail page
+					if (selectedMethod.startsWith('va_')) {
+						const bookingId = bookingResponseData?.data.booking.id;
+						if (bookingId) {
+							router.push(
+								`/reservation/payment/detail?bookingId=${bookingId}&method=${selectedMethod}`,
+							);
+							return;
+						}
+					}
+
+					// For non-VA methods, show modal
 					setIsModalOpen(true);
 
 					// Start polling for payment status
@@ -132,6 +121,16 @@ export default function PaymentPage() {
 
 			// Store payment data in the store
 			setPaymentData(response.data);
+
+			// If payment method is VA, redirect to payment detail page
+			if (selectedMethod.startsWith('va_')) {
+				router.push(
+					`/reservation/payment/detail?bookingId=${bookingId}&method=${selectedMethod}`,
+				);
+				return;
+			}
+
+			// For non-VA methods, show modal
 			setIsModalOpen(true);
 
 			// Start polling for payment status
@@ -177,15 +176,10 @@ export default function PaymentPage() {
 			paymentMethod: selectedMethod,
 		};
 
+		// Only render non-VA payment modals here
 		switch (selectedMethod) {
 			case 'qris':
 				return <QRISModal {...props} />;
-			case 'bank':
-				return <BankTransferModal {...props} />;
-			case 'e-wallet':
-				return <EWalletModal {...props} />;
-			case 'credit-card':
-				return <CreditCardModal {...props} />;
 			default:
 				return null;
 		}
@@ -209,7 +203,7 @@ export default function PaymentPage() {
 			{/* Content Section */}
 			<div className='mx-auto my-24 px-4 container'>
 				<div className='hidden md:block mb-8'>
-					<ReservationStepper currentStep={3} />
+					<ReservationStepper currentStep={4} />
 				</div>
 				<div className='gap-8 grid grid-cols-1 lg:grid-cols-6 pb-12'>
 					{/* Personal Information Form */}
@@ -227,44 +221,24 @@ export default function PaymentPage() {
 									</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<RadioGroup
-										value={selectedMethod || ''}
-										onValueChange={setSelectedMethod}
-										className='space-y-1'
-									>
-										{paymentMethods.map((method) => (
-											<div
-												key={method.id}
-												className={`flex items-center space-x-2 rounded-lg border p-4 transition-colors ${
-													selectedMethod === method.id
-														? 'border-primary'
-														: 'hover:bg-muted/50'
-												}`}
-											>
-												<RadioGroupItem
-													value={method.id}
-													id={method.id}
-													className='sr-only'
+									<div className='bg-card mx-auto p-1 sm:p-4 border border-border rounded-xl w-full'>
+										<div className='space-y-2'>
+											{paymentMethods.map((category) => (
+												<PaymentCategory
+													key={category.id}
+													category={category}
+													isSelected={selectedCategory === category.id}
+													selectedMethod={selectedMethod}
+													onSelectCategory={() =>
+														setSelectedCategory(category.id)
+													}
+													onSelectMethod={(methodId) =>
+														setSelectedMethod(methodId)
+													}
 												/>
-												<Label
-													htmlFor={method.id}
-													className='flex flex-1 justify-between items-center cursor-pointer'
-												>
-													<div className='flex items-center space-x-3'>
-														{method.icon}
-														<span>{method.name}</span>
-													</div>
-													{selectedMethod === method.id ? (
-														<div className='flex justify-center items-center border-2 border-primary rounded-full w-6 h-6'>
-															<div className='bg-primary rounded-full w-3 h-3'></div>
-														</div>
-													) : (
-														<div className='border-2 border-gray-300 rounded-full w-6 h-6'></div>
-													)}
-												</Label>
-											</div>
-										))}
-									</RadioGroup>
+											))}
+										</div>
+									</div>
 								</CardContent>
 							</Card>
 						</div>
