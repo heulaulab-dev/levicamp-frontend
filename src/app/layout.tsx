@@ -6,7 +6,6 @@ import { Monitoring } from 'react-scan/monitoring/next';
 
 import Footer from '@/components/common/footer';
 import Navbar from '@/components/common/navbar';
-import LenisProvider from '@/components/ui/lenis-provider';
 import { ReactScan } from '@/components/ui/react-scan';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ui/theme-provider';
@@ -40,14 +39,12 @@ export default function RootLayout({
 					branch={process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}
 				/>
 				<ThemeProvider>
-					<LenisProvider>
-						<MusicProviderWrapper>
-							<Navbar />
-							<main>{children}</main>
-							<Footer />
-							<Toaster richColors />
-						</MusicProviderWrapper>
-					</LenisProvider>
+					<MusicProviderWrapper>
+						<Navbar />
+						<main>{children}</main>
+						<Footer />
+						<Toaster richColors />
+					</MusicProviderWrapper>
 				</ThemeProvider>
 			</body>
 		</html>
