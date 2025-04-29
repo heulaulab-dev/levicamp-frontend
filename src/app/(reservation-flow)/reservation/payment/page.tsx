@@ -22,6 +22,7 @@ import { useHydration } from '@/hooks/use-hydration';
 import { useReservationStore } from '@/store/useReservationStore';
 import { PaymentCategory } from '@/components/pages/reservation/payment/payment-category';
 import { paymentMethods } from '@/constants/reservation/payment/payment-data';
+import LoadingTent from '@/components/common/loading-tent';
 
 export default function PaymentPage() {
 	const router = useRouter();
@@ -186,11 +187,7 @@ export default function PaymentPage() {
 	};
 
 	if (loading) {
-		return (
-			<div className='flex justify-center items-center h-screen'>
-				<div className='border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin'></div>
-			</div>
-		);
+		return <LoadingTent />;
 	}
 
 	if (!personalInfo || !reservationData) return null;
