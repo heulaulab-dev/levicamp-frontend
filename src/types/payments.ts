@@ -98,7 +98,6 @@ interface VaPaymentDetail extends BasePaymentDetail {
 	va_number: string;
 }
 
-// Extend easily kalau ada metode lain nanti
 export type PaymentDetail = QrPaymentDetail | VaPaymentDetail;
 
 export interface PaymentModalProps {

@@ -7,15 +7,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Separator } from '@/components/ui/separator';
 
+type PaymentMethod = {
+	id: string;
+	name: string;
+	logo: string;
+	enabled?: boolean;
+	disabledMessage?: string;
+};
+
 type PaymentCategoryProps = {
 	category: {
 		id: string;
 		name: string;
-		methods: {
-			id: string;
-			name: string;
-			logo: string;
-		}[];
+		methods: PaymentMethod[];
 		featuredMethods?: string[];
 	};
 	isSelected: boolean;
@@ -43,10 +47,18 @@ export function PaymentCategory({
 		setIsOpen(!isOpen);
 	};
 
-	// Featured methods to show in the header
+	// Featured methods to show in the header (show all, even disabled ones)
 	const featuredMethods = category.featuredMethods
 		? category.methods.filter((m) => category.featuredMethods?.includes(m.id))
 		: [];
+
+	// Find an enabled payment method to select by default
+	const handleSelectMethod = (methodId: string) => {
+		const method = category.methods.find((m) => m.id === methodId);
+		if (method && method.enabled !== false) {
+			onSelectMethod(methodId);
+		}
+	};
 
 	return (
 		<div>
@@ -112,7 +124,7 @@ export function PaymentCategory({
 									key={method.id}
 									method={method}
 									isSelected={selectedMethod === method.id}
-									onSelect={() => onSelectMethod(method.id)}
+									onSelect={() => handleSelectMethod(method.id)}
 								/>
 							))}
 						</div>
