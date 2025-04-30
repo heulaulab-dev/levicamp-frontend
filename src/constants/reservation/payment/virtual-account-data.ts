@@ -3,8 +3,8 @@ interface VirtualAccountBank {
 	name: string;
 	code: string;
 	logoSrc: string;
-	primaryColor: string;
-	secondaryColor: string;
+	enabled: boolean;
+	disabledMessage?: string; // Message to display when payment method is disabled
 }
 
 export const virtualAccountBanks: Record<string, VirtualAccountBank> = {
@@ -14,32 +14,29 @@ export const virtualAccountBanks: Record<string, VirtualAccountBank> = {
 		code: 'BCA',
 		logoSrc:
 			'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg',
-		primaryColor: 'text-green-600',
-		secondaryColor: 'border-green-600',
+		enabled: true,
 	},
 	bni: {
 		id: 'bni',
 		name: 'BNI',
 		code: 'BNI',
 		logoSrc: 'https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg',
-		primaryColor: 'text-blue-600',
-		secondaryColor: 'border-blue-600',
+		enabled: true,
 	},
 	mandiri: {
 		id: 'mandiri',
 		name: 'Mandiri',
 		code: 'MANDIRI',
 		logoSrc: '/assets/banks/mandiri.svg',
-		primaryColor: 'text-yellow-600',
-		secondaryColor: 'border-yellow-600',
+		enabled: false,
+		disabledMessage: 'Temporarily unavailable for maintenance',
 	},
 	bri: {
 		id: 'bri',
 		name: 'BRI',
 		code: 'BRI',
 		logoSrc: '/assets/banks/bri.svg',
-		primaryColor: 'text-blue-600',
-		secondaryColor: 'border-blue-600',
+		enabled: true,
 	},
 };
 

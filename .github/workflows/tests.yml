@@ -1,0 +1,37 @@
+name: Frontend Tests
+
+on:
+  push:
+    branches: [main, testing, develop]
+  pull_request:
+    branches: [main, testing, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+      
+      - name: Install Dependencies
+        run: bun install
+      
+      - name: Run Lint
+        run: bun lint
+      
+      - name: Run Tests
+        run: bun test
