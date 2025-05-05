@@ -9,7 +9,7 @@ const defaultTracks: Track[] = [
 		id: '1',
 		name: 'Nature Sounds',
 		artist: 'Nature Artist',
-		src: '/background-music.mp3',
+		src: 'https://assets.levicamp.id/assets/music/background-music.mp3',
 	},
 ];
 
