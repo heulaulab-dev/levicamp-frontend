@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import withPlaiceholder from '@plaiceholder/next';
 import ReactComponentName from 'react-scan/react-component-name/webpack';
 
 const nextConfig: NextConfig = {
@@ -28,4 +29,4 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default nextConfig;
+export default withPlaiceholder(nextConfig);
