@@ -49,7 +49,7 @@ export default function HeroSection() {
 					<motion.video
 						key='video'
 						className='top-0 left-0 absolute w-full h-full object-cover'
-						src='/levicamp-landscape-drone-view.mp4'
+						src='https://assets.levicamp.id/assets/video/levicamp-landscape-drone-view.mp4'
 						autoPlay
 						loop={false}
 						muted
@@ -58,7 +58,6 @@ export default function HeroSection() {
 						initial={{ opacity: 0.9 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0, transition: { duration: 0.5 } }}
-						// Add will-change to optimize animation
 						style={{ willChange: 'opacity' }}
 					/>
 				)}
@@ -68,12 +67,11 @@ export default function HeroSection() {
 						key='image-container'
 						className='top-0 left-0 absolute w-full h-full'
 						initial={{ opacity: 0 }}
-						animate={{ opacity: 1, transition: { duration: 0.8 } }}
-						// Add will-change to optimize animation
+						animate={{ opacity: 1, transition: { duration: 0.1 } }}
 						style={{ willChange: 'opacity' }}
 					>
 						<Image
-							src='/hero-bg.jpg'
+							src='https://assets.levicamp.id/assets/images/hero-bg.jpg'
 							alt='Hero background'
 							className='w-full h-full object-cover'
 							fill

@@ -2,45 +2,14 @@ import FacilitiesCard from '@/components/ui/facilities-card';
 import { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-
-const facilities = [
-	{
-		title:
-			'Escape the city, breathe in fresh air, and soak in stunning valley views.',
-		imageSrc: '/assets/Toilet.png',
-	},
-	{
-		title:
-			'Cozy, spacious tents with comfy beds and everything you need to chill.',
-		imageSrc: '/assets/waterfall.png',
-	},
-	{
-		title:
-			'Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.',
-		imageSrc: '/assets/wifi.png',
-	},
-	{
-		title:
-			'Escape the city, breathe in fresh air, and soak in stunning valley views.',
-		imageSrc: '/assets/Toilet.png',
-	},
-	{
-		title:
-			'Cozy, spacious tents with comfy beds and everything you need to chill.',
-		imageSrc: '/assets/waterfall.png',
-	},
-	{
-		title:
-			'Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.',
-		imageSrc: '/assets/wifi.png',
-	},
-];
+import { ListFacilities } from '@/constants/facilities/list-facilities';
 
 const WhyUsSection = () => {
 	const sectionRef = useRef<HTMLDivElement>(null);
 	const [scrollIndex, setScrollIndex] = useState(0);
 	const [canScrollDown, setCanScrollDown] = useState(false);
 	const controls = useAnimation();
+	const facilities = ListFacilities;
 
 	// Animasi geser card ke kanan
 	useEffect(() => {
