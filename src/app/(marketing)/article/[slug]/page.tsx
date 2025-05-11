@@ -15,9 +15,9 @@ import { staticBlogData } from '@/app/(marketing)/article/page';
 import { Article } from '@/hooks/useArticles';
 
 interface PageProps {
-	params: {
+	params: Promise<{
 		slug: string;
-	};
+	}>;
 }
 
 // Format date for display
@@ -45,7 +45,8 @@ function getInitials(name: string): string {
 }
 
 // Convert the page to a Server Component
-export default async function ArticleSinglePage({ params }: PageProps) {
+export default async function ArticleSinglePage(props: PageProps) {
+	const params = await props.params;
 	// Since we're already using an async function, we need to ensure all data fetching
 	// is properly awaited before using the params.slug
 	const slug = params.slug;
@@ -100,10 +101,11 @@ export default async function ArticleSinglePage({ params }: PageProps) {
 							<div className='flex items-center gap-4'>
 								<Avatar className='border w-12 h-12'>
 									<AvatarImage
-										src={`/avatars/${fallbackPost.author
-											.toLowerCase()
-											.replace(' ', '-')}.jpg`}
+										src='https://assets.levicamp.id/assets/logo/levicamp-logo-orange.png'
 										alt={fallbackPost.author}
+										width={100}
+										height={100}
+										loading='lazy'
 									/>
 									<AvatarFallback>
 										{getInitials(fallbackPost.author)}
