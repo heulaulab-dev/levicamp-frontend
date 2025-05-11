@@ -8,27 +8,27 @@ import FacilitiesList from '@/components/pages/facilities/facilities-list';
 
 const exampleImages = [
 	{
-		url: '/assets/facilities/facilities-1.png',
+		url: '/assets/facilities/atv.jpg',
 		author: 'Levicamp',
 		title: 'ATV',
 	},
 	{
-		url: '/assets/facilities/facilities-2.png',
+		url: '/assets/facilities/tent.jpg',
 		author: 'Levicamp',
 		title: 'Coffe',
 	},
 	{
-		url: '/assets/facilities/facilities-3.png',
+		url: '/assets/facilities/waterfall.jpg',
 		author: 'Levicamp',
 		title: 'Waterfall',
 	},
 	{
-		url: '/assets/facilities/facilities-4.png',
+		url: '/assets/facilities/rabbit.jpg',
 		author: 'Levicamp',
 		title: 'Rabbit',
 	},
 	{
-		url: '/assets/facilities/facilities-5.png',
+		url: '/assets/facilities/tents.jpg',
 		author: 'Levicamp',
 		title: 'Pos',
 	},

@@ -1,8 +1,9 @@
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 import { Card } from '@/components/ui/card';
 
-interface Post {
+export interface Post {
 	id: string;
 	title: string;
 	summary: string;
@@ -79,13 +80,12 @@ const Blog8 = ({
 										</div>
 									</div>
 									<h3 className='font-semibold text-primary text-xl md:text-2xl lg:text-3xl'>
-										<a
-											href={post.url}
-											target='_blank'
+										<Link
+											href={`/article/${post.url}`}
 											className='hover:underline'
 										>
 											{post.title}
-										</a>
+										</Link>
 									</h3>
 									<p className='mt-4 md:mt-5 text-muted-foreground'>
 										{post.summary}
@@ -98,18 +98,17 @@ const Blog8 = ({
 										</span>
 									</div>
 									<div className='flex items-center space-x-2 mt-6 md:mt-8 text-primary'>
-										<a
-											href={post.url}
-											target='_blank'
+										<Link
+											href={`/article/${post.url}`}
 											className='inline-flex items-center font-semibold md:text-base hover:underline'
 										>
 											<span>Read more</span>
 											<ArrowRight className='ml-2 size-4 transition-transform' />
-										</a>
+										</Link>
 									</div>
 								</div>
 								<div className='order-first sm:order-last sm:col-span-5'>
-									<a href={post.url} target='_blank' className='block'>
+									<Link href={`/article/${post.url}`} className='block'>
 										<div className='border border-border rounded-lg aspect-[16/9] overflow-clip'>
 											<img
 												src={post.image}
@@ -117,7 +116,7 @@ const Blog8 = ({
 												className='hover:opacity-70 w-full h-full object-cover transition-opacity duration-200 fade-in'
 											/>
 										</div>
-									</a>
+									</Link>
 								</div>
 							</div>
 						</Card>

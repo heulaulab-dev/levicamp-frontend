@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
 				protocol: 'http',
 				hostname: '89.116.34.215',
 			},
+			{
+				protocol: 'https',
+				hostname: 'cdn.dribbble.com',
+			},
 		],
 	},
 	webpack: (config) => {
