@@ -107,7 +107,7 @@ export default async function ArticleSinglePage(props: PageProps) {
 										height={100}
 										loading='lazy'
 									/>
-									<AvatarFallback>
+									<AvatarFallback>		
 										{getInitials(fallbackPost.author)}
 									</AvatarFallback>
 								</Avatar>
