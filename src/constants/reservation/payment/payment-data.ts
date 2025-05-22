@@ -44,4 +44,19 @@ export const paymentMethods = [
 			},
 		],
 	},
+	{
+		id: 'manual-transfer',
+		name: 'Manual Transfer',
+		featuredMethods: ['manual_transfer_bca'],
+		methods: [
+			{
+				id: 'manual_transfer_bca',
+				name: 'Transfer Manual BCA',
+				logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg',
+				enabled: true,
+				accountNumber: '1080950752',
+				accountName: 'Anwal Arif Pamungkas',
+			},
+		],
+	},
 ];

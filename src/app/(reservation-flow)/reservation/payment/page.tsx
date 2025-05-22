@@ -15,6 +15,7 @@ import {
 import HeroSection from '@/components/common/hero-section';
 import { PersonalInfoCard } from '@/components/pages/reservation/payment/personal-info-card';
 import QRISModal from '@/components/pages/reservation/payment/qris-modal';
+import { ManualTransferModal } from '@/components/pages/reservation/payment/manual-transfer-modal';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
 import { ReservationSummary } from '@/components/pages/reservation/reservation-summary';
 import { usePayment } from '@/hooks/payments/use-payments';
@@ -86,8 +87,11 @@ export default function PaymentPage() {
 				const now = new Date();
 
 				if (expiry > now) {
-					// If payment method is VA, redirect to payment detail page
-					if (selectedMethod.startsWith('va_')) {
+					// If payment method is VA or manual transfer, redirect to payment detail page
+					if (
+						selectedMethod.startsWith('va_') ||
+						selectedMethod.startsWith('manual_transfer')
+					) {
 						const bookingId = bookingResponseData?.data.booking.id;
 						if (bookingId) {
 							router.push(
@@ -97,7 +101,7 @@ export default function PaymentPage() {
 						}
 					}
 
-					// For non-VA methods, show modal
+					// For other methods, show modal
 					setIsModalOpen(true);
 
 					// Start polling for payment status
@@ -116,26 +120,41 @@ export default function PaymentPage() {
 
 			const bookingId = bookingResponseData.data.booking.id;
 
-			const response = await createPayment(bookingId, {
-				payment_method: selectedMethod,
-			});
+			// Create a new payment
+			try {
+				const response = await createPayment(bookingId, {
+					payment_method: selectedMethod,
+				});
 
-			// Store payment data in the store
-			setPaymentData(response.data);
+				// Store payment data in the store
+				if (response && response.data) {
+					setPaymentData(response.data);
 
-			// If payment method is VA, redirect to payment detail page
-			if (selectedMethod.startsWith('va_')) {
-				router.push(
-					`/reservation/payment/detail?bookingId=${bookingId}&method=${selectedMethod}`,
+					// If payment method is VA or manual transfer, redirect to payment detail page
+					if (
+						selectedMethod.startsWith('va_') ||
+						selectedMethod.startsWith('manual_transfer')
+					) {
+						router.push(
+							`/reservation/payment/detail?bookingId=${bookingId}&method=${selectedMethod}`,
+						);
+						return;
+					}
+
+					// For other methods, show modal
+					setIsModalOpen(true);
+
+					// Start polling for payment status
+					startPollingForPayment(bookingId);
+				} else {
+					toast.error('Failed to create payment - no data returned');
+				}
+			} catch (error) {
+				console.error('Payment creation error:', error);
+				toast.error(
+					error instanceof Error ? error.message : 'Failed to create payment',
 				);
-				return;
 			}
-
-			// For non-VA methods, show modal
-			setIsModalOpen(true);
-
-			// Start polling for payment status
-			startPollingForPayment(bookingId);
 		} catch (error) {
 			toast.error(
 				error instanceof Error ? error.message : 'Failed to process payment',
@@ -177,10 +196,15 @@ export default function PaymentPage() {
 			paymentMethod: selectedMethod,
 		};
 
-		// Only render non-VA payment modals here
+		// Only render payment modals if we have payment data
+		if (!paymentData) return null;
+
+		// Render the appropriate modal based on selected method
 		switch (selectedMethod) {
 			case 'qris':
 				return <QRISModal {...props} />;
+			case 'manual_transfer_bca':
+				return <ManualTransferModal paymentData={paymentData} />;
 			default:
 				return null;
 		}

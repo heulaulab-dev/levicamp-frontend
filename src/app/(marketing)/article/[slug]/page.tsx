@@ -35,13 +35,13 @@ function formatDate(dateString: string): string {
 	}
 }
 
-// Get author initials for avatar fallback
+	// Get author initials for avatar fallback
 function getInitials(name: string): string {
-	return name
-		.split(' ')
-		.map((part) => part[0])
-		.join('')
-		.toUpperCase();
+		return name
+			.split(' ')
+			.map((part) => part[0])
+			.join('')
+			.toUpperCase();
 }
 
 // Convert the page to a Server Component
