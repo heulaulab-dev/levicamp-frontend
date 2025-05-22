@@ -7,6 +7,7 @@ import {
 	PaymentStatusResponse,
 	PaymentStore,
 	PollingOptions,
+	ManualPaymentConfirmationResponse,
 } from '@/types/payments';
 
 export const usePayment = create<PaymentStore>((set, get) => ({
@@ -35,6 +36,38 @@ export const usePayment = create<PaymentStore>((set, get) => ({
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : 'Failed to create payment';
+			set({
+				error: errorMessage,
+				loading: false,
+			});
+			throw error;
+		}
+	},
+
+	confirmManualPayment: async (bookingId: string, formData: FormData) => {
+		set({ loading: true, error: null });
+
+		try {
+			const response = await api.post<ManualPaymentConfirmationResponse>(
+				`/payments/${bookingId}/confirm`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				},
+			);
+
+			// Update payment status after confirmation
+			await get().checkPaymentStatus(bookingId);
+
+			set({ loading: false });
+			return response.data;
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error
+					? error.message
+					: 'Failed to confirm manual payment';
 			set({
 				error: errorMessage,
 				loading: false,

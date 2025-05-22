@@ -41,6 +41,21 @@ export interface PaymentStatusResponse {
 	data: Payment;
 }
 
+export interface ManualPaymentConfirmationResponse {
+	status: number;
+	message: string;
+	data: {
+		id: string;
+		payment_id: string;
+		account_name: string;
+		bank_name: string;
+		account_number: string;
+		proof_image_url: string;
+		created_at: string;
+		updated_at: string;
+	};
+}
+
 export interface PaymentRequest {
 	payment_method: string;
 }
@@ -56,6 +71,10 @@ export interface PaymentStore {
 		bookingId: string,
 		data: PaymentRequest,
 	) => Promise<PaymentResponse>;
+	confirmManualPayment: (
+		bookingId: string,
+		formData: FormData,
+	) => Promise<ManualPaymentConfirmationResponse>;
 	checkPaymentStatus: (bookingId: string) => Promise<Payment>;
 	startPolling: (bookingId: string, options?: PollingOptions) => () => void;
 	stopPolling: () => void;
@@ -98,7 +117,17 @@ interface VaPaymentDetail extends BasePaymentDetail {
 	va_number: string;
 }
 
-export type PaymentDetail = QrPaymentDetail | VaPaymentDetail;
+interface ManualTransferDetail extends BasePaymentDetail {
+	type: 'manual_transfer';
+	bank: string;
+	name: string;
+	method: string;
+}
+
+export type PaymentDetail =
+	| QrPaymentDetail
+	| VaPaymentDetail
+	| ManualTransferDetail;
 
 export interface PaymentModalProps {
 	isOpen: boolean;

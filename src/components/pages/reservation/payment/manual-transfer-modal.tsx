@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { manualTransferInstructions } from '@/constants/reservation/payment/manual-transfer-data';
 import { PaymentDetails } from '@/types/payments';
 import { useRouter } from 'next/navigation';
+import { ManualTransferForm } from './manual-transfer-form';
+import { Separator } from '@/components/ui/separator';
 
 interface ManualTransferModalProps {
 	paymentData: PaymentDetails | null;
@@ -22,6 +24,7 @@ interface ManualTransferModalProps {
 
 export function ManualTransferModal({ paymentData }: ManualTransferModalProps) {
 	const [copied, setCopied] = useState(false);
+	const [showForm, setShowForm] = useState(false);
 	const router = useRouter();
 
 	const {
@@ -172,11 +175,29 @@ export function ManualTransferModal({ paymentData }: ManualTransferModalProps) {
 					</div>
 
 					{/* Action buttons */}
-					<div className='w-full'>
-						<Button onClick={handleCheckPayment} className='w-full'>
+					<div className='flex md:flex-row flex-col gap-4'>
+						<Button
+							onClick={handleCheckPayment}
+							variant='outline'
+							className='flex-1'
+						>
 							Cek Status Bayar
 						</Button>
+						<Button onClick={() => setShowForm(!showForm)} className='flex-1'>
+							{showForm ? 'Sembunyikan Form' : 'Konfirmasi Pembayaran'}
+						</Button>
 					</div>
+
+					{/* Confirmation form */}
+					{showForm && (
+						<>
+							<Separator className='my-6' />
+							<ManualTransferForm
+								bookingId={orderId}
+								paymentId={paymentData.payment.id}
+							/>
+						</>
+					)}
 				</div>
 
 				{/* Payment instructions */}
