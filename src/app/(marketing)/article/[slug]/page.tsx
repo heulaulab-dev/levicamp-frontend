@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 // Import from static data
-import { staticBlogData } from '@/app/(marketing)/article/page';
+import { staticBlogData } from '@/lib/static-blog-data';
 
 // Server actions to fetch article data
 import { Article } from '@/hooks/useArticles';
