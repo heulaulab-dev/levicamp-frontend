@@ -77,7 +77,7 @@ export default function FacilitiesSection() {
 	};
 
 	return (
-		<section ref={sectionRef} className='bg-secondary/40 py-24'>
+		<section ref={sectionRef} className='bg-secondary/40 py-24 min-h-screen'>
 			<div className='flex flex-col mx-auto container'>
 				{/* Header */}
 				<motion.div

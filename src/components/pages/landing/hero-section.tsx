@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useCallback, useState } from 'react';
 import Marquee from 'react-fast-marquee';
+// Add static import for hero background
+import heroBgStatic from '../../../../public/hero-bg.jpg';
 
 import { Button } from '@/components/ui/button';
 
@@ -71,11 +73,12 @@ export default function HeroSection() {
 						style={{ willChange: 'opacity' }}
 					>
 						<Image
-							src='https://assets.levicamp.id/assets/images/hero-bg.jpg'
+							src={heroBgStatic}
 							alt='Hero background'
 							className='w-full h-full object-cover'
 							fill
-							priority
+							placeholder='blur'
+							loading='lazy'
 							sizes='100vw'
 						/>
 					</motion.div>
@@ -84,6 +87,9 @@ export default function HeroSection() {
 
 			{/* Overlay */}
 			<div className='z-[1] absolute inset-0 bg-black/60 backdrop-blur-sm' />
+
+			{/* Updated gradient that transitions to bg-secondary/40 at the bottom */}
+			<div className='z-[2] absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-secondary/40' />
 
 			{/* Text */}
 			<motion.div
