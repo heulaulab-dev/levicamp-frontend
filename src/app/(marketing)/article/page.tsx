@@ -3,7 +3,7 @@ import { Article } from '@/hooks/useArticles';
 import { articlesToPosts } from '@/lib/article-utils';
 
 // Static data as fallback
-export const staticBlogData = {
+const staticBlogData = {
 	heading: 'Levicamp Articles',
 	description:
 		'Explore tips, inspiring stories, and the latest news about camping, locations, and equipment from Levicamp.',
