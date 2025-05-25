@@ -37,7 +37,7 @@ export function VirtualAccountModal({ paymentData }: VirtualAccountModalProps) {
 	const { checkPaymentStatus } = usePayment();
 
 	// Find the VA payment detail
-	const vaPaymentDetail = paymentData.payment_detail.find(
+	const vaPaymentDetail = paymentData.payment_detail?.find(
 		(detail) => detail.type === 'va',
 	);
 
