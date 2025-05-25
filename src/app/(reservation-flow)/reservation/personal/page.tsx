@@ -101,7 +101,7 @@ export default function PersonalPage() {
 		if (reservationData.isLoadingPrices) {
 			fetchPrices();
 		}
-	}, [reservationData, checkPrice, setReservationData, isHydrated]);
+	}, [reservationData, setReservationData, isHydrated]);
 
 	const handlePersonalInfoSubmit = (data: PersonalInfoData) => {
 		// Save to Zustand store with persist

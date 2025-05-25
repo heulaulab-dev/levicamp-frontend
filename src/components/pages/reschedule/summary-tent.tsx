@@ -124,7 +124,7 @@ export default function SummaryTent({
 		};
 
 		fetchPrice();
-	}, [selectedTents, checkInDate, checkOutDate, checkPrice]);
+	}, [selectedTents, checkInDate, checkOutDate]);
 
 	// Calculate days between start and end dates
 	useEffect(() => {

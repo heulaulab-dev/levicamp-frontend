@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'cdn.dribbble.com',
 			},
+			{
+				protocol: 'https',
+				hostname: 'api.midtrans.com',
+			},
 		],
 	},
 	webpack: (config) => {
