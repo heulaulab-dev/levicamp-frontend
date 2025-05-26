@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { VirtualAccountModal } from '@/components/pages/reservation/payment/virtual-account-modal';
+import { MandiriBillPaymentModal } from '@/components/pages/reservation/payment/mandiri-bill-modal';
 import { usePayment } from '@/hooks/payments/use-payments';
 import { useReservationStore } from '@/store/useReservationStore';
 import HeroSection from '@/components/common/hero-section';
@@ -44,10 +45,20 @@ export default function PaymentDetailPage() {
 
 	// Check if this is a Virtual Account payment
 	const isVirtualAccountPayment = () => {
-		if (!paymentData) return false;
+		if (!paymentData?.payment_detail) return false;
 
 		// Find the VA payment detail
 		return paymentData.payment_detail.some((detail) => detail.type === 'va');
+	};
+
+	// Check if this is a Mandiri Bill payment
+	const isMandiriBillPayment = () => {
+		if (!paymentData?.payment_detail) return false;
+
+		// Find the Mandiri Bill payment detail
+		return paymentData.payment_detail.some(
+			(detail) => detail.type === 'mandiri_bill',
+		);
 	};
 
 	if (loading) {
@@ -64,9 +75,11 @@ export default function PaymentDetailPage() {
 					<ReservationStepper currentStep={4} />
 				</div>
 
-				{/* Show the virtual account modal if this is a VA payment */}
+				{/* Show the appropriate payment modal based on payment type */}
 				{paymentData && isVirtualAccountPayment() ? (
 					<VirtualAccountModal paymentData={paymentData} />
+				) : paymentData && isMandiriBillPayment() ? (
+					<MandiriBillPaymentModal paymentData={paymentData} />
 				) : (
 					<div className='py-12 text-center'>
 						<h2 className='mb-4 font-bold text-gray-800 text-2xl'>

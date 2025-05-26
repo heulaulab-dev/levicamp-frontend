@@ -23,6 +23,7 @@ import { useReservationStore } from '@/store/useReservationStore';
 import { PaymentCategory } from '@/components/pages/reservation/payment/payment-category';
 import { paymentMethods } from '@/constants/reservation/payment/payment-data';
 import LoadingTent from '@/components/common/loading-tent';
+import { MandiriBillPaymentModal } from '@/components/pages/reservation/payment/mandiri-bill-modal';
 
 export default function PaymentPage() {
 	const router = useRouter();
@@ -86,8 +87,11 @@ export default function PaymentPage() {
 				const now = new Date();
 
 				if (expiry > now) {
-					// If payment method is VA, redirect to payment detail page
-					if (selectedMethod.startsWith('va_')) {
+					// If payment method is VA or Mandiri Bill, redirect to payment detail page
+					if (
+						selectedMethod.startsWith('va_') ||
+						selectedMethod === 'mandiri_bill'
+					) {
 						const bookingId = bookingResponseData?.data.booking.id;
 						if (bookingId) {
 							router.push(
@@ -123,8 +127,11 @@ export default function PaymentPage() {
 			// Store payment data in the store
 			setPaymentData(response.data);
 
-			// If payment method is VA, redirect to payment detail page
-			if (selectedMethod.startsWith('va_')) {
+			// If payment method is VA or Mandiri Bill, redirect to payment detail page
+			if (
+				selectedMethod.startsWith('va_') ||
+				selectedMethod === 'mandiri_bill'
+			) {
 				router.push(
 					`/reservation/payment/detail?bookingId=${bookingId}&method=${selectedMethod}`,
 				);
@@ -181,6 +188,10 @@ export default function PaymentPage() {
 		switch (selectedMethod) {
 			case 'qris':
 				return <QRISModal {...props} />;
+			case 'mandiri_bill':
+				return paymentData && paymentData.payment_detail ? (
+					<MandiriBillPaymentModal paymentData={paymentData} />
+				) : null;
 			default:
 				return null;
 		}
