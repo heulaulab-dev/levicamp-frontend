@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import withPlaiceholder from '@plaiceholder/next';
 import ReactComponentName from 'react-scan/react-component-name/webpack';
 
 const nextConfig: NextConfig = {
@@ -20,6 +21,14 @@ const nextConfig: NextConfig = {
 				protocol: 'http',
 				hostname: '89.116.34.215',
 			},
+			{
+				protocol: 'https',
+				hostname: 'cdn.dribbble.com',
+			},
+			{
+				protocol: 'https',
+				hostname: 'api.midtrans.com',
+			},
 		],
 	},
 	webpack: (config) => {
@@ -28,4 +37,4 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default nextConfig;
+export default withPlaiceholder(nextConfig);

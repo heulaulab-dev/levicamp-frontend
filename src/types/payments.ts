@@ -98,7 +98,17 @@ interface VaPaymentDetail extends BasePaymentDetail {
 	va_number: string;
 }
 
-export type PaymentDetail = QrPaymentDetail | VaPaymentDetail;
+interface MandiriBillPaymentDetail extends BasePaymentDetail {
+	type: 'mandiri_bill';
+	company_code: string;
+	bill_key: string;
+	biller_code: string;
+}
+
+export type PaymentDetail =
+	| QrPaymentDetail
+	| VaPaymentDetail
+	| MandiriBillPaymentDetail;
 
 export interface PaymentModalProps {
 	isOpen: boolean;

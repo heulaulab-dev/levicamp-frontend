@@ -28,7 +28,7 @@ const cardVariants = {
 
 export default function FacilitiesList() {
 	return (
-		<section className='bg-secondary/50 py-16'>
+		<section className='bg-secondary/40 py-16'>
 			{/* Facilities */}
 			<div className='flex flex-col justify-between mx-auto container'>
 				<motion.div
@@ -37,7 +37,7 @@ export default function FacilitiesList() {
 					transition={{ duration: 0.5 }}
 					className='flex flex-col justify-start items-start mb-8'
 				>
-					<div className='flex items-center gap-2 bg-secondary shadow-sm p-4 border rounded-lg font-semibold text-secondary-foreground'>
+					<div className='flex items-center gap-2 bg-secondary shadow-sm p-4 rounded-full font-semibold text-secondary-foreground'>
 						<Bookmark className='w-5 h-5 text-current' />
 						Our Facilities
 					</div>
@@ -52,9 +52,10 @@ export default function FacilitiesList() {
 				>
 					<motion.div variants={cardVariants}>
 						<FacilityCard
-							imageUrl='/assets/Toilet.png'
-							title='Refreshing Bathroom with Warm Water'
-							description='Agar tidak bosan bermain dan explore tentang alam dan hewan kami fasilitasi untuk Playground untuk anak anak bermain dan tertawa riang bersama teman - temannya'
+							imageUrl='/assets/facilities/waterfall.jpg'
+							title='Escape the city, breathe in fresh air, and soak in stunning valley views.'
+							description='Jauh dari keramaian kota, temukan ketenangan dengan udara segar dan panorama lembah yang memukau.'
+							color='#FFFDF6'
 						/>
 					</motion.div>
 
@@ -64,17 +65,19 @@ export default function FacilitiesList() {
 					>
 						<FacilityCard
 							imagePosition='right'
-							imageUrl='/assets/Toilet.png'
-							title='Curug'
-							description='Agar tidak bosan bermain dan explore tentang alam dan hewan kami fasilitasi untuk Playground untuk anak anak bermain dan tertawa riang bersama teman - temannya'
+							imageUrl='/assets/facilities/tents.jpg'
+							title='Cozy, spacious tents with comfy beds and everything you need to chill.'
+							description='Tenda luas dengan tempat tidur nyaman dan fasilitas lengkap untuk memastikan pengalaman menginap yang santai.'
+							color='#FAF6E9'
 						/>
 					</motion.div>
 
 					<motion.div variants={cardVariants}>
 						<FacilityCard
-							imageUrl='/assets/Toilet.png'
-							title='Stay fresh & connected with clean restrooms, and free Wi-Fi'
-							description='Agar tidak bosan bermain dan explore tentang alam dan hewan kami fasilitasi untuk Playground untuk anak anak bermain dan tertawa riang bersama teman - temannya'
+							imageUrl='/assets/facilities/tent.jpg'
+							title='Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.'
+							description='Tempat pembersihan bersih dan nyaman dengan fasilitas Wi-Fi gratis dan sarapan gratis untuk memastikan pengalaman menginap yang nyaman.'
+							color='#DDEB9D'
 						/>
 					</motion.div>
 
@@ -84,9 +87,19 @@ export default function FacilitiesList() {
 					>
 						<FacilityCard
 							imagePosition='right'
-							imageUrl='/assets/Toilet.png'
-							title='Curug'
-							description='Agar tidak bosan bermain dan explore tentang alam dan hewan kami fasilitasi untuk Playground untuk anak anak bermain dan tertawa riang bersama teman - temannya'
+							imageUrl='/assets/facilities/rabbit.jpg'
+							title='Feed & Bond – Get Up Close with Nature’s Friends!'
+							description='Dapatkan pengalaman yang tak terlupakan dengan berinteraksi langsung dengan teman alam kami.'
+							color='#A0C878'
+						/>
+					</motion.div>
+
+					<motion.div variants={cardVariants}>
+						<FacilityCard
+							imageUrl='/assets/facilities/atv.jpg'
+							title='Experience the thrill off-road ATV rides.'
+							description='Nikmati pengalaman yang seru dengan mengendarai ATV melintasi medan yang menantang.'
+							color='#F0BB78'
 						/>
 					</motion.div>
 				</motion.div>
@@ -101,6 +114,7 @@ export interface FacilityCardProps {
 	title: string;
 	description: string;
 	imagePosition?: 'left' | 'right';
+	color?: string;
 }
 
 export const FacilityCard = ({
@@ -108,9 +122,13 @@ export const FacilityCard = ({
 	title,
 	description,
 	imagePosition = 'left',
+	color,
 }: FacilityCardProps) => {
 	return (
-		<Card className='bg-secondary shadow-lg mb-6 border-none rounded-xl max-w-3xl overflow-hidden'>
+		<Card
+			className={`bg-secondary shadow-lg mb-6 border-none rounded-xl max-w-3xl overflow-hidden`}
+			style={{ backgroundColor: color }}
+		>
 			<CardContent className='flex flex-row p-0'>
 				{imagePosition === 'left' ? (
 					<>

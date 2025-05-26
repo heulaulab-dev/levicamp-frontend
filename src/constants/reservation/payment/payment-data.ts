@@ -21,7 +21,8 @@ export const paymentMethods = [
 				id: 'va_bca',
 				name: 'BCA',
 				logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg',
-				enabled: true,
+				enabled: false,
+				disabledMessage: 'Temporarily unavailable for maintenance',
 			},
 			{
 				id: 'va_bni',
@@ -30,16 +31,22 @@ export const paymentMethods = [
 				enabled: true,
 			},
 			{
-				id: 'va_mandiri',
-				name: 'Mandiri',
-				logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg',
-				enabled: false,
-				disabledMessage: 'Temporarily unavailable for maintenance',
-			},
-			{
 				id: 'va_bri',
 				name: 'BRI',
 				logo: 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg',
+				enabled: true,
+			},
+		],
+	},
+	{
+		id: 'mandiri-bill',
+		name: 'Mandiri Bill',
+		featuredMethods: ['mandiri_bill'],
+		methods: [
+			{
+				id: 'mandiri_bill',
+				name: 'Mandiri',
+				logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg',
 				enabled: true,
 			},
 		],
