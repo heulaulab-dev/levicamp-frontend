@@ -104,7 +104,11 @@ export default function CardTent({
 									: 'bg-red-500 text-white'
 							}`}
 						>
-							{status === 'available' ? 'Available' : 'Booked'}
+							{status === 'available'
+								? 'Available'
+								: tent.status === 'maintenance'
+								? 'Maintenance'
+								: 'Booked'}
 						</span>
 
 						{/* Tombol Select / Not Available */}

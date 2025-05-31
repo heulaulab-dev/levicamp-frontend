@@ -192,7 +192,8 @@ export default function TentCollection({
 											key={tent.id}
 											status={
 												category.id === 'unavailable' ||
-												tent.status === 'unavailable'
+												tent.status === 'unavailable' ||
+												tent.status === 'maintenance'
 													? 'unavailable'
 													: 'available'
 											}
