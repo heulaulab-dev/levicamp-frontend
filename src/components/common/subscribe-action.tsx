@@ -81,7 +81,6 @@ export function NewsletterSection({
 							}
 							disabled={isLoading}
 							aria-label='Subscribe to the newsletter'
-							required
 						/>
 						<Button
 							type='submit'
