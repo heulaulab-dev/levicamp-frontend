@@ -11,7 +11,7 @@ import { Tent } from '@/types/reservations';
 interface CardTentProps {
 	tent: Tent;
 	isSelected: boolean;
-	status: string;
+	status: 'available' | 'unavailable' | 'maintenance';
 	onSelect: () => void;
 }
 
@@ -96,28 +96,32 @@ export default function CardTent({
 				{/* Status & Tombol Select */}
 				<div className='flex justify-between items-center mt-10'>
 					<div className='flex items-center gap-5 w-full'>
-						{/* Status Available / Booked */}
+						{/* Status Available / Booked / Maintenance */}
 						<span
 							className={`text-sm flex items-center px-3 py-1 rounded-full font-medium ${
 								status === 'available'
 									? 'bg-green-100 text-green-700'
+									: status === 'maintenance'
+									? 'bg-orange-100 text-orange-700'
 									: 'bg-red-500 text-white'
 							}`}
 						>
 							{status === 'available'
 								? 'Available'
-								: tent.status === 'maintenance'
+								: status === 'maintenance'
 								? 'Maintenance'
 								: 'Booked'}
 						</span>
 
-						{/* Tombol Select / Not Available */}
+						{/* Tombol Select / Not Available / Under Maintenance */}
 						<Button
 							className={`flex w-full ${
 								status === 'available'
 									? isSelected
 										? 'bg-secondary hover:bg-secondary/80 hover:text-secondary-foreground/80 text-secondary-foreground'
 										: 'bg-primary hover:bg-primary/80 text-primary-foreground'
+									: status === 'maintenance'
+									? 'bg-secondary text-secondary-foreground'
 									: 'bg-secondary text-secondary-foreground'
 							}`}
 							disabled={status !== 'available'}
@@ -127,6 +131,8 @@ export default function CardTent({
 								? isSelected
 									? 'Selected'
 									: 'Select'
+								: status === 'maintenance'
+								? 'Select'
 								: 'Not Available'}
 						</Button>
 					</div>
