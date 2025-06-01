@@ -65,6 +65,8 @@ export interface ReservationRequest {
 	email?: string;
 	phone: string;
 	address: string;
+	guest_count: number;
+	source: string;
 	tent_id: string[];
 	start_date: string;
 	end_date: string;
@@ -93,6 +95,8 @@ export interface Guest {
 	email?: string;
 	phone: string;
 	address: string;
+	guest_count: number;
+	source: string;
 	created_at: string;
 	updated_at: string;
 }
