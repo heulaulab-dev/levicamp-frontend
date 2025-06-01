@@ -73,7 +73,7 @@ export const usePayment = create<PaymentStore>((set, get) => ({
 	startPolling: (bookingId: string, options: PollingOptions = {}) => {
 		const {
 			interval = 5000, // Default: check every 5 seconds
-			maxAttempts = 60, // Default: try for 5 minutes (60 * 5 seconds)
+			maxAttempts = 720, // Default: try for 1 hour (720 * 5 seconds) - sufficient for 3-hour payment window
 			onSuccess,
 			onError,
 			onExpired,
