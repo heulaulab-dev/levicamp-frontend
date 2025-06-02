@@ -59,7 +59,7 @@ export const useRefundData = create<RefundDataStore>()(
 							bookingId: bookingData.id,
 							paymentDate: bookingData.created_at,
 							guestName: bookingData.guest.name,
-							guestEmail: bookingData.guest.email,
+							guestEmail: bookingData.guest.email || 'No email provided',
 							guestPhone: bookingData.guest.phone,
 							guestCount: bookingData.detail_booking.length.toString(),
 							checkInDate: bookingData.start_date,

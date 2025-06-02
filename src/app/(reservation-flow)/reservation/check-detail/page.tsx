@@ -81,6 +81,8 @@ export default function CheckDetailPage() {
 				email: personalInfo.email,
 				phone: personalInfo.phone,
 				address: personalInfo.address,
+				guest_count: parseInt(personalInfo.guestCount, 10),
+				source: personalInfo.source,
 				tent_id: reservationData.selectedTents.map((tent) => tent.id),
 				start_date: format(reservationData.checkInDate, 'yyyy-MM-dd'),
 				end_date: format(reservationData.checkOutDate, 'yyyy-MM-dd'),

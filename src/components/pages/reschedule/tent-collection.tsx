@@ -279,7 +279,10 @@ export default function TentCollection({
 										<CardTent
 											key={tent.id}
 											status={
-												category.id === 'unavailable'
+												tent.status === 'maintenance'
+													? 'maintenance'
+													: tent.status === 'unavailable' ||
+													  category.id === 'unavailable'
 													? 'unavailable'
 													: 'available'
 											}

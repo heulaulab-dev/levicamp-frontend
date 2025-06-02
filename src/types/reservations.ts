@@ -10,7 +10,7 @@ export type Tent = {
 	facilities: string[];
 	category_id: string;
 	category?: Category;
-	status: 'available' | 'unavailable';
+	status: 'available' | 'unavailable' | 'maintenance';
 	updated_at?: string;
 	created_at?: string;
 	capacity: number;
@@ -62,9 +62,11 @@ export type responseObject = {
 
 export interface ReservationRequest {
 	name: string;
-	email: string;
+	email?: string;
 	phone: string;
 	address: string;
+	guest_count: number;
+	source: string;
 	tent_id: string[];
 	start_date: string;
 	end_date: string;
@@ -90,9 +92,11 @@ export interface Booking {
 export interface Guest {
 	id: string;
 	name: string;
-	email: string;
+	email?: string;
 	phone: string;
 	address: string;
+	guest_count: number;
+	source: string;
 	created_at: string;
 	updated_at: string;
 }
