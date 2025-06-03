@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,6 +12,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import Link from 'next/link';
 
 interface PersonalInfoCardProps {
 	onSubmit: (data: PersonalInfoData) => void;
@@ -87,6 +86,20 @@ export function PersonalInfoCard({
 									type='tel'
 									placeholder='Enter your phone number'
 									defaultValue={initialData?.phone || ''}
+									onChange={(e) => {
+										// Remove +62 prefix if user accidentally includes it
+										let value = e.target.value;
+										if (value.startsWith('+62')) {
+											value = value.slice(3);
+										} else if (value.startsWith('62')) {
+											value = value.slice(2);
+										} else if (value.startsWith('0')) {
+											value = value.slice(1);
+										}
+										// Only allow numbers
+										value = value.replace(/\D/g, '');
+										e.target.value = value;
+									}}
 								/>
 								<span className='absolute inset-y-0 flex justify-center items-center peer-disabled:opacity-50 ps-3 text-muted-foreground text-sm pointer-events-none start-0'>
 									+62
