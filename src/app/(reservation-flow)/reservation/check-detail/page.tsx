@@ -79,7 +79,7 @@ export default function CheckDetailPage() {
 			const reservationRequest = {
 				name: personalInfo.name,
 				email: personalInfo.email,
-				phone: personalInfo.phone,
+				phone: `+62${personalInfo.phone}`,
 				address: personalInfo.address,
 				guest_count: parseInt(personalInfo.guestCount, 10),
 				source: personalInfo.source,
