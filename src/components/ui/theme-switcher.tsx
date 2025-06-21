@@ -27,14 +27,14 @@ const themes = [
 export type ThemeSwitcherProps = {
 	value?: 'light' | 'dark' | 'system';
 	onChange?: (theme: 'light' | 'dark' | 'system') => void;
-	defaultValue: 'light' | 'dark' | 'system';
+	defaultValue?: 'light' | 'dark' | 'system';
 	className?: string;
 };
 
 export const ThemeSwitcher = ({
 	value,
 	onChange,
-	defaultValue,
+	defaultValue = 'light',
 	className,
 }: ThemeSwitcherProps) => {
 	const [theme, setTheme] = useControllableState({
