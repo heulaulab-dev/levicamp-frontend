@@ -51,12 +51,6 @@ export default function RescheduleSuccessPage() {
 		}
 	}, [bookingId, router]);
 
-	// Function to download invoice
-	const handleDownload = () => {
-		// Implement download functionality here
-		alert('Download functionality will be implemented here');
-	};
-
 	// Display loading state
 	if (loading) {
 		return <LoadingTent />;

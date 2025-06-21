@@ -120,7 +120,7 @@ export default function InvoicePage() {
 
 			<HeroSection
 				title='Thank you for choosing Levi Camp!'
-				description='Here’s your invoice. Download it, screenshot it, or check your email for a copy.'
+				description='Here is your invoice. Download it, screenshot it, or check your email for a copy.'
 				showActionButtons={true}
 			>
 				<div className='mx-auto my-24 px-4 container'>
@@ -132,13 +132,12 @@ export default function InvoicePage() {
 						paymentDate={paymentDate}
 						guestName={personalInfo?.name || ''}
 						guestEmail={personalInfo?.email || ''}
-						guestPhone={personalInfo?.phone || ''}
+						guestPhone={personalInfo?.phone ? `+62${personalInfo.phone}` : ''}
 						guestCount={personalInfo?.guestCount || '1'}
 						checkInDate={formattedCheckInDate}
 						checkOutDate={formattedCheckOutDate}
 						tents={tents}
 						totalPrice={reservationData?.totalPrice || 0}
-						onDownload={handleDownload}
 					/>
 				</div>
 			</HeroSection>
