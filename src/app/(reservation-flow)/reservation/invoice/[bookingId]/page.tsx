@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import HeroSection from '@/components/common/hero-section';
 import InvoiceDetail from '@/components/pages/reservation/invoice/invoice-detail';
@@ -15,6 +16,7 @@ import { Confetti } from '@/components/ui/confetti';
 import { useHydration } from '@/hooks/use-hydration';
 import { useReservationStore } from '@/store/useReservationStore';
 import LoadingTent from '@/components/common/loading-tent';
+import { downloadInvoice, triggerFileDownload } from '@/lib/api';
 
 export default function InvoicePage() {
 	const params = useParams();
@@ -49,8 +51,24 @@ export default function InvoicePage() {
 		paymentData,
 	]);
 
-	const handleDownload = () => {
-		alert('Download functionality will be implemented here');
+	const handleDownload = async () => {
+		try {
+			toast.info('Preparing your invoice for download...');
+
+			// Download the PDF blob from the API
+			const pdfBlob = await downloadInvoice(bookingId);
+
+			// Generate filename with booking ID
+			const filename = `invoice-${bookingId}.pdf`;
+
+			// Trigger the download
+			triggerFileDownload(pdfBlob, filename);
+
+			toast.success('Invoice downloaded successfully!');
+		} catch (error) {
+			console.error('Download error:', error);
+			toast.error('Failed to download invoice. Please try again.');
+		}
 	};
 
 	if (loading) {
