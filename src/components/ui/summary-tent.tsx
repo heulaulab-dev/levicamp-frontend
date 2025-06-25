@@ -203,7 +203,7 @@ export default function SummaryTent({
 						<p className='font-semibold text-primary text-sm text-right'>
 							{format(checkOutDate, 'EEE, dd MMM yyyy')}
 						</p>
-						<p className='text-sm text-right'>To 12:00 WIB</p>
+						<p className='text-sm text-right'>To 11:00 WIB</p>
 					</div>
 				</div>
 				<div className='bg-secondary mt-2 py-1 rounded-md font-medium text-primary text-center'>
