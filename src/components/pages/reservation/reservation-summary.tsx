@@ -110,7 +110,7 @@ export function ReservationSummary({
 								? format(new Date(checkOutDate), 'EEE, dd MMM yyyy')
 								: '-'}
 						</p>
-						<p className='text-sm text-right'>To 12:00 WIB</p>
+						<p className='text-sm text-right'>To 11:00 WIB</p>
 					</div>
 				</div>
 				<div className='bg-primary mt-2 py-1 rounded-md font-medium text-white text-center'>
