@@ -4,7 +4,10 @@ import Link from 'next/link';
 
 interface PricingCardProps {
 	type: 'Standard' | 'VIP';
-	price: string;
+	price: {
+		weekday: string;
+		weekend: string;
+	};
 	features: string[];
 }
 
@@ -20,9 +23,15 @@ const PricingCard: React.FC<PricingCardProps> = ({ type, price, features }) => {
 
 			{/* Price */}
 			<p className='mt-5 font-bold text-secondary-foreground text-5xl'>
-				{price}
+				{price.weekday}
 				<span className='font-semibold text-secondary-foreground text-4xl'>
-					/night
+					/weekday
+				</span>
+			</p>
+			<p className='mt-5 text-secondary-foreground text-xl'>
+				<span className='font-semibold text-secondary-foreground text-4xl'>
+					{price.weekend}
+					/weekend
 				</span>
 			</p>
 
