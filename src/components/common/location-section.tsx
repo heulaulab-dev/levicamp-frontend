@@ -66,10 +66,10 @@ export default function LocationSection() {
 							Our friendly team is here to help.
 						</p>
 						<Link
-							href='mailto:hello@levicamp.com'
+							href='mailto:care@levicamp.id'
 							className='font-semibold text-secondary-foreground hover:text-primary text-sm md:text-lg transition-colors duration-300'
 						>
-							hello@levicamp.com
+							care@levicamp.id
 						</Link>
 					</div>
 					<div className='text-center'>
@@ -80,10 +80,10 @@ export default function LocationSection() {
 							Mon-Fri from 8am to 5pm.
 						</p>
 						<Link
-							href='https://wa.me/6285885159279'
+							href='https://wa.me/6283135566342'
 							className='font-semibold text-secondary-foreground hover:text-primary text-sm md:text-lg transition-colors duration-300'
 						>
-							+62 858 8515 9279
+							+62 831-3556-6342
 						</Link>
 					</div>
 				</div>
