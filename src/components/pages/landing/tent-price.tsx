@@ -27,7 +27,10 @@ const TentPrice = () => {
 			<div className='flex flex-wrap justify-center gap-8 mb-24 w-full overflow-x-auto'>
 				<PricingCard
 					type='Standard'
-					price='400k'
+					price={{
+						weekday: '400.000',
+						weekend: '500.000',
+					}}
 					features={[
 						'Fits up to 4 people - no extra fees!',
 						'Best View',
@@ -40,7 +43,10 @@ const TentPrice = () => {
 				/>
 				<PricingCard
 					type='VIP'
-					price='550k'
+					price={{
+						weekday: '550.000',
+						weekend: '650.000',
+					}}
 					features={[
 						'Fits up to 4 people - no extra fees!',
 						'Best View',
