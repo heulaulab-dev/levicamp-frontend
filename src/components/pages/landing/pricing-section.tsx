@@ -19,7 +19,8 @@ interface Feature {
 interface PricingTier {
 	name: string;
 	price: {
-		nightly: string;
+		weekday: string;
+		weekend: string;
 	};
 	description: string;
 	features: Feature[];
@@ -191,10 +192,16 @@ export default function PricingSection({
 								<motion.div className='mb-6' variants={featureVariants}>
 									<div className='flex items-baseline gap-2'>
 										<span className='font-bold text-primary text-4xl'>
-											Rp.{tier.price.nightly}
+											Rp.{tier.price.weekday}
 										</span>
 										<span className='text-secondary-foreground text-sm'>
-											/night
+											/weekday
+										</span>
+										<span className='font-bold text-primary text-4xl'>
+											Rp.{tier.price.weekend}
+										</span>
+										<span className='text-secondary-foreground text-sm'>
+											/weekend
 										</span>
 									</div>
 									<p className='mt-2 text-secondary-foreground text-sm'>
