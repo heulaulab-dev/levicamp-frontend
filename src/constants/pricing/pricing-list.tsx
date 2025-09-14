@@ -4,7 +4,7 @@ export const defaultTiers = [
 	{
 		name: 'Standard',
 		price: {
-			weekday: '485.000',
+			weekday: '450.000',
 			weekend: '600.000',
 		},
 		description: 'Affordable Escape with Full Experience',
@@ -62,8 +62,8 @@ export const defaultTiers = [
 	{
 		name: 'VIP',
 		price: {
-			weekday: '550.000',
-			weekend: '680.000',
+			weekday: '500.000',
+			weekend: '650.000',
 		},
 		description: 'Ideal Level Up Your Stay with a Touch of Luxury.',
 		highlight: true,
