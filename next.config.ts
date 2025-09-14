@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'api.midtrans.com',
 			},
+			{
+				protocol: 'https',
+				hostname: 'merchants-app.midtrans.com',
+			},
 		],
 	},
 	webpack: (config) => {
