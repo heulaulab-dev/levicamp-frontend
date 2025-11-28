@@ -49,6 +49,7 @@ export default function TentCollection({
 	const categoriesData = categories ?? [];
 	const filteredCategories =
 		selectedCategory === 'All'
+		
 			? categoriesData
 			: categoriesData.filter((category) => category.name === selectedCategory);
 

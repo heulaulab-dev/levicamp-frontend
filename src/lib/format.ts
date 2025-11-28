@@ -1,10 +1,12 @@
 export function formatToK(num: number): string {
-	if (num >= 1000000) {
-		return (num / 1000000).toFixed(1) + 'M';
+	if (num >= 1000000000) {
+		return 'IDR ' + (num / 1000000000).toFixed(1).replace('.', ',') + ' M';
+	} else if (num >= 1000000) {
+		return 'IDR ' + (num / 1000000).toFixed(1).replace('.', ',') + ' Juta';
 	} else if (num >= 1000) {
-		return (num / 1000).toFixed(0) + 'K';
+		return 'IDR ' + (num / 1000).toFixed(0) + ' Ribu';
 	}
-	return num.toString();
+	return 'IDR ' + num.toString();
 }
 
 export function formatCurrency(amount: number): string {

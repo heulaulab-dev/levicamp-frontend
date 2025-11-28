@@ -55,6 +55,11 @@ export default function CardTent({
 					) : null}
 					{tent.category?.name || 'Uncategorized'}
 				</span>
+				{tent.is_high_season && (
+					<span className='absolute top-3 left-3 flex items-center gap-1 text-xs px-3 py-1 rounded-full font-medium bg-primary text-primary-foreground'>
+						High Season
+					</span>
+				)}
 			</div>
 
 			{/* Nama Tenda */}
@@ -76,7 +81,7 @@ export default function CardTent({
 						Weekday:
 					</span>
 					<b className='text-sm'>
-						{formatToK(tent.weekday_price ?? 0)}
+						{formatToK(tent.is_high_season? tent.high_season_info?.price_weekday ?? 0 : tent.weekday_price ?? 0)}
 						<span className='font-normal text-xs'> /night</span>
 					</b>
 				</div>
@@ -88,7 +93,7 @@ export default function CardTent({
 						Weekend:
 					</span>
 					<b className='text-sm'>
-						{formatToK(tent.weekend_price ?? 0)}
+						{formatToK(tent.is_high_season? tent.high_season_info?.price_weekend ?? 0 : tent.weekend_price ?? 0)}
 						<span className='font-normal text-xs'> /night</span>
 					</b>
 				</div>

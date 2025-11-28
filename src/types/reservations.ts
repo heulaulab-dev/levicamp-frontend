@@ -15,6 +15,13 @@ export type Tent = {
 	created_at?: string;
 	capacity: number;
 	price: number;
+	is_high_season?: boolean;
+	high_season_info?: {
+		start_date?: string;
+		end_date?: string;
+		price_weekday?: number;
+		price_weekend?: number;
+	};
 };
 
 export type Category = {
