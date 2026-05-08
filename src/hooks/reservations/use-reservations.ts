@@ -3,12 +3,13 @@ import { DateRange } from 'react-day-picker';
 import { create } from 'zustand';
 
 import api from '@/lib/api';
+import { ApiError } from '@/types/api-error';
 import {
+	AvailabilityResponse,
 	PriceCheckResponse,
 	ReservationRequest,
 	ReservationResponse,
 	ReservationStore,
-	responseArray,
 } from '@/types/reservations';
 
 export const useReservations = create<ReservationStore>((set) => ({
@@ -50,7 +51,7 @@ export const useReservations = create<ReservationStore>((set) => ({
 				params.name = state.selectedCategory;
 			}
 
-			const response = await api.get<responseArray>(
+			const response = await api.get<AvailabilityResponse>(
 				'/reservations/availability',
 				{ params },
 			);
@@ -60,7 +61,7 @@ export const useReservations = create<ReservationStore>((set) => ({
 			});
 			console.log(response.data.data);
 		} catch (err: unknown) {
-			onError(err instanceof Error ? err.message : 'Something went wrong');
+			onError(err instanceof ApiError ? err.message : 'Something went wrong');
 			set({ showResults: false });
 		} finally {
 			set({ loading: false });

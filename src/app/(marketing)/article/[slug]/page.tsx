@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ArticleContent } from '@/components/article/ArticleContent';
 
 // Import from static data
 import { staticBlogData } from '@/lib/static-blog-data';
@@ -270,10 +271,10 @@ export default async function ArticleSinglePage(props: PageProps) {
 					/>
 				</div>
 
-				<div className='dark:prose-invert mx-auto max-w-3xl prose prose-lg'>
-					{/* Render the article content */}
-					<div dangerouslySetInnerHTML={{ __html: article.content }} />
-				</div>
+				<ArticleContent
+						html={article.content}
+						className='dark:prose-invert mx-auto max-w-3xl prose prose-lg'
+					/>
 
 				{/* Tags */}
 				{article.tags && article.tags.length > 0 && (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { format } from 'date-fns';
@@ -19,8 +18,7 @@ import LoadingTent from '@/components/common/loading-tent';
 import { downloadInvoice, triggerFileDownload } from '@/lib/api';
 
 export default function InvoicePage() {
-	const params = useParams();
-	const bookingId = params.bookingId as string;
+	const bookingId = (useParams() as { bookingId?: string }).bookingId ?? '';
 	const [loading, setLoading] = useState(true);
 	const isHydrated = useHydration();
 	const [showConfetti, setShowConfetti] = useState(true);
@@ -38,7 +36,6 @@ export default function InvoicePage() {
 			!bookingResponseData ||
 			!paymentData
 		) {
-			// If missing data, you could either redirect or attempt to fetch it using the bookingId
 			console.error('Missing required data for invoice');
 		}
 
@@ -65,8 +62,8 @@ export default function InvoicePage() {
 			triggerFileDownload(pdfBlob, filename);
 
 			toast.success('Invoice downloaded successfully!');
-		} catch (error) {
-			console.error('Download error:', error);
+		} catch {
+			console.error('Download error');
 			toast.error('Failed to download invoice. Please try again.');
 		}
 	};

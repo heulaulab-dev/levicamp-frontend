@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-
+import type { MotionValue } from 'framer-motion';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
@@ -11,8 +9,8 @@ interface FacilitiesCardProps {
 	imageSrc: string;
 	color: string;
 	targetScale: number;
-	progress: any;
-	range: any; // Changed from any to number[]
+	progress: MotionValue<number>;
+	range: [number, number];
 	i: number;
 }
 
@@ -44,7 +42,7 @@ const FacilitiesCard: React.FC<FacilitiesCardProps> = ({
 				style={{
 					backgroundColor: color,
 					top: `calc(-10% + ${i * 25}px)`,
-					scale: scale,
+					scale,
 				}}
 			>
 				<h2 className='mx-8 font-semibold text-secondary-foreground text-2xl text-left'>
