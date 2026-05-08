@@ -3,11 +3,11 @@ import { useState } from 'react';
 
 import { OTPVerificationModal } from '@/components/pages/reschedule/otp-modal';
 import { StatusCard } from '@/components/pages/reschedule/status-card';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/ios-spinner';
 import { Label } from '@/components/ui/label';
+import { ApiError } from '@/types/api-error';
 import { useReschedules } from '@/hooks/reschedules/use-reschedules';
 import { errorDescriptionMap } from '@/types/error-description-map';
 
@@ -44,17 +44,21 @@ export default function SearchBooking() {
 					description: response.message || 'An unexpected error occurred',
 				});
 			}
-		} catch (error: any) {
-			const errorDescription = error.error.description;
+		} catch (error: unknown) {
+			const message = error instanceof ApiError ? error.message : 'An unexpected error occurred';
+			const raw = error instanceof ApiError ? error.raw : null;
+			const errorDescription =
+				raw && typeof raw === 'object' && !Array.isArray(raw)
+					? (raw as Record<string, unknown>).error?.description
+					: undefined;
 
-			if (errorDescription && errorDescriptionMap[errorDescription]) {
+			if (typeof errorDescription === 'string' && errorDescriptionMap[errorDescription]) {
 				setStatusInfo(errorDescriptionMap[errorDescription]);
 			} else {
 				setStatusInfo({
 					variant: 'error',
 					title: 'Error',
-					description:
-						error.error.description || 'An unexpected error occurred',
+					description: message,
 				});
 			}
 		}

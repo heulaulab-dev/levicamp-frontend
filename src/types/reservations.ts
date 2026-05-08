@@ -46,19 +46,13 @@ export type Reservation = {
 		| 'rescheduled';
 };
 
-export type responseArray = {
+export type ApiResponse<T> = {
 	message: string;
 	status: number;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	data: any[];
+	data: T;
 };
 
-export type responseObject = {
-	message: string;
-	status: number;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	data: any;
-};
+export type AvailabilityResponse = ApiResponse<Category[]>;
 
 export interface ReservationRequest {
 	name: string;

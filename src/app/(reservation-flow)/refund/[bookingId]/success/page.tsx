@@ -45,9 +45,7 @@ export default function RefundConfirmationPage() {
 			)}
 			<HeroSection
 				title={
-					<>
-						<span className='text-primary'>Refund Request Submitted</span>{' '}
-					</>
+					<span className='text-primary'>Refund Request Submitted</span>
 				}
 				description="Your refund request has been successfully submitted. We'll process your request within 3-5 business days and transfer the refund to your provided account."
 				showActionButtons={true}

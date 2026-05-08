@@ -24,7 +24,7 @@ const TentPrice = () => {
 				</div>
 			</div>
 
-			<div className='flex flex-wrap justify-center gap-8 mb-24 w-full overflow-x-auto'>
+			<div className='flex flex-wrap justify-center gap-8 mb-24 w-full overflow-x-auto no-scrollbar'>
 				<PricingCard
 					type='Standard'
 					price={{

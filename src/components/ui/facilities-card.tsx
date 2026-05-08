@@ -1,9 +1,11 @@
 'use client';
 
-import { motion, useAnimation } from 'framer-motion';
 import { useRef } from 'react';
-import { cn } from '@/lib/utils';
+import { motion, useAnimation } from 'framer-motion';
+
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 interface FacilitiesCardProps {
 	title: string;
@@ -18,25 +20,25 @@ const FacilitiesCard: React.FC<FacilitiesCardProps> = ({
 }) => {
 	const controls = useAnimation();
 	const ref = useRef<HTMLDivElement>(null);
+	const shouldReduce = useReducedMotion();
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+		if (shouldReduce) return;
 		const bounds = ref.current?.getBoundingClientRect();
 		if (!bounds) return;
 
 		const centerX = bounds.left + bounds.width / 2;
 		const centerY = bounds.top + bounds.height / 2;
 
-		const offsetX = (e.clientX - centerX) / 10;
-		const offsetY = (e.clientY - centerY) / 10;
-
 		controls.start({
-			x: offsetX,
-			y: offsetY,
+			x: (e.clientX - centerX) / 10,
+			y: (e.clientY - centerY) / 10,
 			transition: { type: 'spring', stiffness: 300, damping: 20 },
 		});
 	};
 
 	const handleMouseLeave = () => {
+		if (shouldReduce) return;
 		controls.start({
 			x: 0,
 			y: 0,
@@ -49,17 +51,17 @@ const FacilitiesCard: React.FC<FacilitiesCardProps> = ({
 			ref={ref}
 			style={{ backgroundColor: color }}
 			className={cn(
-				'flex flex-col justify-between pt-6 rounded-2xl w-[449px] h-[604px] cursor-pointer',
+				'flex flex-col justify-between pt-6 rounded-2xl w-full aspect-[3/4] cursor-pointer',
 			)}
-			animate={controls}
+			animate={shouldReduce ? { x: 0, y: 0 } : controls}
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
 		>
-			<h2 className='mx-8 mb-4 font-semibold text-secondary-foreground text-3xl text-left'>
+			<h2 className='mx-6 sm:mx-8 mb-4 font-semibold text-secondary-foreground text-2xl sm:text-3xl text-left'>
 				{title}
 			</h2>
 
-			<div className='mx-8 rounded-t-xl overflow-hidden'>
+			<div className='mx-6 sm:mx-8 rounded-t-xl overflow-hidden'>
 				<Image
 					src={imageSrc}
 					alt={title}
