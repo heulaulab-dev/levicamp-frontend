@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
 	Select,
 	SelectContent,
@@ -62,9 +63,7 @@ export function PersonalInfoCard({
 				<form onSubmit={handleSubmit} className='space-y-6'>
 					<div className='gap-4 grid grid-cols-1 md:grid-cols-2'>
 						<div className='space-y-2'>
-							<label htmlFor='name' className='font-medium text-sm'>
-								Full Name *
-							</label>
+							<Label htmlFor='name'>Full Name *</Label>
 							<Input
 								id='name'
 								name='name'
@@ -74,9 +73,7 @@ export function PersonalInfoCard({
 							/>
 						</div>
 						<div className='space-y-2'>
-							<label htmlFor='phone' className='font-medium text-sm'>
-								Phone Number *
-							</label>
+							<Label htmlFor='phone'>Phone Number *</Label>
 							<div className='relative'>
 								<Input
 									className='peer ps-16'
@@ -87,7 +84,6 @@ export function PersonalInfoCard({
 									placeholder='Enter your phone number'
 									defaultValue={initialData?.phone || ''}
 									onChange={(e) => {
-										// Remove +62 prefix if user accidentally includes it
 										let value = e.target.value;
 										if (value.startsWith('+62')) {
 											value = value.slice(3);
@@ -96,12 +92,11 @@ export function PersonalInfoCard({
 										} else if (value.startsWith('0')) {
 											value = value.slice(1);
 										}
-										// Only allow numbers
 										value = value.replace(/\D/g, '');
 										e.target.value = value;
 									}}
 								/>
-								<span className='absolute inset-y-0 flex justify-center items-center peer-disabled:opacity-50 ps-3 text-muted-foreground text-sm pointer-events-none start-0'>
+								<span className='absolute inset-y-0 flex justify-center items-center pointer-events-none start-0 ps-3 text-muted-foreground text-sm'>
 									+62
 								</span>
 							</div>
@@ -110,9 +105,7 @@ export function PersonalInfoCard({
 
 					<div className='gap-4 grid grid-cols-1 md:grid-cols-2'>
 						<div className='space-y-2'>
-							<label htmlFor='email' className='font-medium text-sm'>
-								Email
-							</label>
+							<Label htmlFor='email'>Email</Label>
 							<Input
 								id='email'
 								name='email'
@@ -122,10 +115,8 @@ export function PersonalInfoCard({
 							/>
 						</div>
 						<div className='space-y-2'>
-							<label htmlFor='guestCount' className='font-medium text-sm'>
-								Total Guests *
-							</label>
-							<div className='relative flex shadow-black/5 shadow-sm rounded-lg'>
+							<Label htmlFor='guestCount'>Total Guests *</Label>
+							<div className='relative flex shadow-sm rounded-lg'>
 								<Input
 									className='z-10 shadow-none -me-px ps-6 rounded-e-none'
 									id='guestCount'
@@ -136,7 +127,7 @@ export function PersonalInfoCard({
 									placeholder='1'
 									defaultValue={initialData?.guestCount || ''}
 								/>
-								<span className='inline-flex items-center bg-background px-3 border border-input rounded-e-lg text-muted-foreground text-sm'>
+								<span className='inline-flex items-center border border-input bg-background px-3 rounded-e-lg text-muted-foreground text-sm'>
 									Guests
 								</span>
 							</div>
@@ -144,9 +135,7 @@ export function PersonalInfoCard({
 					</div>
 
 					<div className='space-y-2'>
-						<label htmlFor='address' className='font-medium text-sm'>
-							Address *
-						</label>
+						<Label htmlFor='address'>Address *</Label>
 						<Textarea
 							id='address'
 							name='address'
@@ -157,11 +146,9 @@ export function PersonalInfoCard({
 					</div>
 
 					<div className='space-y-2'>
-						<label htmlFor='source' className='font-medium text-sm'>
-							How did you hear about us? *
-						</label>
+						<Label htmlFor='source'>How did you hear about us? *</Label>
 						<Select name='source' required defaultValue={initialData?.source}>
-							<SelectTrigger>
+							<SelectTrigger id='source'>
 								<SelectValue placeholder='Select an option' />
 							</SelectTrigger>
 							<SelectContent>
@@ -181,15 +168,15 @@ export function PersonalInfoCard({
 								required
 								defaultChecked={initialData?.agreeToTerms}
 							/>
-							<label htmlFor='agreeToTerms' className='text-sm'>
+							<Label htmlFor='agreeToTerms' className='text-sm'>
 								I agree to the{' '}
 								<Link
 									href='/terms-and-conditions'
 									className='font-medium text-primary hover:underline'
 								>
-									Terms and Conditions*
+									Terms and Conditions
 								</Link>
-							</label>
+							</Label>
 						</div>
 						<div className='flex items-center space-x-2'>
 							<Checkbox
@@ -198,15 +185,15 @@ export function PersonalInfoCard({
 								required
 								defaultChecked={initialData?.agreeToPrivacy}
 							/>
-							<label htmlFor='agreeToPrivacy' className='text-sm'>
+							<Label htmlFor='agreeToPrivacy' className='text-sm'>
 								I agree to the{' '}
 								<Link
 									href='/privacy-policy'
 									className='font-medium text-primary hover:underline'
 								>
-									Privacy Policy*
+									Privacy Policy
 								</Link>
-							</label>
+							</Label>
 						</div>
 					</div>
 

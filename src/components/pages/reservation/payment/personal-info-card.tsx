@@ -1,25 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useReservationStore } from '@/store/useReservationStore';
 
 export function PersonalInfoCard() {
 	const router = useRouter();
-	// Use Zustand store
 	const { personalInfo } = useReservationStore();
 
-	useEffect(() => {
-		if (!personalInfo) {
-			router.push('/reservation/personal');
-		}
-	}, [router, personalInfo]);
-
-	if (!personalInfo) return null;
+	if (!personalInfo) {
+		router.push('/reservation/personal');
+		return null;
+	}
 
 	return (
 		<Card>
@@ -32,36 +28,42 @@ export function PersonalInfoCard() {
 				<div className='space-y-6'>
 					<div className='gap-4 grid grid-cols-1 md:grid-cols-2'>
 						<div className='space-y-2'>
-							<label className='font-medium text-sm'>Full Name</label>
-							<Input value={personalInfo.name} disabled />
+							<Label htmlFor='display-name'>Full Name</Label>
+							<Input id='display-name' value={personalInfo.name} disabled />
 						</div>
 						<div className='space-y-2'>
-							<label className='font-medium text-sm'>Phone Number</label>
-							<Input value={personalInfo.phone} disabled />
+							<Label htmlFor='display-phone'>Phone Number</Label>
+							<Input id='display-phone' value={personalInfo.phone} disabled />
 						</div>
 					</div>
 
 					<div className='gap-4 grid grid-cols-1 md:grid-cols-2'>
 						<div className='space-y-2'>
-							<label className='font-medium text-sm'>Email</label>
-							<Input value={personalInfo.email || 'Not provided'} disabled />
+							<Label htmlFor='display-email'>Email</Label>
+							<Input
+								id='display-email'
+								value={personalInfo.email || 'Not provided'}
+								disabled
+							/>
 						</div>
 						<div className='space-y-2'>
-							<label className='font-medium text-sm'>Number of Guests</label>
-							<Input value={personalInfo.guestCount} disabled />
+							<Label htmlFor='display-guest-count'>Number of Guests</Label>
+							<Input
+								id='display-guest-count'
+								value={personalInfo.guestCount}
+								disabled
+							/>
 						</div>
 					</div>
 
 					<div className='space-y-2'>
-						<label className='font-medium text-sm'>Address</label>
-						<Textarea value={personalInfo.address} disabled />
+						<Label htmlFor='display-address'>Address</Label>
+						<Textarea id='display-address' value={personalInfo.address} disabled />
 					</div>
 
 					<div className='space-y-2'>
-						<label className='font-medium text-sm'>
-							How did you hear about us?
-						</label>
-						<Input value={personalInfo.source} disabled />
+						<Label htmlFor='display-source'>How did you hear about us?</Label>
+						<Input id='display-source' value={personalInfo.source} disabled />
 					</div>
 
 					<div className='space-y-4 pt-4 border-t'>

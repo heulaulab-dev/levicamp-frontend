@@ -1,39 +1,41 @@
 import { Bookmark } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-// Animation variants
+import { Card, CardContent } from '@/components/ui/card';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import {
+	reduceMotion,
+	slideUpVariants,
+} from '@/lib/motion-variants';
+
 const containerVariants = {
 	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
-		transition: {
-			staggerChildren: 0.3,
-		},
+		transition: { staggerChildren: 0.3 },
 	},
 };
 
 const cardVariants = {
-	hidden: { opacity: 0, y: 50 },
+	hidden: { opacity: 0, y: '5%' },
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: {
-			duration: 0.6,
-		},
+		transition: { duration: 0.6, ease: 'easeOut' },
 	},
 };
 
 export default function FacilitiesList() {
+	const shouldReduce = useReducedMotion();
+
 	return (
 		<section className='bg-secondary/40 py-16'>
-			{/* Facilities */}
 			<div className='flex flex-col justify-between mx-auto container'>
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
+					initial='hidden'
+					animate='visible'
+					variants={reduceMotion(slideUpVariants, shouldReduce)}
 					className='flex flex-col justify-start items-start mb-8'
 				>
 					<div className='flex items-center gap-2 bg-secondary shadow-sm p-4 rounded-full font-semibold text-secondary-foreground'>
@@ -44,12 +46,12 @@ export default function FacilitiesList() {
 
 				<motion.div
 					className='mx-auto w-full'
-					variants={containerVariants}
+					variants={reduceMotion(containerVariants, shouldReduce)}
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true, margin: '-100px' }}
 				>
-					<motion.div variants={cardVariants}>
+					<motion.div variants={reduceMotion(cardVariants, shouldReduce)}>
 						<FacilityCard
 							imageUrl='/assets/facilities/waterfall.jpg'
 							title='Escape the city, breathe in fresh air, and soak in stunning valley views.'
@@ -60,7 +62,7 @@ export default function FacilitiesList() {
 
 					<motion.div
 						className='flex justify-end w-full'
-						variants={cardVariants}
+						variants={reduceMotion(cardVariants, shouldReduce)}
 					>
 						<FacilityCard
 							imagePosition='right'
@@ -71,7 +73,7 @@ export default function FacilitiesList() {
 						/>
 					</motion.div>
 
-					<motion.div variants={cardVariants}>
+					<motion.div variants={reduceMotion(cardVariants, shouldReduce)}>
 						<FacilityCard
 							imageUrl='/assets/facilities/tent.jpg'
 							title='Stay fresh & connected with clean restrooms, free Wi-Fi, and breakfast on us.'
@@ -82,18 +84,18 @@ export default function FacilitiesList() {
 
 					<motion.div
 						className='flex justify-end w-full'
-						variants={cardVariants}
+						variants={reduceMotion(cardVariants, shouldReduce)}
 					>
 						<FacilityCard
 							imagePosition='right'
 							imageUrl='/assets/facilities/rabbit.jpg'
-							title='Feed & Bond – Get Up Close with Nature’s Friends!'
+							title="Feed & Bond – Get Up Close with Nature's Friends!"
 							description='Dapatkan pengalaman yang tak terlupakan dengan berinteraksi langsung dengan teman alam kami.'
 							color='#A0C878'
 						/>
 					</motion.div>
 
-					<motion.div variants={cardVariants}>
+					<motion.div variants={reduceMotion(cardVariants, shouldReduce)}>
 						<FacilityCard
 							imageUrl='/assets/facilities/atv.jpg'
 							title='Experience the thrill off-road ATV rides.'
@@ -116,16 +118,16 @@ export interface FacilityCardProps {
 	color?: string;
 }
 
-export const FacilityCard = ({
+export function FacilityCard({
 	imageUrl,
 	title,
 	description,
 	imagePosition = 'left',
 	color,
-}: FacilityCardProps) => {
+}: FacilityCardProps) {
 	return (
 		<Card
-			className={`bg-secondary shadow-lg mb-6 border-none rounded-xl max-w-3xl overflow-hidden`}
+			className='bg-secondary shadow-lg mb-6 border-none rounded-xl max-w-3xl overflow-hidden'
 			style={{ backgroundColor: color }}
 		>
 			<CardContent className='flex flex-row p-0'>
@@ -169,4 +171,4 @@ export const FacilityCard = ({
 			</CardContent>
 		</Card>
 	);
-};
+}

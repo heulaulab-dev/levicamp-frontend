@@ -61,8 +61,10 @@ export default function PaymentPage() {
 			const expiry = new Date(paymentData.expired_at);
 			const now = new Date();
 			if (expiry <= now) {
-				// Remove expired payment data
 				clearPaymentData();
+				toast.error('Payment session expired. Starting a new booking...');
+				setTimeout(() => router.replace('/reservation'), 2000);
+				return;
 			}
 		}
 
