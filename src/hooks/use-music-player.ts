@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type Track = {
 	id: string;
@@ -64,6 +64,9 @@ export const useMusicPlayer = (initialTracks: Track[] = []) => {
 	}, [state.hasInteracted]);
 
 	useEffect(() => {
+		// Initialize Audio only once on mount. state.volume is intentionally
+		// excluded — volume is applied in a separate effect (line 121) after
+		// isInitialized becomes true, so re-running on volume change is correct.
 		const audio = new Audio();
 		audio.volume = state.volume;
 
@@ -157,44 +160,27 @@ export const useMusicPlayer = (initialTracks: Track[] = []) => {
 		state.isInitialized,
 	]);
 
-	const play = useCallback(() => {
-		setState((prev) => ({ ...prev, isPlaying: true }));
-	}, []);
-
-	const pause = useCallback(() => {
-		setState((prev) => ({ ...prev, isPlaying: false }));
-	}, []);
-
-	const toggle = useCallback(() => {
-		setState((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
-	}, []);
-
-	const setVolume = useCallback((volume: number) => {
-		setState((prev) => ({ ...prev, volume: Math.max(0, Math.min(1, volume)) }));
-	}, []);
-
-	const selectTrack = useCallback((trackId: string) => {
-		setState((prev) => {
-			const found = prev.tracks.find((t) => t.id === trackId) ?? null;
-			return { ...prev, currentTrack: found };
-		});
-	}, []);
-
-	const addTrack = useCallback((track: Track) => {
-		setState((prev) => ({
-			...prev,
-			tracks: [...prev.tracks, track],
-			currentTrack: prev.currentTrack ?? track,
-		}));
-	}, []);
-
 	return {
 		...state,
-		play,
-		pause,
-		toggle,
-		setVolume,
-		selectTrack,
-		addTrack,
+		play: () => setState((prev) => ({ ...prev, isPlaying: true })),
+		pause: () => setState((prev) => ({ ...prev, isPlaying: false })),
+		toggle: () =>
+			setState((prev) => ({ ...prev, isPlaying: !prev.isPlaying })),
+		setVolume: (volume: number) =>
+			setState((prev) => ({
+				...prev,
+				volume: Math.max(0, Math.min(1, volume)),
+			})),
+		selectTrack: (trackId: string) =>
+			setState((prev) => {
+				const found = prev.tracks.find((t) => t.id === trackId) ?? null;
+				return { ...prev, currentTrack: found };
+			}),
+		addTrack: (track: Track) =>
+			setState((prev) => ({
+				...prev,
+				tracks: [...prev.tracks, track],
+				currentTrack: prev.currentTrack ?? track,
+			})),
 	};
 };

@@ -13,7 +13,6 @@ import type {
 	CreateTypes as ConfettiInstance,
 	Options as ConfettiOptions,
 } from 'canvas-confetti';
-import confetti from 'canvas-confetti';
 
 import { Button, ButtonProps } from '@/components/ui/button';
 
@@ -40,28 +39,31 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
 		children,
 		...rest
 	} = props;
-	const instanceRef = useRef<ConfettiInstance | null>(null); // confetti instance
+	const instanceRef = useRef<ConfettiInstance | null>(null);
 
 	const canvasRef = useCallback(
-		// https://react.dev/reference/react-dom/components/common#ref-callback
-		// https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 		(node: HTMLCanvasElement) => {
 			if (node !== null) {
-				// <canvas> is mounted => create the confetti instance
-				if (instanceRef.current) return; // if not already created
-				instanceRef.current = confetti.create(node, {
-					...globalOptions,
-					resize: true,
+				if (instanceRef.current) return;
+				// Lazy-load canvas-confetti when the canvas is mounted
+				import('canvas-confetti').then((mod) => {
+					instanceRef.current = mod.create(node, {
+						...globalOptions,
+						resize: true,
+					});
+					// Fire on mount unless manualstart is true
+					if (!manualstart && instanceRef.current) {
+						instanceRef.current({ ...options });
+					}
 				});
 			} else {
-				// <canvas> is unmounted => reset and destroy instanceRef
 				if (instanceRef.current) {
 					instanceRef.current.reset();
 					instanceRef.current = null;
 				}
 			}
 		},
-		[globalOptions],
+		[globalOptions, options, manualstart],
 	);
 
 	// `fire` is a function that calls the instance() with `opts` merged with `options`
@@ -79,11 +81,11 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
 
 	useImperativeHandle(ref, () => api, [api]);
 
+	// No automatic fire on mount — defer to lazy instance creation in canvasRef
 	useEffect(() => {
-		if (!manualstart) {
-			fire();
-		}
-	}, [manualstart, fire]);
+		// Intentionally empty — fire is deferred to canvasRef initialization
+		// so canvas-confetti is never imported until the component is actually rendered
+	}, []);
 
 	return (
 		<ConfettiContext.Provider value={api}>
@@ -100,7 +102,8 @@ interface ConfettiButtonProps extends ButtonProps {
 }
 
 function ConfettiButton({ options, children, ...props }: ConfettiButtonProps) {
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		const confetti = (await import('canvas-confetti')).default;
 		const rect = event.currentTarget.getBoundingClientRect();
 		const x = rect.left + rect.width / 2;
 		const y = rect.top + rect.height / 2;

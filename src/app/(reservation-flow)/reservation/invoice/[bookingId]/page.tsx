@@ -1,29 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { format } from 'date-fns';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import HeroSection from '@/components/common/hero-section';
+import LoadingTent from '@/components/common/loading-tent';
 import InvoiceDetail from '@/components/pages/reservation/invoice/invoice-detail';
 import { ReservationStepper } from '@/components/pages/reservation/reservation-stepper';
-import { Button } from '@/components/ui/button';
 import { Confetti } from '@/components/ui/confetti';
 import { useHydration } from '@/hooks/use-hydration';
 import { useReservationStore } from '@/store/useReservationStore';
-import LoadingTent from '@/components/common/loading-tent';
-import { downloadInvoice, triggerFileDownload } from '@/lib/api';
 
 export default function InvoicePage() {
-	const params = useParams();
-	const bookingId = params.bookingId as string;
+	const bookingId = (useParams() as { bookingId?: string }).bookingId ?? '';
 	const [loading, setLoading] = useState(true);
 	const isHydrated = useHydration();
-	const [showConfetti, setShowConfetti] = useState(true);
+	const [showConfetti] = useState(true);
 
 	const { reservationData, personalInfo, bookingResponseData, paymentData } =
 		useReservationStore();
@@ -31,14 +24,12 @@ export default function InvoicePage() {
 	useEffect(() => {
 		if (!isHydrated) return;
 
-		// Verify that we have the required data
 		if (
 			!reservationData ||
 			!personalInfo ||
 			!bookingResponseData ||
 			!paymentData
 		) {
-			// If missing data, you could either redirect or attempt to fetch it using the bookingId
 			console.error('Missing required data for invoice');
 		}
 
@@ -51,31 +42,10 @@ export default function InvoicePage() {
 		paymentData,
 	]);
 
-	const handleDownload = async () => {
-		try {
-			toast.info('Preparing your invoice for download...');
-
-			// Download the PDF blob from the API
-			const pdfBlob = await downloadInvoice(bookingId);
-
-			// Generate filename with booking ID
-			const filename = `invoice-${bookingId}.pdf`;
-
-			// Trigger the download
-			triggerFileDownload(pdfBlob, filename);
-
-			toast.success('Invoice downloaded successfully!');
-		} catch (error) {
-			console.error('Download error:', error);
-			toast.error('Failed to download invoice. Please try again.');
-		}
-	};
-
 	if (loading) {
 		return <LoadingTent />;
 	}
 
-	// Format dates for display
 	const formattedCheckInDate = reservationData?.checkInDate
 		? format(new Date(reservationData.checkInDate), 'EEE, MMM dd yyyy')
 		: 'N/A';
@@ -88,7 +58,6 @@ export default function InvoicePage() {
 		? format(new Date(paymentData.payment.created_at), 'MMMM d, yyyy')
 		: 'N/A';
 
-	// Prepare tents data for the InvoiceDetail component
 	const tents =
 		reservationData?.selectedTents?.map((tent) => ({
 			id: tent.id,

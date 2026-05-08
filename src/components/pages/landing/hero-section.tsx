@@ -5,18 +5,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useCallback, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-// Add static import for hero background
+
 import heroBgStatic from '../../../../public/hero-bg.jpg';
 
 import { Button } from '@/components/ui/button';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import {
+	fadeInVariants,
+	reduceMotion,
+	slideUpVariants,
+} from '@/lib/motion-variants';
 
-// Define props interface for MarqueeRow
 interface MarqueeRowProps {
 	direction: 'left' | 'right';
 	images: Array<unknown>;
 }
 
-// Memoize the marquee components to prevent unnecessary rerenders
 const MarqueeRow = memo(({ direction, images }: MarqueeRowProps) => (
 	<Marquee speed={30} direction={direction}>
 		{images.map((_, index: number) => (
@@ -36,16 +40,14 @@ MarqueeRow.displayName = 'MarqueeRow';
 
 export default function HeroSection() {
 	const [videoEnded, setVideoEnded] = useState(false);
+	const shouldReduce = useReducedMotion();
 
-	// Use callback to prevent recreation on each render
 	const handleVideoEnd = useCallback(() => setVideoEnded(true), []);
 
-	// Prepare the image array just once
 	const imageArray = [...Array(10)];
 
 	return (
 		<section className='relative flex md:flex-row flex-col justify-between items-center bg-cover bg-center mt-[80px] px-6 md:px-12 w-full min-h-screen overflow-hidden'>
-			{/* Video or fallback image - simplified animation */}
 			<AnimatePresence mode='wait'>
 				{!videoEnded && (
 					<motion.video
@@ -57,9 +59,10 @@ export default function HeroSection() {
 						muted
 						playsInline
 						onEnded={handleVideoEnd}
-						initial={{ opacity: 0.9 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0, transition: { duration: 0.5 } }}
+						variants={reduceMotion(fadeInVariants, shouldReduce)}
+						initial='hidden'
+						animate='visible'
+						exit='hidden'
 						style={{ willChange: 'opacity' }}
 					/>
 				)}
@@ -68,8 +71,10 @@ export default function HeroSection() {
 					<motion.div
 						key='image-container'
 						className='top-0 left-0 absolute w-full h-full'
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1, transition: { duration: 0.1 } }}
+						variants={reduceMotion(fadeInVariants, shouldReduce)}
+						initial='hidden'
+						animate='visible'
+						exit='hidden'
 						style={{ willChange: 'opacity' }}
 					>
 						<Image
@@ -85,19 +90,14 @@ export default function HeroSection() {
 				)}
 			</AnimatePresence>
 
-			{/* Overlay */}
 			<div className='z-[1] absolute inset-0 bg-black/60 backdrop-blur-sm' />
-
-			{/* Updated gradient that transitions to bg-secondary/40 at the bottom */}
 			<div className='z-[2] absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-secondary/40' />
 
-			{/* Text */}
 			<motion.div
 				className='z-[2] relative flex flex-col justify-center items-center md:items-start mx-auto md:mx-0 md:w-1/2 max-w-3xl min-h-screen md:text-left text-center'
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.8, delay: 0.5 }}
-				// Add will-change to optimize animation
+				variants={reduceMotion(slideUpVariants, shouldReduce)}
+				initial='hidden'
+				animate='visible'
 				style={{ willChange: 'opacity, transform' }}
 			>
 				<div className='flex justify-center md:justify-start items-center gap-2'>
@@ -128,17 +128,14 @@ export default function HeroSection() {
 				</Button>
 			</motion.div>
 
-			{/* Marquee Container - optimized with memoization */}
 			{videoEnded && (
 				<motion.div
 					className='hidden z-[2] relative md:flex justify-center items-center w-full md:w-1/2 h-96'
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8, delay: 0.6 }}
-					// Add will-change to optimize animation
+					variants={reduceMotion(slideUpVariants, shouldReduce)}
+					initial='hidden'
+					animate='visible'
 					style={{ willChange: 'opacity, transform' }}
 				>
-					{/* First Marquee */}
 					<div
 						className='absolute'
 						style={{
@@ -151,7 +148,6 @@ export default function HeroSection() {
 						<MarqueeRow direction='left' images={imageArray} />
 					</div>
 
-					{/* Second Marquee */}
 					<div
 						className='absolute'
 						style={{

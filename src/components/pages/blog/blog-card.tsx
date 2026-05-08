@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Card } from '@/components/ui/card';
@@ -65,7 +66,7 @@ const Blog8 = ({
 				</div>
 
 				<div className='gap-y-10 sm:gap-y-12 md:gap-y-16 lg:gap-y-20 grid sm:grid-cols-12'>
-					{posts.map((post) => (
+					{posts.map((post, index) => (
 						<Card
 							key={post.id}
 							className='order-last sm:order-first sm:col-span-12 lg:col-span-10 lg:col-start-2 bg-transparent shadow-none border-0'
@@ -109,11 +110,14 @@ const Blog8 = ({
 								</div>
 								<div className='order-first sm:order-last sm:col-span-5'>
 									<Link href={`/article/${post.url}`} className='block'>
-										<div className='border border-border rounded-lg aspect-[16/9] overflow-clip'>
-											<img
+										<div className='relative border border-border rounded-lg aspect-[16/9] overflow-clip'>
+											<Image
 												src={post.image}
 												alt={post.title}
-												className='hover:opacity-70 w-full h-full object-cover transition-opacity duration-200 fade-in'
+												fill
+												sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw'
+												priority={index === 0}
+												className='object-cover transition-opacity duration-200 hover:opacity-70'
 											/>
 										</div>
 									</Link>
