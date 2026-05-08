@@ -53,7 +53,6 @@ export default function SummaryTent({
 	const [tentCapacityFromApi, setTentCapacityFromApi] = useState<
 		Record<string, string>
 	>({});
-	const [days, setDays] = useState(1);
 
 	// Calculate duration between check-in and check-out dates for the new booking
 	const duration =
@@ -125,45 +124,6 @@ export default function SummaryTent({
 		fetchPrice();
 	}, [selectedTents, checkInDate, checkOutDate]);
 
-	// Calculate days between start and end dates
-	useEffect(() => {
-		if (checkInDate && checkOutDate) {
-			const diff = differenceInDays(checkOutDate, checkInDate);
-			setDays(diff);
-		}
-	}, [checkInDate, checkOutDate]);
-
-	// Check if we have prices for all tents
-	const allPricesLoaded = selectedTents.every(
-		(tent) =>
-			tentsWithPrices[tent.id] !== undefined && !loadingPerTent[tent.id],
-	);
-
-	// Calculate total price only if all prices are loaded
-	const calculatedTotalPrice = allPricesLoaded
-		? selectedTents.reduce(
-				(sum, tent) => sum + (tentsWithPrices[tent.id] || 0),
-				0,
-		  )
-		: 0;
-
-	// Get price per night (avoid using weekend_price as fallback)
-	const getPricePerNight = (tent: Tent) => {
-		if (!tentsWithPrices[tent.id] || loadingPerTent[tent.id]) {
-			return null; // No price available yet
-		}
-		return tentsWithPrices[tent.id] / (days || 1);
-	};
-
-	// Get total price for a tent
-	const getTotalTentPrice = (tent: Tent) => {
-		if (!tentsWithPrices[tent.id] || loadingPerTent[tent.id]) {
-			return null; // No price available yet
-		}
-		return tentsWithPrices[tent.id];
-	};
-
-	// Use the calculated total price from API instead of simple addition
 	const displayTotalPrice = loading ? 0 : totalPrice;
 
 	return (
