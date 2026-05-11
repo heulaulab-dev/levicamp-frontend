@@ -153,6 +153,7 @@ export default function QRISModal({
 												size='icon'
 												className='w-6 h-6'
 												onClick={copyOrderId}
+												aria-label='Copy booking code'
 											>
 												<Copy className='w-3 h-3' />
 											</Button>

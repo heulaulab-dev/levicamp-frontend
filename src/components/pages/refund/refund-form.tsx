@@ -185,7 +185,7 @@ export default function RefundForm({
 								disabled={!agreed || isLoading}
 								className='w-full'
 							>
-								{isLoading ? 'Processing...' : 'Request Refund'}
+								{isLoading ? 'Processing…' : 'Request Refund'}
 							</Button>
 						</div>
 					</CardContent>

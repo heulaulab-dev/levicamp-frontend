@@ -134,7 +134,7 @@ export default function RescheduleForm({
 								onClick={handleRequestReschedule}
 								className={loading ? 'opacity-70 cursor-not-allowed' : ''}
 							>
-								{loading ? 'Processing...' : 'Request Reschedule'}
+								{loading ? 'Processing…' : 'Request Reschedule'}
 							</Button>
 						</CardFooter>
 					</Card>
