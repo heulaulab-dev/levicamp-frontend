@@ -136,7 +136,7 @@ export default function Navbar() {
 				className={`fixed shadow-xl ${
 					hasInProgressReservation && pathname === '/reservation'
 						? 'top-[41px]'
-						: 'top-0'
+						: 'top-0 pt-[env(safe-area-inset-top)]'
 				} left-0 w-full bg-background py-5 px-8 h-20 flex justify-between items-center z-50 transition-transform duration-300 ${
 					isHidden ? '-translate-y-full' : 'translate-y-0'
 				}`}
