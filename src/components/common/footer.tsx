@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-const ASSETS_URL = process.env.NEXT_PUBLIC_ASSETS_URL || 'https://assets.tazkiyaworks.fun:9001/';
+const ASSETS_URL = process.env.NEXT_PUBLIC_ASSETS_URL || 'https://assets.tazkiyaworks.fun:9001/'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 type FooterStatus = {
 	name: string;
@@ -106,7 +106,7 @@ export default function Footer({ onSubscribe }: FooterProps) {
 							</div>
 						</div>
 						<p className='text-sm text-muted-foreground leading-relaxed max-w-sm'>
-							The best camping experience in Indonesia's great outdoors.
+							The best camping experience in Indonesia&apos;s great outdoors.
 							Enjoy unforgettable adventures with family and friends.
 						</p>
 
