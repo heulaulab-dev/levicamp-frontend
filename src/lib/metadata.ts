@@ -65,3 +65,10 @@ export function createMetadata({
 		},
 	};
 }
+
+export const viewport: Metadata['viewport'] = {
+	width: 'device-width',
+	initialScale: 1,
+	maximumScale: 5,
+	viewportFit: 'cover',
+};
