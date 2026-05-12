@@ -2,7 +2,7 @@
 
 import { Award, Grid, Star, Tent as TentIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { toast } from 'sonner';
 
 import CardTent from '@/components/ui/card-tent';
@@ -47,51 +47,53 @@ export default function TentCollection({
 
 	// Rename to avoid confusion with the later reservationData object
 	const categoriesData = categories ?? [];
-	const filteredCategories =
-		selectedCategory === 'All'
-			? categoriesData
-			: categoriesData.filter((category) => category.name === selectedCategory);
+	const filteredCategories = useMemo(() => {
+		if (selectedCategory === 'All') return categoriesData;
+		return categoriesData.filter((category) => category.name === selectedCategory);
+	}, [categoriesData, selectedCategory]);
 
-	const handleSelectTent = (tentId: string) => {
+	const handleSelectTent = useCallback((tentId: string) => {
 		setSelectedTentIds((prev) => {
 			return prev.includes(tentId)
 				? prev.filter((id) => id !== tentId) // Remove if already selected
 				: [...prev, tentId]; // Add if not selected
 		});
-	};
+	}, []);
 
-	const handleRemoveTent = (tentId: string) => {
+	const handleRemoveTent = useCallback((tentId: string) => {
 		setSelectedTentIds((prev) => prev.filter((id) => id !== tentId));
-	};
+	}, []);
 
 	// Get all selected tents with their full data
-	const selectedTents = selectedTentIds
-		.map((id) => {
-			const tent = (categories ?? [])
-				.flatMap((category) => category.tents)
-				.find((tent) => tent.id === id);
+	const selectedTents = useMemo(() => {
+		return selectedTentIds
+			.map((id) => {
+				const tent = (categories ?? [])
+					.flatMap((category) => category.tents)
+					.find((tent) => tent.id === id);
 
-			if (!tent) return null;
+				if (!tent) return null;
 
-			// Create a new tent object with required fields
-			const defaultCategory: Category = {
-				id: tent.category_id,
-				name:
-					(categories ?? []).find((c) => c.id === tent.category_id)?.name ??
-					'Unknown',
-				price: 0,
-				description: '',
-				tents: [],
-			};
+				// Create a new tent object with required fields
+				const defaultCategory: Category = {
+					id: tent.category_id,
+					name:
+						(categories ?? []).find((c) => c.id === tent.category_id)?.name ??
+						'Unknown',
+					price: 0,
+					description: '',
+					tents: [],
+				};
 
-			const tentWithCategory: Tent = {
-				...tent,
-				category: tent.category ?? defaultCategory,
-			};
+				const tentWithCategory: Tent = {
+					...tent,
+					category: tent.category ?? defaultCategory,
+				};
 
-			return tentWithCategory;
-		})
-		.filter((tent): tent is NonNullable<typeof tent> => tent !== null);
+				return tentWithCategory;
+			})
+			.filter((tent): tent is NonNullable<typeof tent> => tent !== null);
+	}, [selectedTentIds, categories]);
 
 	const handleRequestBook = () => {
 		// Validate that tents are selected
