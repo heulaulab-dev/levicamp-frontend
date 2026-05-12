@@ -157,7 +157,9 @@ export default function RefundForm({
 										id='accountName'
 										value={accountName}
 										onChange={(e) => setAccountName(e.target.value)}
-										placeholder='Enter account holder name'
+										placeholder='e.g., John Doe'
+										autocomplete='name'
+										name='accountName'
 									/>
 								</div>
 
@@ -168,7 +170,9 @@ export default function RefundForm({
 										id='accountNumber'
 										value={accountNumber}
 										onChange={(e) => setAccountNumber(e.target.value)}
-										placeholder='Enter account number'
+										placeholder='e.g., 1234-5678-9012'
+										autocomplete='off'
+										spellCheck='false'
 									/>
 								</div>
 							</div>
