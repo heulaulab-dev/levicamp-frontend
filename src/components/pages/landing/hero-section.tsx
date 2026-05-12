@@ -47,7 +47,7 @@ export default function HeroSection() {
 	const imageArray = [...Array(10)];
 
 	return (
-		<section className='relative flex md:flex-row flex-col justify-between items-center bg-cover bg-center mt-[80px] px-6 md:px-12 w-full min-h-screen overflow-hidden'>
+		<section className='relative flex md:flex-row flex-col justify-between items-center bg-cover bg-center mt-[80px] px-6 md:px-12 w-full min-h-[calc(100dvh-80px)] md:min-h-screen overflow-hidden'>
 			<AnimatePresence mode='wait'>
 				{!videoEnded && (
 					<motion.video
@@ -114,7 +114,7 @@ export default function HeroSection() {
 					Your Perfect Nature <br /> Glamping Experience
 				</h1>
 
-				<p className='mt-6 text-primary-foreground text-xl'>
+				<p className='mt-6 text-primary-foreground text-base sm:text-lg md:text-xl'>
 					Reconnect with nature without the hassle of planning. We take care of
 					everything for you. Just pick a date, book your tent, and enjoy the
 					great outdoors.
