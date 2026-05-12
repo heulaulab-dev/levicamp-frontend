@@ -149,9 +149,9 @@ export default function RefundForm({
 							</div>
 
 							{/* Account details */}
-							<div className='flex gap-4'>
+							<div className='flex flex-col md:flex-row gap-4'>
 								{/* Account name */}
-								<div className='w-1/2'>
+								<div className='w-full md:w-1/2'>
 									<Label htmlFor='accountName'>Account Name</Label>
 									<Input
 										id='accountName'
@@ -164,7 +164,7 @@ export default function RefundForm({
 								</div>
 
 								{/* Account number */}
-								<div className='w-1/2'>
+								<div className='w-full md:w-1/2'>
 									<Label htmlFor='accountNumber'>Account Number</Label>
 									<Input
 										id='accountNumber'
