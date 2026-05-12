@@ -73,8 +73,7 @@ export function Spotlight({
 			style={{
 				width: size,
 				height: size,
-				left: spotlightLeft,
-				top: spotlightTop,
+				transform: `translate(${parseFloat(spotlightLeft.get()) - size / 2}px, ${parseFloat(spotlightTop.get()) - size / 2}px)`,
 			}}
 		/>
 	);
