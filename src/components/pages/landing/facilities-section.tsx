@@ -126,7 +126,7 @@ export default function FacilitiesSection() {
 							{ListFacilities.map((facility, index) => (
 								<motion.div
 									key={index}
-									className='flex-shrink-0 w-[449px]'
+									className='flex-shrink-0 w-[calc(100vw-3rem)] sm:w-[449px]'
 									initial='hidden'
 									whileInView='visible'
 									viewport={{ once: true, margin: '-100px' }}
