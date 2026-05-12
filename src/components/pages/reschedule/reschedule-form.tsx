@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/ios-spinner';
 import {
 	Card,
 	CardContent,
@@ -132,9 +133,16 @@ export default function RescheduleForm({
 							<Button
 								disabled={!agreed || loading}
 								onClick={handleRequestReschedule}
-								className={loading ? 'opacity-70 cursor-not-allowed' : ''}
+								className='group relative'
 							>
-								{loading ? 'Processing…' : 'Request Reschedule'}
+								<span className={loading ? 'text-transparent' : ''}>
+									Request Reschedule
+									</span>
+									{loading && (
+										<span className='absolute inset-0 flex items-center justify-center'>
+											<Spinner size='lg' />
+										</span>
+									)}
 							</Button>
 						</CardFooter>
 					</Card>

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/ios-spinner';
 import {
 	Card,
 	CardContent,
@@ -183,9 +184,16 @@ export default function RefundForm({
 							<Button
 								onClick={handleRequestRefund}
 								disabled={!agreed || isLoading}
-								className='w-full'
+								className='group relative w-full'
 							>
-								{isLoading ? 'Processing…' : 'Request Refund'}
+								<span className={isLoading ? 'text-transparent' : ''}>
+									Request Refund
+								</span>
+								{isLoading && (
+									<span className='absolute inset-0 flex items-center justify-center'>
+										<Spinner size='lg' />
+									</span>
+								)}
 							</Button>
 						</div>
 					</CardContent>
