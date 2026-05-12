@@ -12,7 +12,7 @@ export function createMetadata({
 	title,
 	description,
 	path = '',
-	noIndex = true,
+	noIndex = false,
 }: {
 	title?: string;
 	description?: string;
