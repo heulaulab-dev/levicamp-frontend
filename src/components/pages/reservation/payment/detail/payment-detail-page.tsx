@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 import { VirtualAccountModal } from '@/components/pages/reservation/payment/virtual-account-modal';
 import { MandiriBillPaymentModal } from '@/components/pages/reservation/payment/mandiri-bill-modal';
 import { usePayment } from '@/hooks/payments/use-payments';
@@ -26,10 +27,11 @@ export default function PaymentDetailPage() {
 					window.location.href = `/reservation/invoice/${bookingId}`;
 				},
 				onError: (error) => {
+					toast.error(error || 'Payment check failed. Please refresh the page.');
 					console.error('Payment error:', error);
 				},
 				onExpired: () => {
-					// Handle expired payment
+					toast.error('Payment session expired. Please create a new payment.');
 					console.warn('Payment expired');
 				},
 			});
