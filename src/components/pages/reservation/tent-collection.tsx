@@ -165,15 +165,15 @@ export default function TentCollection({
 						].map((category) => (
 							<button
 								key={category.name}
-								className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ease-in-out ${
+								className={`flex items-center gap-2 px-4 py-3 rounded-md transition-all duration-200 ease-in-out min-h-[44px] ${
 									selectedCategory === category.name
 										? 'bg-primary text-primary-foreground shadow-md'
-										: 'bg-transparent text-secondary-foreground dark:text-primary-foreground  hover:bg-primary/50 hover:text-primary-foreground'
+										: 'bg-transparent text-secondary-foreground dark:text-primary-foreground hover:bg-primary/50 hover:text-primary-foreground'
 								}`}
 								onClick={() => setSelectedCategory(category.name)}
 							>
 								{category.icon}
-								{category.name}
+								<span className='hidden sm:inline'>{category.name}</span>
 							</button>
 						))}
 					</div>
