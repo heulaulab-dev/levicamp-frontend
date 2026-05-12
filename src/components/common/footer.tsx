@@ -92,7 +92,7 @@ export default function Footer({ onSubscribe }: FooterProps) {
 			/>
 
 			<div className='max-w-7xl mx-auto px-4 sm:px-8 relative z-10'>
-				<div className='grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 py-16'>
+				<div className='grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 py-8 sm:py-12 md:py-16'>
 					{/* Brand Column */}
 					<div className='col-span-1 md:col-span-5 flex flex-col gap-6'>
 						<div className='flex items-center gap-3'>
