@@ -9,7 +9,8 @@ const Hero = () => {
 			className='relative flex md:flex-row flex-col justify-between items-center bg-cover bg-center mt-[80px] px-6 md:px-12 w-full min-h-screen overflow-hidden'
 			style={{ backgroundImage: "url('/bg.png')" }}
 		>
-			<div className='z-10 relative ml-12 max-w-3xl md:text-left text-center'>
+			{/* Text Container */}
+			<div className='z-10 relative max-w-3xl md:text-left text-center'>
 				<div className='flex justify-center md:justify-start items-center gap-2'>
 					<Image
 						src='/assets/icons/camp-icon.png'
@@ -37,8 +38,8 @@ const Hero = () => {
 				</Button>
 			</div>
 
-			{/* Marquee Container */}
-			<div className='z-10 relative flex justify-center items-center w-full md:w-1/2 h-[500px]'>
+			{/* Marquee Container - Hidden on mobile */}
+			<div className='z-10 relative hidden md:flex justify-center items-center w-1/2 h-[500px]'>
 				{/* Marquee Pertama */}
 				<div
 					className='absolute'

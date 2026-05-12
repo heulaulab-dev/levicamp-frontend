@@ -23,8 +23,8 @@ export function ReservationStepper({ currentStep }: ReservationStepperProps) {
 
 	return (
 		<div className='mx-auto w-full max-w-4xl'>
-			<div className='overflow-x-auto pb-2'>
-				<div className='min-w-[600px]'>
+			<div className='overflow-x-auto'>
+				<div className='min-w-[320px] sm:min-w-[600px]'>
 					<Stepper
 						value={currentStep}
 						className='flex justify-between items-center'
