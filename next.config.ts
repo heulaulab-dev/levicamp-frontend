@@ -37,6 +37,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'assets.tazkiyaworks.fun',
 			},
+			{
+				protocol: 'https',
+				hostname: 'merchants-app.sbx.midtrans.com',
+			}
 		],
 	},
 	webpack: (config) => {

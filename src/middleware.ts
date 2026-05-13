@@ -6,19 +6,7 @@ export function middleware(_request: NextRequest) {
 	const response = NextResponse.next();
 
 	// Content-Security-Policy
-	response.headers.set(
-		'Content-Security-Policy',
-		[
-			"default-src 'self'",
-			"script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-			"style-src 'self' 'unsafe-inline'",
-			"img-src 'self' data: https://assets.levicamp.id https://assets.tazkiyaworks.fun https://api.sandbox.midtrans.com https://api.midtrans.com blob:",
-			"font-src 'self' data:",
-			"connect-src 'self' https://api.levicamp.id https://api-sandbox.levicamp.id",
-			"frame-ancestors 'none'",
-			"form-action 'self'",
-		].join('; '),
-	);
+	
 
 	// X-Frame-Options
 	response.headers.set('X-Frame-Options', 'DENY');
