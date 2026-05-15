@@ -29,7 +29,7 @@ export function useAvailability(startDate: string, endDate: string, categoryId?:
         })
         setData(response.data.data.dates)
       } catch (err) {
-        setError('Failed to fetch availability')
+        setError(`Failed to fetch availability: ${err}`);
       } finally {
         setLoading(false)
       }
