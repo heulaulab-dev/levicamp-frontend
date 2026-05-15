@@ -27,8 +27,10 @@ export default function PaymentDetailPage() {
 					window.location.href = `/reservation/invoice/${bookingId}`;
 				},
 				onError: (error) => {
-					toast.error(error || 'Payment check failed. Please refresh the page.');
-					console.error('Payment error:', error);
+				toast.error(
+					error?.message || 'Payment check failed. Please refresh the page.',
+				);
+				console.error('Payment error:', error);
 				},
 				onExpired: () => {
 					toast.error('Payment session expired. Please create a new payment.');

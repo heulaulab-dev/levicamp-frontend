@@ -149,7 +149,7 @@ export default function RefundForm({
 							</div>
 
 							{/* Account details */}
-							<div className='flex flex-col md:flex-row gap-4'>
+							<div className='flex md:flex-row flex-col gap-4'>
 								{/* Account name */}
 								<div className='w-full md:w-1/2'>
 									<Label htmlFor='accountName'>Account Name</Label>
@@ -158,7 +158,6 @@ export default function RefundForm({
 										value={accountName}
 										onChange={(e) => setAccountName(e.target.value)}
 										placeholder='e.g., John Doe'
-										autocomplete='name'
 										name='accountName'
 									/>
 								</div>
@@ -171,7 +170,6 @@ export default function RefundForm({
 										value={accountNumber}
 										onChange={(e) => setAccountNumber(e.target.value)}
 										placeholder='e.g., 1234-5678-9012'
-										autocomplete='off'
 										spellCheck='false'
 									/>
 								</div>
@@ -194,7 +192,7 @@ export default function RefundForm({
 									Request Refund
 								</span>
 								{isLoading && (
-									<span className='absolute inset-0 flex items-center justify-center'>
+									<span className='absolute inset-0 flex justify-center items-center'>
 										<Spinner size='lg' />
 									</span>
 								)}

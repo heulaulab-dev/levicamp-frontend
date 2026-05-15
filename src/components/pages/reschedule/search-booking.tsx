@@ -49,7 +49,7 @@ export default function SearchBooking() {
 			const raw = error instanceof ApiError ? error.raw : null;
 			const errorDescription =
 				raw && typeof raw === 'object' && !Array.isArray(raw)
-					? (raw as Record<string, unknown>).error?.description
+					? (raw as Record<string, { description?: string }>).error?.description
 					: undefined;
 
 			if (typeof errorDescription === 'string' && errorDescriptionMap[errorDescription]) {

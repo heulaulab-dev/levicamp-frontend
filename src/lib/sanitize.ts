@@ -26,7 +26,6 @@ export function sanitizeHTML(dirty: string): string {
 		ALLOWED_TAGS,
 		ALLOWED_ATTR,
 		ALLOW_DATA_ATTR: false,
-		FORCE_HTTPS: true,
 		ADD_ATTR: ['target'],
 	});
 }
