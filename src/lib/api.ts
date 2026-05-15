@@ -5,6 +5,9 @@ import { ApiError } from '@/types/api-error';
 const api = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	headers: { 'Content-Type': 'application/json' },
+	withCredentials: true,
+	xsrfCookieName: 'csrftoken',
+	xsrfHeaderName: 'X-CSRFToken',
 });
 
 // Normalize every non-2xx response to an ApiError so callers can

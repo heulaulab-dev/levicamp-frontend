@@ -78,7 +78,13 @@ export default function SummaryTent({
 						const capacityMap: Record<string, string> = {};
 						const loadingMap: Record<string, boolean> = {};
 
-						data.data.tents.forEach(
+						const tents = data?.data?.tents || [];
+
+						if (!Array.isArray(tents)) {
+							throw new Error('Invalid data format: tents should be an array');
+						}
+
+						tents.forEach(
 							(t: {
 								id: string;
 								price: number;

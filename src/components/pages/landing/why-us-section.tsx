@@ -54,9 +54,9 @@ const WhyUsSection = () => {
 	};
 
 	return (
-		<section ref={sectionRef} className='px-6 py-24 overflow-hidden'>
+		<section ref={sectionRef} className='px-4 md:px-6 py-16 md:py-24 overflow-hidden'>
 			{/* Header Section */}
-			<div className='relative pl-28 w-full'>
+			<div className='relative pl-4 md:pl-28 w-full'>
 				<div className='flex justify-between items-center mb-3 w-full'>
 					<div className='flex items-center gap-2 bg-secondary shadow-sm mb-12 px-4 py-2.5 border rounded-lg text-secondary-foreground'>
 						<svg
@@ -72,7 +72,7 @@ const WhyUsSection = () => {
 					</div>
 
 					{/* Navigation Arrows */}
-					<div className='flex gap-4 mr-28 mb-12'>
+					<div className='flex gap-2 md:gap-4 mr-0 md:mr-28 mb-12'>
 						<button
 							onClick={handlePrev}
 							className='flex justify-center items-center bg-secondary hover:bg-secondary-hover rounded-full w-15 h-15 transition'
@@ -89,12 +89,12 @@ const WhyUsSection = () => {
 				</div>
 
 				{/* Scroll Animation */}
-				<div className='relative overflow-x-hidden'>
-					<motion.div animate={controls} className='flex gap-6'>
+				<div className='relative overflow-x-auto'>
+					<motion.div animate={controls} className='flex gap-4 md:gap-6'>
 						{facilities.map((facility, index) => (
 							<motion.div
 								key={index}
-								className='flex-shrink-0 w-[449px] snap-center'
+								className='flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[449px] snap-center'
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: index * 0.1 }}

@@ -105,6 +105,7 @@ export const useReservations = create<ReservationStore>((set) => ({
 			return response.data;
 		} catch (error) {
 			console.error('Error checking price:', error);
+			set({ error: 'Failed to fetch prices. Please try again.' });
 			return null;
 		}
 	},

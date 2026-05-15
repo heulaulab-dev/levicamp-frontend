@@ -103,7 +103,7 @@ export default function InvoiceDetail({
 						disabled={isDownloading}
 					>
 						<Download className='mr-2 w-4 h-4' />
-						{isDownloading ? 'Downloading...' : 'Download Invoice'}
+						{isDownloading ? 'Downloading…' : 'Download Invoice'}
 					</Button>
 				</div>
 

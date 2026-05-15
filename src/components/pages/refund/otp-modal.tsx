@@ -179,7 +179,7 @@ export function OTPVerificationModal({
 										onClick={handleResendOTP}
 										disabled={isResendingOTP}
 									>
-										{isResendingOTP ? 'Resending...' : 'Click to resend'}
+										{isResendingOTP ? 'Resending…' : 'Click to resend'}
 									</Button>
 								</FormDescription>
 								<FormMessage />
@@ -196,7 +196,7 @@ export function OTPVerificationModal({
 							Cancel
 						</Button>
 						<Button type='submit' className='w-full' disabled={loading}>
-							{loading ? 'Verifying...' : 'Confirm Code'}
+							{loading ? 'Verifying…' : 'Confirm Code'}
 						</Button>
 					</div>
 				</form>

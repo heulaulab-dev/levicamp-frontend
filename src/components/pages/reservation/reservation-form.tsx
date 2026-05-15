@@ -35,11 +35,11 @@ export default function ReservationForm() {
 	return (
 		<div className='flex flex-col items-center gap-2 w-full'>
 			{/* Reservation Date Picker */}
-			<div className='flex md:flex-row flex-col items-center md:gap-4 bg-secondary shadow-xl p-6 rounded-lg w-full max-w-3xl'>
+			<div className='flex md:flex-row flex-col items-center md:gap-4 bg-secondary shadow-xl p-4 sm:p-6 rounded-lg w-full max-w-3xl'>
 				{/* Search Form Section */}
 				<div className='flex md:flex-row flex-col gap-4 w-full'>
 					<div className='flex flex-col gap-2 w-full'>
-						<label className='font-medium text-secondary-foreground text-sm'>
+						<label className='font-medium text-secondary-foreground text-xs sm:text-sm'>
 							Category
 						</label>
 						<Select onValueChange={setTempSelectedCategory}>
@@ -68,7 +68,7 @@ export default function ReservationForm() {
 
 				{/* Search Button Section */}
 				<div className='flex flex-col gap-2 w-full md:w-auto'>
-					<label className='opacity-0 font-medium text-secondary-foreground text-sm'>
+					<label className='opacity-0 font-medium text-secondary-foreground text-xs sm:text-sm'>
 						Action
 					</label>
 					<Button

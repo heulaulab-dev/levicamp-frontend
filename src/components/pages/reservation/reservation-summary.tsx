@@ -238,7 +238,7 @@ export function ReservationSummary({
 									{isLoading ? (
 										<div className='flex items-center gap-2'>
 											<div className='border-white border-t-2 border-b-2 rounded-full w-4 h-4 animate-spin'></div>
-											<span>Processing...</span>
+											<span>Processing…</span>
 										</div>
 									) : isLoadingPrices ? (
 										'Calculating Prices...'

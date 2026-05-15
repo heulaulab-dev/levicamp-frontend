@@ -123,7 +123,7 @@ export default function DateRangePicker({ date, setDate, label }: Props) {
 				</PopoverTrigger>
 				<PopoverContent className='p-0 md:p-4 w-auto'>
 					<div className='flex flex-col items-center gap-2 p-2'>
-						<h1 className='font-bold text-xl'>Set The Date</h1>
+						<h3 className='font-bold text-xl'>Set The Date</h3>
 						<p className='text-sm'>
 							Select the date you want to stay at the campsite.
 						</p>

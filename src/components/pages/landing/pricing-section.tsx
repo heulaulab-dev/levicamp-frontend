@@ -190,19 +190,23 @@ export default function PricingSection({
 								</motion.div>
 
 								<motion.div className='mb-6' variants={featureVariants}>
-									<div className='flex items-baseline gap-2'>
-										<span className='font-bold text-primary text-4xl'>
-											Rp.{tier.price.weekday}
-										</span>
-										<span className='text-secondary-foreground text-sm'>
-											/weekday
-										</span>
-										<span className='font-bold text-primary text-4xl'>
-											Rp.{tier.price.weekend}
-										</span>
-										<span className='text-secondary-foreground text-sm'>
-											/weekend
-										</span>
+									<div className='space-y-2'>
+										<div className='flex items-baseline gap-2'>
+											<span className='font-bold text-primary text-2xl sm:text-4xl'>
+												Rp.{tier.price.weekday}
+											</span>
+											<span className='text-secondary-foreground text-sm'>
+												/weekday
+											</span>
+										</div>
+										<div className='flex items-baseline gap-2'>
+											<span className='font-bold text-primary text-2xl sm:text-4xl'>
+												Rp.{tier.price.weekend}
+											</span>
+											<span className='text-secondary-foreground text-sm'>
+												/weekend
+											</span>
+										</div>
 									</div>
 									<p className='mt-2 text-secondary-foreground text-sm'>
 										{tier.description}

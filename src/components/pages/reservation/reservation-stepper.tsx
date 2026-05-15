@@ -23,37 +23,41 @@ export function ReservationStepper({ currentStep }: ReservationStepperProps) {
 
 	return (
 		<div className='mx-auto w-full max-w-4xl'>
-			<Stepper
-				value={currentStep}
-				className='flex justify-between items-center'
-			>
-				{steps.map((step, index) => (
-					<React.Fragment key={index}>
-						<StepperItem
-							step={index + 1}
-							completed={index < currentStep}
-							disabled={index > currentStep}
-						>
-							<StepperTrigger className='flex items-center gap-2'>
-								<StepperIndicator />
-								<div className='text-left'>
-									<StepperTitle>{step.title}</StepperTitle>
-								</div>
-							</StepperTrigger>
-						</StepperItem>
-						{index < steps.length - 1 && (
-							<div
-								className={cn(
-									'flex-1',
-									'm-0.5',
-									index < currentStep ? 'bg-primary' : 'bg-muted',
-									'h-0.5 w-full',
+			<div className='overflow-x-auto'>
+				<div className='min-w-[320px] sm:min-w-[600px]'>
+					<Stepper
+						value={currentStep}
+						className='flex justify-between items-center'
+					>
+						{steps.map((step, index) => (
+							<React.Fragment key={index}>
+								<StepperItem
+									step={index + 1}
+									completed={index < currentStep}
+									disabled={index > currentStep}
+								>
+									<StepperTrigger className='flex items-center gap-2'>
+										<StepperIndicator />
+										<div className='text-left'>
+											<StepperTitle>{step.title}</StepperTitle>
+										</div>
+									</StepperTrigger>
+								</StepperItem>
+								{index < steps.length - 1 && (
+									<div
+										className={cn(
+											'flex-1',
+											'm-0.5',
+											index < currentStep ? 'bg-primary' : 'bg-muted',
+											'h-0.5 w-full',
+										)}
+									></div>
 								)}
-							></div>
-						)}
-					</React.Fragment>
-				))}
-			</Stepper>
+							</React.Fragment>
+						))}
+					</Stepper>
+				</div>
+			</div>
 		</div>
 	);
 }

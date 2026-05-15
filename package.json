@@ -52,7 +52,7 @@
 		"next-themes": "^0.4.6",
 		"npkill": "^0.12.2",
 		"react": "^19.0.0",
-		"react-day-picker": "8.10.1",
+		"react-day-picker": "^8.10.1",
 		"react-dom": "^19.0.0",
 		"react-fast-marquee": "^1.6.5",
 		"react-hook-form": "^7.55.0",
@@ -76,9 +76,9 @@
 		"eslint-config-next": "15.1.6",
 		"eslint-plugin-import": "^2.31.0",
 		"postcss": "^8",
+		"react-scan": "^0.3.3",
 		"tailwindcss": "^3.4.1",
-		"typescript": "^5",
-		"react-scan": "^0.3.3"
+		"typescript": "^5"
 	},
 	"module": "index.ts",
 	"type": "module",

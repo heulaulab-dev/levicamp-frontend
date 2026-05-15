@@ -144,7 +144,7 @@ export function HeroHeader() {
 							}}
 							disabled={loading}
 						>
-							{loading ? 'Loading...' : 'Search'}
+							{loading ? 'Loading…' : 'Search'}
 						</Button>
 					</div>
 				</div>

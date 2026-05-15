@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/ios-spinner';
 import {
 	Card,
 	CardContent,
@@ -148,26 +149,30 @@ export default function RefundForm({
 							</div>
 
 							{/* Account details */}
-							<div className='flex gap-4'>
+							<div className='flex flex-col md:flex-row gap-4'>
 								{/* Account name */}
-								<div className='w-1/2'>
+								<div className='w-full md:w-1/2'>
 									<Label htmlFor='accountName'>Account Name</Label>
 									<Input
 										id='accountName'
 										value={accountName}
 										onChange={(e) => setAccountName(e.target.value)}
-										placeholder='Enter account holder name'
+										placeholder='e.g., John Doe'
+										autocomplete='name'
+										name='accountName'
 									/>
 								</div>
 
 								{/* Account number */}
-								<div className='w-1/2'>
+								<div className='w-full md:w-1/2'>
 									<Label htmlFor='accountNumber'>Account Number</Label>
 									<Input
 										id='accountNumber'
 										value={accountNumber}
 										onChange={(e) => setAccountNumber(e.target.value)}
-										placeholder='Enter account number'
+										placeholder='e.g., 1234-5678-9012'
+										autocomplete='off'
+										spellCheck='false'
 									/>
 								</div>
 							</div>
@@ -183,9 +188,16 @@ export default function RefundForm({
 							<Button
 								onClick={handleRequestRefund}
 								disabled={!agreed || isLoading}
-								className='w-full'
+								className='group relative w-full'
 							>
-								{isLoading ? 'Processing...' : 'Request Refund'}
+								<span className={isLoading ? 'text-transparent' : ''}>
+									Request Refund
+								</span>
+								{isLoading && (
+									<span className='absolute inset-0 flex items-center justify-center'>
+										<Spinner size='lg' />
+									</span>
+								)}
 							</Button>
 						</div>
 					</CardContent>

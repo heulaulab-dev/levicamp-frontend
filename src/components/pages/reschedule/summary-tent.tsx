@@ -86,7 +86,7 @@ export default function SummaryTent({
 						const capacityMap: Record<string, string> = {};
 						const loadingMap: Record<string, boolean> = {};
 
-						data.data.tents.forEach(
+						(data.data.tents ?? []).forEach(
 							(t: {
 								id: string;
 								price: number;

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Award, Briefcase, Star, Sun, Users } from 'lucide-react';
 import Image from 'next/image';
 
@@ -15,7 +16,7 @@ interface CardTentProps {
 	onSelect: () => void;
 }
 
-export default function CardTent({
+function CardTentComponent({
 	tent,
 	isSelected,
 	onSelect,
@@ -35,6 +36,7 @@ export default function CardTent({
 					alt={tent.name}
 					width={500}
 					height={350}
+					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 					className={`object-cover w-full aspect-[16/10] ${
 						status === 'unavailable' ? 'filter grayscale' : ''
 					}`}
@@ -141,3 +143,8 @@ export default function CardTent({
 		</Card>
 	);
 }
+
+const CardTent = React.memo(CardTentComponent);
+CardTent.displayName = 'CardTent';
+
+export default CardTent;
